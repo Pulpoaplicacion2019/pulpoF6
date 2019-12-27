@@ -6,6 +6,7 @@ import { createStackNavigator, HeaderTitle } from "react-navigation-stack";
 import { createBottomTabNavigator } from "react-navigation-tabs";
 import { Icon } from "react-native-elements";
 import MenuHeader  from "../components/Header";
+import HeaderEdit  from "../components/HeaderEdit";
 // Importacion de las Screen creadas para la navegacion
 import FavoritosScreen from "../screens/Torneos/Favoritos";
 import EnCursoScreen from "../screens/Torneos/EnCurso";
@@ -58,7 +59,7 @@ const TorneosRootStack = createStackNavigator({
 	TabEquipos:{
 		screen:TabEquipos,
 		navigationOptions:({ navigation })=>({
-			title:navigation.getParam('nombreTorneo', 'NO-ID'),
+			headerTitle: () => <HeaderEdit nav={navigation} />,
 			headerStyle: {
 				backgroundColor: '#f4511e',
 			},
