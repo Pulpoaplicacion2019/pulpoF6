@@ -103,7 +103,7 @@ this.setState({uri:uriCargado})
          />
           <Input placeholder='Año'
                 onChangeText={text => this.setState({anio:text})}
-                value={this.state.anio}
+                value={this.state.anio+''}
                 leftIcon={ <Icon name='chevron-down-box' type="material-community" size={20} color='black' />}
          />
           <Input placeholder= 'Nombre Torneo'
@@ -134,7 +134,7 @@ this.setState({uri:uriCargado})
                 value={this.state.correoOrganizador}
                 leftIcon={ <Icon name='chevron-down-box' type="material-community" size={20} color='black' />}
          />
-         <Input placeholder= {this.state.fechaInicio}
+         <Input placeholder= 'Fecha Inicio'
                 leftIcon={ <Icon name='calendar' type="material-community" size={20} color='black' />}
          />
 
