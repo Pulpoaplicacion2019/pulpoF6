@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "616527640285",
+    "firebase_url": "https://pulpoapp2019-36a53.firebaseio.com",
+    "project_id": "pulpoapp2019-36a53",
+    "storage_bucket": "pulpoapp2019-36a53.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:616527640285:android:7532a11f82a94d07",
+        "android_client_info": {
+          "package_name": "com.clearminds.pulpobase"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "616527640285-7jr93itadhs48qpg90jan9dum7uobgff.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCV_wSolmdgLPx7lHirF8f_dngUdsd8XuU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "616527640285-7jr93itadhs48qpg90jan9dum7uobgff.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:616527640285:android:52c6d6fbc1f0608df24d34",
+        "android_client_info": {
+          "package_name": "com.pulpo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "616527640285-7jr93itadhs48qpg90jan9dum7uobgff.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCV_wSolmdgLPx7lHirF8f_dngUdsd8XuU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "616527640285-7jr93itadhs48qpg90jan9dum7uobgff.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
