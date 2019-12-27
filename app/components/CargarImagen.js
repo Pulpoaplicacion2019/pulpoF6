@@ -1,7 +1,9 @@
 import { StyleSheet, View, Text,TouchableOpacity,Image,FlatList,AsyncStorage,Dimensions,cScrollView } from "react-native";
 import {firebase} from '@react-native-firebase/storage';
 import  ImagePicker  from 'react-native-image-picker' ;
-import React, { Component } from "react";
+import ImageResizer from 'react-native-image-resizer';
+
+import React, { Component,Alert } from "react";
 const options = {
     title: 'Select Image',
     storageOptions: {
@@ -11,7 +13,6 @@ const options = {
   };
 
   export default class CargarImagen extends Component{
-
     constructor(props){
         super(props);
         this.state = {
@@ -19,9 +20,27 @@ const options = {
             url:'',
             nuevaImagen:true
         };
-       
       };
  
+ resize=()=> {
+    ImageResizer.createResizedImage(this.state.imgSource.uri, 400, 400, 'JPEG', 100)
+      .then(({uri}) => {
+		  console.log("redimensionada");
+        this.setState({
+          resizedImageUri: uri,
+		  imgSource:{uri:uri}
+        });
+		this.uploadImage();
+      })
+      .catch(err => {
+        console.log(err);
+        return Alert.alert(
+          'Unable to resize the photo',
+          'Check the console for full the error message',
+        );
+      });
+  }
+  
   pickImage = () => {
     ImagePicker.showImagePicker(options, response => {
       if (response.didCancel) {
@@ -42,6 +61,7 @@ const options = {
     this.props.navigation.goBack();
   }
   uploadImage = () => {
+	  console.log("subiendo imagen");
     this.setState({nuevaImagen:true})
     const ext = this.state.imageUri.split('.').pop(); // Extract image extension
     const filename =new Date().getTime(); // Generate unique name
@@ -49,7 +69,7 @@ const options = {
     let url=this.props.navigation.state.params.url;
     let fn=this.props.navigation.state.params.fn;
 	
-    firebase.storage().ref(url+'/'+filename).putFile(this.state.imageUri).on(
+    firebase.storage().ref(url+'/'+filename).putFile(this.state.resizedImageUri).on(
         firebase.storage.TaskEvent.STATE_CHANGED,
         snapshot => {
           let state = {};
@@ -112,28 +132,23 @@ const options = {
         ) : (
           <Text>Seleccione una imagen!</Text>
         )}
-  {uploading && (
+		{uploading && (
                   <View
                     style={[styles.progressBar, { width:progress }]}
                   />
                 )}
-      <TouchableOpacity style={nuevaImagen? styles.disabledBtn:styles.btn}   disabled= {nuevaImagen} onPress={this.uploadImage}>
+      <TouchableOpacity style={nuevaImagen? styles.disabledBtn:styles.btn}   disabled= {nuevaImagen} onPress={this.resize}>
           <View>
-            <Text style={styles.btnTxt} 
-            
-
-            >Guardar</Text>
+            <Text style={styles.btnTxt}>Guardar</Text>
           </View>
         </TouchableOpacity>
+		
         <TouchableOpacity style={nuevaImagen? styles.disabledBtn:styles.btn}   disabled= {nuevaImagen} onPress={this.cancelar}>
           <View>
-            <Text style={styles.btnTxt} 
-            
-
-            >Cancelar</Text>
+            <Text style={styles.btnTxt}>Cancelar</Text>
           </View>
         </TouchableOpacity>
-
+      
         </View>
       )
   }
@@ -176,11 +191,9 @@ const options = {
       color: '#fff'
     },
     image: {
-      marginTop: 20,
       minWidth:200,
-      height: 400,
+      height:200,
       resizeMode: 'contain'
-  
     },
   
     img: {
@@ -196,8 +209,8 @@ const options = {
       backgroundColor: 'rgb(3, 154, 229)',
       height: 5,
       shadowColor: '#000',
-    }
+    },
+	
   });
-  
   
   
