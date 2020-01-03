@@ -8,7 +8,7 @@ import {
 } from "react-native";
 
 import { Image } from "react-native-elements";
-
+import ActionButton from "react-native-action-button";
 //Importación componente de navegación
 import NavegadorCategorias from "../components/NavegadorCategorias.js";
 
@@ -102,6 +102,7 @@ export default class Calendarios extends Component {
     const { listCalendarios } = this.state;
     return (
       <Container>
+        
         <Header style={styles.header}>
           <NavegadorCategorias
             pintar={categ => {
@@ -111,13 +112,23 @@ export default class Calendarios extends Component {
             }}
           ></NavegadorCategorias>
         </Header>
+        
         <Content>
+       
           <View style={styles.viewBody}>
             {this.renderFlatList(listCalendarios)}
           </View>
         </Content>
+        <ActionButton
+             buttonColor="#00A680"
+             onPress={() => {
+			          this.props.navigation.navigate("CrearFecha");
+             }}
+        />
         <StatusBarGeneral></StatusBarGeneral>
+        
       </Container>
+      
     );
   }
 }

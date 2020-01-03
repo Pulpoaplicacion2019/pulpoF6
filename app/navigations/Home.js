@@ -14,11 +14,14 @@ import PorIniciarScreen from "../screens/Torneos/PorIniciar";
 import MisTorneosScreen from "../screens/Torneos/MisTorneos";
 
 import CalendariosScreen from "../screens/Calendarios";
+import CrearFechaScreen from "../screens/CrearFecha";
+
 import EquiposScreen from "../screens/Equipos/Equipos";
 import PosicionesScreen from "../screens/Posiciones";
 import ResultadosScreen from "../screens/Resultados";
 
 import PerfilTorneoScreen from "../screens/Torneos/PerfilTorneo";
+import InfoPerfilTorneoScreen from "../screens/Torneos/InfoPerfilTorneo";
 import CargarImagenScreen from "../components/CargarImagen";
 import CrearEquiposScreen from "../screens/Equipos/CrearEquipos";
 
@@ -68,6 +71,14 @@ const TorneosRootStack = createStackNavigator({
 	},
 	PerfilTorneo:{
 		screen:PerfilTorneoScreen,
+		
+	},
+	InfoPerfilTorneo:{
+		screen:InfoPerfilTorneoScreen,
+		
+	},
+	CrearFecha:{
+		screen:CrearFechaScreen,
 		
 	},
 	CargarImagen:{

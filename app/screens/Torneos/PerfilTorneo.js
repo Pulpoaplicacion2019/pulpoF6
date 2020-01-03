@@ -1,8 +1,10 @@
 import React, { Component } from "react";
-import { StyleSheet, View, Text,TouchableOpacity,Image,FlatList,AsyncStorage,Dimensions,cScrollView } from "react-native";
+import { StyleSheet, View, Text,TouchableOpacity,Image,FlatList,KeyboardAvoidingView,ScrollView } from "react-native";
 import { Avatar, Input ,Icon, Button } from 'react-native-elements';
+import { Dropdown } from 'react-native-material-dropdown';
 import {guardarTorneo,recuperarTorneo} from '../../services/torneos.js';
-
+import {cargarCategorias} from '../../services/categorias.js';
+import FilaCategoria from '../../components/filaCategoria.js';
 import DatePicker from 'react-native-datepicker'
 
 export default class PerfilTorneo extends Component {
@@ -21,7 +23,9 @@ export default class PerfilTorneo extends Component {
       correoOrganizador:'',
       telefonoOrganizador:'',
       favorito:'false',
-      uri:''
+      uri:'',
+      listaCategorias: [],
+      listaCatTorneo: [],
     };
    
   };
@@ -36,23 +40,26 @@ export default class PerfilTorneo extends Component {
   }*/
   
 	componentDidMount() {
-     const itemsRef = recuperarTorneo((torneo)=>{this.setState({
+   recuperarTorneo((torneo)=>{if (torneo!=null){this.setState({
 		 anio:torneo.anio,
 		 nombreTorneo:torneo.nombreTorneo,
          fechaRegistro:torneo.fechaRegistro,
          estado:torneo.estado,
-         fechaInicio:torneo.fechaInicio,
+         date:torneo.fechaInicio,
          nombreOrganizador:torneo.nombreOrganizador,
          apellidoOrganizador:torneo.apellidoOrganizador,
          correoOrganizador:torneo.correoOrganizador,
          telefonoOrganizador:torneo.telefonoOrganizador,
          favorito:torneo.favorito,
-         uri:torneo.imagenTorneo
-	 })}); 
+         uri:torneo.imagenTorneo,
+         listaCatTorneo:this.convertirCategoriasLista(torneo.categorias)
+   })}}); 
+   cargarCategorias((listaCategorias)=>{this.setState({listaCategorias:listaCategorias})});
   }
 
    
 guardar = () => {
+  let categorias=this.convertirCategorias(this.state.listaCatTorneo)
   const torneo= {
     anio:this.state.anio,
     apellidoOrganizador:this.state.apellidoOrganizador,
@@ -60,16 +67,40 @@ guardar = () => {
     estado:this.state.estado,
     favorito:this.state.favorito,
     nombreTorneo:this.state.nombreTorneo,
-    fechaInicio:this.state.fechaInicio,
+    fechaInicio:this.state.date,
     id:this.state.nombreTorneo+'_'+this.state.anio,
     imagenTorneo:this.state.uri,
     nombreOrganizador:this.state.nombreOrganizador,
     nombreTorneo:this.state.nombreTorneo,
-    telefonoOrganizador:this.state.telefonoOrganizador
+    telefonoOrganizador:this.state.telefonoOrganizador,
+    categorias:categorias
   }  
   guardarTorneo(torneo);
   this.props.navigation.goBack();
 }
+convertirCategorias=(categorias)=>{
+  let objetoCategorias={}
+  categorias.forEach((item)=>{
+    objetoCategorias[item]=item
+  })
+  return objetoCategorias
+}
+convertirCategoriasLista=(objetoCategorias)=>{
+  let listaCategorias=[]
+  Object.keys(objetoCategorias).forEach((item)=>{
+    listaCategorias.push(item);
+  })
+  return listaCategorias
+}
+elegirCategoria=(value)=>{
+  const categorias=this.state.listaCatTorneo;
+  const position=this.buscarCategoria(categorias,value);
+  if(position==-1){
+    categorias.push(value);
+    this.setState({listaCatTorneo:categorias})}
+  }
+  
+ 
   
   
  
@@ -80,11 +111,36 @@ guardar = () => {
 pintarImagen=(uriCargado)=>{
 this.setState({uri:uriCargado})
 }
+
+buscarCategoria=(categorias,categoria)=>{
+  let posicion=-1
+  let iteracion=0
+  console.log('buscar: '+categorias.length);
+  categorias.forEach(element => {
+    console.log('element: '+element);
+      if(element==categoria){
+          posicion=iteracion
+
+      }
+      iteracion++
+  });
+  return posicion;
+}
+
+eliminar= (categoria)=>{
+  const categorias=this.state.listaCatTorneo;
+  let i = this.buscarCategoria(categorias,categoria);
+  console.log('posicion '+i);
+  categorias.splice( i, 1 );
+
+  this.setState({listaCatTorneo:categorias})
+}
   render() {
-    
+  
     return (
-      <View >
-        
+      <ScrollView>
+      <KeyboardAvoidingView behavior="position" style={styles.container} enabled keyboardVerticalOffset={1}>
+    
         <Avatar
               size="xlarge"
               rounded
@@ -95,12 +151,7 @@ this.setState({uri:uriCargado})
               showEditButton= {true}
               editButton={{underlayColor:'#000',color: '#6E2665', name: 'mode-edit', type: 'material',containerStyle:'#6E2665',reverse:true,size:30}}
           />
-           
-          <Input value= {this.state.uri}
-          
-                leftIcon={ <Icon name='account-group' type="material-community" size={20} color='black' />}
-               
-         />
+
           <Input placeholder='Año'
                 onChangeText={text => this.setState({anio:text})}
                 value={this.state.anio+''}
@@ -134,13 +185,29 @@ this.setState({uri:uriCargado})
                 value={this.state.correoOrganizador}
                 leftIcon={ <Icon name='chevron-down-box' type="material-community" size={20} color='black' />}
          />
-         <Input placeholder= 'Fecha Inicio'
-                leftIcon={ <Icon name='calendar' type="material-community" size={20} color='black' />}
-         />
+          <DatePicker style={{width: 200}} date={this.state.date}  mode="date" placeholder='Fecha Inicio'
+                      format="YYYY-MM-DD"  minDate="2016-05-01" maxDate="2100-06-01" confirmBtnText="Confirm"
+                      cancelBtnText="Cancel"
+        customStyles={{
+          dateIcon: {  position: 'absolute', left: 0,  top: 4,  marginLeft: 0  },
+          dateInput: { marginLeft: 36 }
+          // ... You can check the source to find the other keys.
+        }}onDateChange={(date) => {this.setState({date: date})}}/>
+           <Dropdown
+        label='Categorias'
+        data={this.state.listaCategorias}
+        onChangeText={this.elegirCategoria}
+             />
+<FlatList
+        data={this.state.listaCatTorneo}
+        renderItem={({ item }) => <FilaCategoria categoria={item} fnEliminar={this.eliminar}/>}
+        keyExtractor={item => item}
+      />
 
          <Button title="GUARDAR" onPress={this.guardar}/>
-
-      </View>
+         
+      </KeyboardAvoidingView>
+      </ScrollView>
     );
   }
 }
@@ -148,12 +215,7 @@ this.setState({uri:uriCargado})
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    flexDirection: 'column',
-    backgroundColor: '#ffffff',
-    marginTop: 20,
-    paddingLeft: 5,
-    paddingRight: 5
+    flex: 1
   },
 
   btn: {
