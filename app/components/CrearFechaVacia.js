@@ -49,7 +49,15 @@ export default class CrearFechaVacia extends Component {
                  <Dropdown
                        label='Min'
                        data={min}
-                 />     
+                 /> .
+                  <Dropdown
+                       label='Equipo1'
+                       data={}
+                 />  
+                 <Dropdown
+                       label='Equipo2'
+                       data={}
+                 />    
 			</View>
          
     );

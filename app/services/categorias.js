@@ -12,7 +12,7 @@ export const cargarCategorias=(fn)=>{
      console.log('agrega equipo ',snap);
     
      listaCategorias.push(snap.val());
-        
+     console.log('listaCategorias ',listaCategorias); 
         fn(listaCategorias);
     });
 

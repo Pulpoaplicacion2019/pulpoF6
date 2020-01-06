@@ -87,9 +87,12 @@ convertirCategorias=(categorias)=>{
 }
 convertirCategoriasLista=(objetoCategorias)=>{
   let listaCategorias=[]
+  console.log('objetoCategoriasconver  '+objetoCategorias)
   Object.keys(objetoCategorias).forEach((item)=>{
+    console.log('itemconver '+item)
     listaCategorias.push(item);
   })
+  console.log('listaCategoriasconver '+listaCategorias)
   return listaCategorias
 }
 elegirCategoria=(value)=>{

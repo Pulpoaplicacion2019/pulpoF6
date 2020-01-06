@@ -24,3 +24,58 @@ export const listenForItems = (itemsRef, fn) => {
     fn(listResult);
   });
 };
+//guardar fechas
+export const cargarFechas=(categoria,fecha,fn)=>{
+	console.log("ingresa a cargar equipos v6");
+	const refFechasRoot = firebase.database().ref('calendario/torneos');
+	const refFechas =refFechasRoot.child(global.idTorneo+'/categorias/'+categoria+'/'+fecha+'/fechas');
+     	console.log("refFechas "+refFechas.path);
+	const listaFechas=[]
+
+  refFechas.on('child_added',(snap)=>{
+     console.log('agrega fechas ',snap);
+    
+     listaFechas.push(snap.val());
+     console.log('listaFechas ',listaFechas);
+        fn(listaFechas);
+    });
+
+    refFechas.on('child_changed',(snap)=>{
+        console.log('cambia '+snap.val().nombre);
+        let i = buscar(snap.val().id);
+        listaFechas[i]=snap.val();
+        fn(listaFechas);
+    });
+
+    refFechas.on('child_removed',(snap)=>{
+        let i = buscar(snap.val().id);
+        console.log('posicion '+i);
+        listaFechas.splice( i, 1 );
+       console.log('borrado '+snap.val().id);
+       fn(listaFechas);
+   });
+
+}
+buscar=(id)=>{
+  let posicion=-1
+  let iteracion=0
+  listaPersonas.forEach(element => {
+      if(element.id==id){
+          posicion=iteracion
+      }
+      iteracion++
+  });
+  return posicion;
+}
+export const guardarFechas=(categoria,fecha,fechas)=>{
+  console.log("ingresa a guardar fecha");
+ var itemsRef = firebase.database().ref('calendario/torneos').child(global.idTorneo+'/categorias/'+categoria+'/'+fecha);
+ itemsRef.set(fechas)
+}
+export const recuperarFecha =(categoria,fecha,fn)=>{
+	var fechasRef=firebase.database().ref('calendario/'+'torneos/'+global.idTorneo+'/categorias/'+categoria+'/'+fecha+'/fechas');
+	fechasRef.on('value', (snap) => {
+    console.log('recuperar Fecha'+snap)
+		fn(snap.val());
+	});
+}
