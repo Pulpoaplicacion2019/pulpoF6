@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, TouchableOpacity, Button } from 'react-native';
-import { Dropdown } from 'react-native-material-dropdown';
+import { StyleSheet, View, TouchableOpacity, Text, Button } from 'react-native';
 import { Icon } from 'react-native-elements';
-export default class CrearPartidoV extends Component {
+import { Dropdown } from 'react-native-material-dropdown';
+
+export default class ItemPartidos extends Component {
    constructor(props) {
       super(props);
       this.state = {
@@ -50,11 +51,18 @@ export default class CrearPartidoV extends Component {
       ];
 
       return (
-         <View style={{ flexDirection: 'column', marginLeft: 30 }}>
+         <View
+            style={{
+               flexDirection: 'column',
+               marginLeft: 30,
+               marginBottom: 20,
+            }}
+         >
             <View style={{ flexDirection: 'row' }}>
                <View style={{ width: 70 }}>
                   <Dropdown
                      label="Hora"
+                     value={this.props.partidos.hora}
                      data={horas}
                      onChangeText={value => this.setState({ hora: value })}
                   />
@@ -62,6 +70,7 @@ export default class CrearPartidoV extends Component {
                <View style={{ width: 60, marginLeft: 50 }}>
                   <Dropdown
                      label="Min"
+                     value={this.props.partidos.minuto}
                      data={min}
                      onChangeText={value => this.setState({ minutos: value })}
                   />
@@ -71,10 +80,21 @@ export default class CrearPartidoV extends Component {
                      hitSlop={{ top: 50, bottom: 50, left: 50, right: 50 }}
                      onPress={() => {
                         this.props.guardar(
-                           this.state.equipo1,
-                           this.state.equipo2,
-                           this.state.hora,
-                           this.state.minutos
+                           this.state.equipo1 == ''
+                              ? this.props.partidos.equipoUno
+                              : this.state.equipo1,
+
+                           this.state.equipo2 == ''
+                              ? this.props.partidos.equipoDos
+                              : this.state.equipo2,
+
+                           this.state.hora == ''
+                              ? this.props.partidos.hora
+                              : this.state.hora,
+
+                           this.state.minutos == ''
+                              ? this.props.partidos.minuto
+                              : this.state.minutos
                         );
                      }}
                   >
@@ -90,6 +110,7 @@ export default class CrearPartidoV extends Component {
                <View style={{ width: 150 }}>
                   <Dropdown
                      label="Equipo1"
+                     value={this.props.partidos.equipoUno}
                      data={this.props.equipos}
                      onChangeText={value => this.setState({ equipo1: value })}
                   />
@@ -97,6 +118,7 @@ export default class CrearPartidoV extends Component {
                <View style={{ width: 150, marginLeft: 50 }}>
                   <Dropdown
                      label="Equipo2"
+                     value={this.props.partidos.equipoDos}
                      data={this.props.equipos}
                      onChangeText={value => this.setState({ equipo2: value })}
                   />
