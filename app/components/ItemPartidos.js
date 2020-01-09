@@ -11,6 +11,7 @@ export default class ItemPartidos extends Component {
          equipo1: '',
          hora: '',
          minutos: '',
+         fecha: '',
       };
    }
 
@@ -59,6 +60,13 @@ export default class ItemPartidos extends Component {
             }}
          >
             <View style={{ flexDirection: 'row' }}>
+               <View style={{ width: 150 }}>
+                  <Dropdown
+                     label="Fecha"
+                     value={this.props.partidos.fecha}
+                     data={this.props.fechas}
+                  />
+               </View>
                <View style={{ width: 70 }}>
                   <Dropdown
                      label="Hora"
@@ -67,7 +75,7 @@ export default class ItemPartidos extends Component {
                      onChangeText={value => this.setState({ hora: value })}
                   />
                </View>
-               <View style={{ width: 60, marginLeft: 50 }}>
+               <View style={{ width: 60, marginLeft: 10 }}>
                   <Dropdown
                      label="Min"
                      value={this.props.partidos.minuto}
@@ -75,7 +83,7 @@ export default class ItemPartidos extends Component {
                      onChangeText={value => this.setState({ minutos: value })}
                   />
                </View>
-               <View style={{ width: 50, marginLeft: 90, marginTop: 30 }}>
+               <View style={{ width: 50, marginLeft: 10, marginTop: 30 }}>
                   <TouchableOpacity
                      hitSlop={{ top: 50, bottom: 50, left: 50, right: 50 }}
                      onPress={() => {
@@ -94,7 +102,8 @@ export default class ItemPartidos extends Component {
 
                            this.state.minutos == ''
                               ? this.props.partidos.minuto
-                              : this.state.minutos
+                              : this.state.minutos,
+                           this.props.partidos.fecha
                         );
                      }}
                   >

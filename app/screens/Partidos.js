@@ -10,9 +10,10 @@ export default class Partidos extends Component {
       this.state = {
          listaEquip: [],
          listaPartidos: [],
+         listaFechas: [],
          equipoDos: '',
          equipoUno: '',
-         fecha: '2020-01-08',
+         fecha: '',
          hora: '',
          id: '',
          minuto: '',
@@ -21,20 +22,27 @@ export default class Partidos extends Component {
       };
    }
    componentDidMount() {
-      var lista = global.listaCategorias;
-      var categ = lista[0];
-      const fecha = 'Fecha' + 1;
+      this.setState({
+         listaPartidos: this.props.navigation.state.params.partidos,
+         listaFechas: this.convertirFechaLista(
+            this.props.navigation.state.params.fechas
+         ),
+         fecha: this.props.navigation.state.params.id,
+      });
+      // var lista = global.listaCategorias;
+      var categ = global.categoria;
+
       cargarEquipos(categ, listaEquipos => {
          this.setState({
             listaEquip: this.convertirEquiposLista(listaEquipos),
          });
       });
-      cargarPartidos(categ, fecha, listaPartidos => {
+      /*cargarPartidos(categ, fecha, listaPartidos => {
          console.log('listaPartidos: ' + listaPartidos);
          this.setState({
             listaPartidos: listaPartidos,
          });
-      });
+      });*/
    }
    guardar = (equipo1, equipo2, hora, minutos) => {
       const partido = {
@@ -47,9 +55,9 @@ export default class Partidos extends Component {
          puntosEquiDos: '00',
          puntosEquiUno: '00',
       };
-      const listaCategorias = global.listaCategorias;
-      const categ = listaCategorias[0];
-      const fecha = 'Fecha' + 1;
+      //const listaCategorias = global.listaCategorias;
+      const categ = global.categoria;
+      const fecha = this.state.fecha;
       const id = equipo1 + '_' + equipo2;
       guardarPartido(categ, fecha, id, partido);
    };
@@ -67,6 +75,17 @@ export default class Partidos extends Component {
       console.log('listaCategoriasconver ' + listaEquipos);
       return listaEquipos;
    };
+   convertirFechaLista = fechas => {
+      let listaF = [];
+      fechas.map((item, index) => {
+         console.log('item:   ' + item);
+         listaF.push({
+            value: item,
+         });
+      });
+
+      return listaF;
+   };
    render() {
       return (
          <ScrollView>
@@ -74,6 +93,7 @@ export default class Partidos extends Component {
                <Text>Partidos</Text>
                <CrearPartidoV
                   equipos={this.state.listaEquip}
+                  fechas={this.state.listaFechas}
                   guardar={this.guardar}
                ></CrearPartidoV>
                <FlatList
@@ -81,6 +101,7 @@ export default class Partidos extends Component {
                   renderItem={({ item }) => (
                      <ItemPartidos
                         equipos={this.state.listaEquip}
+                        fechas={this.state.listaFechas}
                         partidos={item}
                         guardar={this.guardar}
                      />

@@ -49,8 +49,8 @@ export default class CrearFecha extends Component {
    eliminarFecha = date => {
       const fechasob = this.convertirFechas(this.state.listaFechas);
       console.log('ingresa componentDidMount ');
-      const listaCategorias = global.listaCategorias;
-      const categ = listaCategorias[0];
+
+      const categ = global.categoria;
       const fecha = this.state.fecha + 1;
 
       eliminarFechas(categ, fecha, date, fechas => {
@@ -62,8 +62,8 @@ export default class CrearFecha extends Component {
    };
    componentDidMount() {
       console.log('ingresa componentDidMount ');
-      const listaCategorias = global.listaCategorias;
-      const categ = listaCategorias[0];
+
+      const categ = global.categoria;
       const fecha = this.state.fecha + 1;
       recuperarFecha(categ, fecha, fechas => {
          console.log('fechas: ' + fechas);
@@ -84,8 +84,8 @@ export default class CrearFecha extends Component {
    };
    guardar = () => {
       let fechasO = this.convertirFechas(this.state.listaFechas);
-      const listaCategorias = global.listaCategorias;
-      const categ = listaCategorias[0];
+
+      const categ = global.categoria;
       const fecha = this.state.fecha + 1;
       const fechas = {
          fechas: fechasO,

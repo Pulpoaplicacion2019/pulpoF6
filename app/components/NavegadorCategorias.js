@@ -1,33 +1,10 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, ScrollView } from 'react-native';
-import {
-   Container,
-   Header,
-   Title,
-   Content,
-   Footer,
-   FooterTab,
-   Button,
-   Left,
-   Right,
-   Body,
-} from 'native-base';
+import { StyleSheet, View } from 'react-native';
+import { Title, Button } from 'native-base';
 import { Icon } from 'react-native-elements';
 
-const styles = StyleSheet.create({
-   arrows: {
-      flex: 1,
-   },
-   container: {
-      justifyContent: 'center',
-      backgroundColor: '#eb1c24',
-      flexDirection: 'row',
-      flex: 1,
-   },
-   title: {
-      flex: 4,
-   },
-});
+import * as COLOR from '../constants/colors.js';
+
 export default class NavegadorCategorias extends Component {
    state = {
       listaCat: [],
@@ -40,12 +17,12 @@ export default class NavegadorCategorias extends Component {
       ++indice;
       if (indice < this.state.listaCat.length) {
          var categ = this.state.listaCat[indice];
-         var lista = this.state.listaCat;
          this.props.pintar(categ);
          this.setState({
             index: indice,
             categoria: categ,
          });
+         global.categoria = categ;
       }
    };
    back = () => {
@@ -54,12 +31,12 @@ export default class NavegadorCategorias extends Component {
       --indice;
       if (indice >= 0) {
          var categ = this.state.listaCat[indice];
-         var lista = this.state.listaCat;
          this.props.pintar(categ);
          this.setState({
             index: indice,
             categoria: categ,
          });
+         global.categoria = categ;
       }
    };
    componentDidMount() {
@@ -75,7 +52,13 @@ export default class NavegadorCategorias extends Component {
          <View style={styles.container}>
             <View style={styles.arrows}>
                <Button transparent>
-                  <Icon name="keyboard-arrow-left" onPress={this.back} />
+                  <Icon
+                     name="menu-left"
+                     type="material-community"
+                     color="#fff"
+                     size={50}
+                     onPress={this.back}
+                  />
                </Button>
             </View>
             <View style={styles.title}>
@@ -83,10 +66,32 @@ export default class NavegadorCategorias extends Component {
             </View>
             <View style={styles.arrows}>
                <Button transparent>
-                  <Icon name="keyboard-arrow-right" onPress={this.next} />
+                  <Icon
+                     name="menu-right"
+                     type="material-community"
+                     color="#fff"
+                     size={50}
+                     onPress={this.next}
+                  />
                </Button>
             </View>
          </View>
       );
    }
 }
+
+const styles = StyleSheet.create({
+   arrows: {
+      flex: 1,
+   },
+   container: {
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: COLOR.COLOR_SECUNDARIO,
+      flexDirection: 'row',
+      flex: 1,
+   },
+   title: {
+      flex: 4,
+   },
+});

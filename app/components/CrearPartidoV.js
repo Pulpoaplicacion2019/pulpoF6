@@ -10,6 +10,7 @@ export default class CrearPartidoV extends Component {
          equipo1: '',
          hora: '',
          minutos: '',
+         fecha: '',
       };
    }
 
@@ -52,6 +53,13 @@ export default class CrearPartidoV extends Component {
       return (
          <View style={{ flexDirection: 'column', marginLeft: 30 }}>
             <View style={{ flexDirection: 'row' }}>
+               <View style={{ width: 150 }}>
+                  <Dropdown
+                     label="Fecha"
+                     data={this.props.fechas}
+                     onChangeText={value => this.setState({ fecha: value })}
+                  />
+               </View>
                <View style={{ width: 70 }}>
                   <Dropdown
                      label="Hora"
@@ -59,14 +67,14 @@ export default class CrearPartidoV extends Component {
                      onChangeText={value => this.setState({ hora: value })}
                   />
                </View>
-               <View style={{ width: 60, marginLeft: 50 }}>
+               <View style={{ width: 60, marginLeft: 10 }}>
                   <Dropdown
                      label="Min"
                      data={min}
                      onChangeText={value => this.setState({ minutos: value })}
                   />
                </View>
-               <View style={{ width: 50, marginLeft: 90, marginTop: 30 }}>
+               <View style={{ width: 50, marginLeft: 10, marginTop: 30 }}>
                   <TouchableOpacity
                      hitSlop={{ top: 50, bottom: 50, left: 50, right: 50 }}
                      onPress={() => {

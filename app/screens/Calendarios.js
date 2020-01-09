@@ -36,13 +36,15 @@ export default class Calendarios extends Component {
    componentDidMount() {
       var listaCategorias = global.listaCategorias;
       var categ = listaCategorias[0];
-      console.log(NOMBRE_CLASE + '>> Lista global:' + listaCategorias);
+      console.log(
+         NOMBRE_CLASE + '>> Lista global de categorias:' + listaCategorias
+      );
       loadTeams(lista => {
          this.setState({ listCalendarios: lista });
       }, categ);
    }
 
-   renderRow = listCalendarios => {
+   renderRowPartidos = listaPartidos => {
       const {
          equipoUno,
          equipoDos,
@@ -50,8 +52,7 @@ export default class Calendarios extends Component {
          hora,
          minuto,
          cancha,
-      } = listCalendarios.item;
-
+      } = listaPartidos.item;
       return (
          <View style={styles.viewPartidos}>
             <View style={styles.viewEquipoUno}>
@@ -77,14 +78,54 @@ export default class Calendarios extends Component {
                />
                <Text style={styles.viewNombreEquipo}>{equipoDos}</Text>
             </View>
-            <Button
-               title="E"
-               onPress={() => {
-                  this.props.navigation.navigate('Partidos');
-               }}
-            ></Button>
          </View>
       );
+   };
+
+   renderRow = listCalendarios => {
+      const { id, listaPartidos, listaFechas } = listCalendarios.item;
+      if (listaPartidos) {
+         return (
+            <View>
+               <View style={{ flexDirection: 'row', marginLeft: 30 }}>
+                  <Text style={styles.fechas}>{id}</Text>
+                  <Button
+                     title="E"
+                     onPress={() => {
+                        this.props.navigation.navigate('Partidos', {
+                           partidos: listaPartidos,
+                           fechas: listaFechas,
+                           id: id,
+                        });
+                     }}
+                  ></Button>
+               </View>
+               <FlatList
+                  data={listaPartidos}
+                  renderItem={this.renderRowPartidos}
+                  keyExtractor={(item, index) => index.toString()}
+               />
+            </View>
+         );
+      } else {
+         return (
+            <View>
+               <View style={{ flexDirection: 'row', marginLeft: 30 }}>
+                  <Text style={styles.fechas}>{id}</Text>
+                  <Button
+                     title="E"
+                     onPress={() => {
+                        this.props.navigation.navigate('Partidos', {
+                           partidos: listaPartidos,
+                           fechas: listaFechas,
+                           id: id,
+                        });
+                     }}
+                  ></Button>
+               </View>
+            </View>
+         );
+      }
    };
 
    renderFlatList = listCalendarios => {
@@ -99,7 +140,7 @@ export default class Calendarios extends Component {
       } else {
          return (
             <View style={styles.startLoadCalendarios}>
-               <Text>Cargando Calendairio </Text>
+               <Text>Cargando Calendario </Text>
             </View>
          );
       }
@@ -108,7 +149,7 @@ export default class Calendarios extends Component {
    render() {
       const { listCalendarios } = this.state;
       return (
-         <Container>
+         <Container style={styles.viewBody}>
             <Header style={styles.header}>
                <NavegadorCategorias
                   pintar={categ => {
@@ -116,13 +157,11 @@ export default class Calendarios extends Component {
                         this.setState({ listCalendarios: lista });
                      }, categ);
                   }}
-               ></NavegadorCategorias>
+               />
             </Header>
 
             <Content>
-               <View style={styles.viewBody}>
-                  {this.renderFlatList(listCalendarios)}
-               </View>
+               <View>{this.renderFlatList(listCalendarios)}</View>
             </Content>
             <ActionButton
                buttonColor="#00A680"
@@ -130,7 +169,7 @@ export default class Calendarios extends Component {
                   this.props.navigation.navigate('CrearFecha');
                }}
             />
-            <StatusBarGeneral></StatusBarGeneral>
+            <StatusBarGeneral />
          </Container>
       );
    }
@@ -143,7 +182,7 @@ const border = color => {
 const styles = StyleSheet.create({
    viewBody: {
       flex: 1,
-      backgroundColor: '#fff',
+      backgroundColor: COLOR.COLOR_SNOWY_MOUNT,
    },
    startLoadCalendarios: { marginTop: 20, alignItems: 'center' },
    viewEquipoUno: {
@@ -152,18 +191,25 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       alignItems: 'center',
    },
-   viewNombreEquipo: { fontSize: 9 },
+   viewNombreEquipo: { fontSize: 12 },
    viewPartidos: {
       flexDirection: 'row',
-      marginLeft: 2,
-      marginRight: 2,
+      marginLeft: 15,
+      marginRight: 15,
       marginTop: 2,
       padding: 5,
-      backgroundColor: COLOR.COLOR_SNOWY_MOUNT,
+      backgroundColor: COLOR.COLOR_BLANCO,
       borderRadius: CONSTANTES.BORDER_RADIUS,
       height: 90,
    },
-   imagenEstilo: { width: 60, height: 60 },
+   fechas: {
+      fontSize: 20,
+      fontWeight: 'bold',
+      marginBottom: 5,
+      marginTop: 5,
+      marginLeft: 15,
+   },
+   imagenEstilo: { width: 60, height: 60, borderRadius: 67 },
    viewDatos: { flex: 2, justifyContent: 'center', alignItems: 'center' },
    header: {
       backgroundColor: COLOR.COLOR_SECUNDARIO,
