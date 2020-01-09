@@ -1,11 +1,5 @@
 import React, { Component } from 'react';
-import {
-   StyleSheet,
-   View,
-   Text,
-   FlatList,
-   ActivityIndicator,
-} from 'react-native';
+import { StyleSheet, View, Text, FlatList } from 'react-native';
 
 import { Image } from 'react-native-elements';
 
@@ -27,7 +21,6 @@ export default class Calendarios extends Component {
    constructor() {
       super();
       this.state = {
-         objCalendario: { valorFecha: '', listaPartidos: null },
          listCalendarios: null,
          categoria: '',
       };
@@ -44,7 +37,7 @@ export default class Calendarios extends Component {
       }, categ);
    }
 
-   renderRow = listCalendarios => {
+   renderRowPartidos = listaPartidos => {
       const {
          equipoUno,
          equipoDos,
@@ -52,8 +45,7 @@ export default class Calendarios extends Component {
          hora,
          minuto,
          cancha,
-      } = listCalendarios.item;
-
+      } = listaPartidos.item;
       return (
          <View style={styles.viewPartidos}>
             <View style={styles.viewEquipoUno}>
@@ -82,6 +74,22 @@ export default class Calendarios extends Component {
          </View>
       );
    };
+   renderRow = listCalendarios => {
+      const { id, listaPartidos } = listCalendarios.item;
+
+      return (
+         <View>
+            <View>
+               <Text style={styles.fechas}>{id}</Text>
+            </View>
+            <FlatList
+               data={listaPartidos}
+               renderItem={this.renderRowPartidos}
+               keyExtractor={(item, index) => index.toString()}
+            />
+         </View>
+      );
+   };
 
    renderFlatList = listCalendarios => {
       if (listCalendarios) {
@@ -95,7 +103,7 @@ export default class Calendarios extends Component {
       } else {
          return (
             <View style={styles.startLoadCalendarios}>
-               <Text>Cargando Calendairio </Text>
+               <Text>Cargando Calendario </Text>
             </View>
          );
       }
@@ -104,7 +112,7 @@ export default class Calendarios extends Component {
    render() {
       const { listCalendarios } = this.state;
       return (
-         <Container>
+         <Container style={styles.viewBody}>
             <Header style={styles.header}>
                <NavegadorCategorias
                   pintar={categ => {
@@ -115,9 +123,7 @@ export default class Calendarios extends Component {
                />
             </Header>
             <Content>
-               <View style={styles.viewBody}>
-                  {this.renderFlatList(listCalendarios)}
-               </View>
+               <View>{this.renderFlatList(listCalendarios)}</View>
             </Content>
             <StatusBarGeneral />
          </Container>
@@ -132,7 +138,7 @@ const border = color => {
 const styles = StyleSheet.create({
    viewBody: {
       flex: 1,
-      backgroundColor: '#fff',
+      backgroundColor: COLOR.COLOR_SNOWY_MOUNT,
    },
    startLoadCalendarios: { marginTop: 20, alignItems: 'center' },
    viewEquipoUno: {
@@ -141,18 +147,25 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       alignItems: 'center',
    },
-   viewNombreEquipo: { fontSize: 9 },
+   viewNombreEquipo: { fontSize: 12 },
    viewPartidos: {
       flexDirection: 'row',
-      marginLeft: 2,
-      marginRight: 2,
+      marginLeft: 15,
+      marginRight: 15,
       marginTop: 2,
       padding: 5,
-      backgroundColor: COLOR.COLOR_SNOWY_MOUNT,
+      backgroundColor: COLOR.COLOR_BLANCO,
       borderRadius: CONSTANTES.BORDER_RADIUS,
       height: 90,
    },
-   imagenEstilo: { width: 60, height: 60 },
+   fechas: {
+      fontSize: 20,
+      fontWeight: 'bold',
+      marginBottom: 5,
+      marginTop: 5,
+      marginLeft: 15,
+   },
+   imagenEstilo: { width: 60, height: 60, borderRadius: 67 },
    viewDatos: { flex: 2, justifyContent: 'center', alignItems: 'center' },
    header: {
       backgroundColor: COLOR.COLOR_SECUNDARIO,

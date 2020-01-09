@@ -1,6 +1,6 @@
 import { firebase } from '@react-native-firebase/database';
 
-const listResult = [];
+let keyItem = '';
 
 export const loadTeams = (fn, categoria) => {
    //Referencia firebase
@@ -11,50 +11,51 @@ export const loadTeams = (fn, categoria) => {
    let itemChildRef = itemsRef.child(
       'torneos/' + global.idTorneo + '/categorias/' + categoria
    );
-
-   listenForItems(itemChildRef, fn);
+   const listaResultado = [];
+   listenForItems(itemChildRef, fn, listaResultado);
 };
 
 // Función como ingreso tiene la referencia
-export const listenForItems = (itemsRef, fn) => {
+export const listenForItems = (itemsRef, fn, lista) => {
    console.log('Metodo listenForItems >> itemsRef: ' + itemsRef);
 
+   let listaPartidos = [];
    // Se ejecuta cuando se añade elementos
    itemsRef.on('child_added', snap => {
       console.log('Se ejecuta al añadir elemento');
 
-      let keyItem = snap.key;
-      console.log(keyItem);
+      keyItem = snap.key;
+      listaPartidos = Object.values(snap._snapshot.value.partidos);
 
-      listResult.push(snap.val());
-      console.log('Lista: ' + listResult);
-      fn(listResult);
+      lista.push({ id: keyItem, listaPartidos: listaPartidos });
+      console.log('Lista: ' + lista);
+      fn(lista);
    });
 
    // Se ejecuta cuando se modifica un elemento
    itemsRef.on('child_changed', snap => {
       console.log('Se ejecuta al cambiar elemento' + snap.val().id);
-      let i = buscar(snap.val().id);
-      listResult[i] = snap.val();
-      //object.setState({ listCalendarios: listResult });
-      fn(listResult);
+      let i = buscar(snap.val().id, lista);
+      lista[i] = snap.val();
+      //object.setState({ listCalendarios: listaResultado });
+      fn(lista);
    });
 
    // Se ejecuta cuando se elimina un elemento
    itemsRef.on('child_removed', snap => {
-      let i = buscar(snap.val().id);
+      let i = buscar(snap.val().id, lista);
       console.log('posicion ' + i);
-      listResult.splice(i, 1);
+      lista.splice(i, 1);
       console.log('borrado ' + snap.val().id);
-      fn(listResult);
+      fn(lista);
    });
 };
 
 // Metodo de busqueda de objetos en la lista y devuelve la posicion
-const buscar = id => {
+const buscar = (id, list) => {
    let posicion = -1;
    let iteracion = 0;
-   listResult.forEach(element => {
+   list.forEach(element => {
       if (element.id === id) {
          posicion = iteracion;
       }
