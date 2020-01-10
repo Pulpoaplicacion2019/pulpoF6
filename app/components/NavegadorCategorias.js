@@ -42,6 +42,7 @@ export default class NavegadorCategorias extends Component {
    componentDidMount() {
       var lista = global.listaCategorias;
       var categ = lista[0];
+      global.categoria = categ;
       this.setState({
          listaCat: lista,
          categoria: categ,
