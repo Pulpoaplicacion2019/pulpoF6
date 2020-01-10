@@ -58,3 +58,20 @@ export const guardarPartido = (categoria, fecha, id, partido) => {
       .child('partidos/' + id);
    itemsRef.set(partido);
 };
+export const eliminarPartidos = (categoria, fecha, partidoEliminar, fn) => {
+   console.log('ingresa a eliminar partidos v6');
+   const refPartidosRoot = firebase.database().ref('calendario/torneos');
+   const refPartidos = refPartidosRoot
+      .child(
+         global.idTorneo +
+            '/categorias/' +
+            categoria +
+            '/' +
+            fecha +
+            '/partidos/' +
+            partidoEliminar
+      )
+      .remove(() => {
+         console.log('Operation Complete');
+      });
+};

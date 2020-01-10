@@ -60,11 +60,12 @@ export default class ItemPartidos extends Component {
             }}
          >
             <View style={{ flexDirection: 'row' }}>
-               <View style={{ width: 150 }}>
+               <View style={{ width: 140 }}>
                   <Dropdown
                      label="Fecha"
                      value={this.props.partidos.fecha}
                      data={this.props.fechas}
+                     onChangeText={value => this.setState({ fecha: value })}
                   />
                </View>
                <View style={{ width: 70 }}>
@@ -103,12 +104,28 @@ export default class ItemPartidos extends Component {
                            this.state.minutos == ''
                               ? this.props.partidos.minuto
                               : this.state.minutos,
-                           this.props.partidos.fecha
+                           this.state.fecha == ''
+                              ? this.props.partidos.fecha
+                              : this.state.fecha
                         );
                      }}
                   >
                      <Icon
                         name="check"
+                        type="material-icons"
+                        style={styles.button}
+                     />
+                  </TouchableOpacity>
+               </View>
+               <View style={{ width: 30, marginLeft: 1, marginTop: 30 }}>
+                  <TouchableOpacity
+                     hitSlop={{ top: 50, bottom: 50, left: 50, right: 50 }}
+                     onPress={() => {
+                        this.props.eliminar(this.props.partidos.id);
+                     }}
+                  >
+                     <Icon
+                        name="delete"
                         type="material-icons"
                         style={styles.button}
                      />

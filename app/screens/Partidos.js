@@ -3,7 +3,12 @@ import { StyleSheet, View, Text, FlatList, ScrollView } from 'react-native';
 import CrearPartidoV from '../components/CrearPartidoV';
 import ItemPartidos from '../components/ItemPartidos';
 import { cargarEquipos } from '../services/equipos.js';
-import { guardarPartido, cargarPartidos } from '../services/partidos.js';
+import {
+   guardarPartido,
+   cargarPartidos,
+   eliminarPartidos,
+} from '../services/partidos.js';
+
 export default class Partidos extends Component {
    constructor(props) {
       super(props);
@@ -22,13 +27,13 @@ export default class Partidos extends Component {
       };
    }
    componentDidMount() {
-      this.setState({
-         listaPartidos: this.props.navigation.state.params.partidos,
+      /*this.setState({
+         // listaPartidos: this.props.navigation.state.params.partidos,
          listaFechas: this.convertirFechaLista(
             this.props.navigation.state.params.fechas
          ),
          fecha: this.props.navigation.state.params.id,
-      });
+      });*/
       // var lista = global.listaCategorias;
       var categ = global.categoria;
 
@@ -37,18 +42,26 @@ export default class Partidos extends Component {
             listaEquip: this.convertirEquiposLista(listaEquipos),
          });
       });
-      /*cargarPartidos(categ, fecha, listaPartidos => {
-         console.log('listaPartidos: ' + listaPartidos);
-         this.setState({
-            listaPartidos: listaPartidos,
-         });
-      });*/
+      cargarPartidos(
+         categ,
+         this.props.navigation.state.params.id,
+         listaPartidos => {
+            console.log('listaPartidos: ' + listaPartidos);
+            this.setState({
+               listaPartidos: listaPartidos,
+               listaFechas: this.convertirFechaLista(
+                  this.props.navigation.state.params.fechas
+               ),
+               fecha: this.props.navigation.state.params.id,
+            });
+         }
+      );
    }
-   guardar = (equipo1, equipo2, hora, minutos) => {
+   guardar = (equipo1, equipo2, hora, minutos, fechas) => {
       const partido = {
          equipoDos: equipo2,
          equipoUno: equipo1,
-         fecha: '2020-01-08',
+         fecha: fechas,
          hora: hora,
          id: equipo1 + '_' + equipo2,
          minuto: minutos,
@@ -57,9 +70,9 @@ export default class Partidos extends Component {
       };
       //const listaCategorias = global.listaCategorias;
       const categ = global.categoria;
-      const fecha = this.state.fecha;
+      const fechaId = this.state.fecha;
       const id = equipo1 + '_' + equipo2;
-      guardarPartido(categ, fecha, id, partido);
+      guardarPartido(categ, fechaId, id, partido);
    };
    convertirEquiposLista = equipos => {
       let listaEquipos = [];
@@ -74,6 +87,17 @@ export default class Partidos extends Component {
 
       console.log('listaCategoriasconver ' + listaEquipos);
       return listaEquipos;
+   };
+   eliminar = partido => {
+      const categ = global.categoria;
+      const fecha = this.state.fecha;
+      console.log('eliminarpartido ');
+      eliminarPartidos(categ, fecha, partido, listaPartidos => {
+         console.log('listaPartidos: ' + listaPartidos);
+         this.setState({
+            listaPartidos: listaPartidos,
+         });
+      });
    };
    convertirFechaLista = fechas => {
       let listaF = [];
@@ -103,6 +127,7 @@ export default class Partidos extends Component {
                         equipos={this.state.listaEquip}
                         fechas={this.state.listaFechas}
                         partidos={item}
+                        eliminar={this.eliminar}
                         guardar={this.guardar}
                      />
                   )}

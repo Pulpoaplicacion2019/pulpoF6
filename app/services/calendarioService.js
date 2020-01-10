@@ -12,6 +12,7 @@ export const loadTeams = (fn, categoria) => {
       'torneos/' + global.idTorneo + '/categorias/' + categoria
    );
    const listaResultado = [];
+
    listenForItems(itemChildRef, fn, listaResultado);
 };
 
@@ -29,8 +30,9 @@ export const listenForItems = (itemsRef, fn, lista) => {
       if (snap._snapshot.value.partidos) {
          listaPartidos = Object.values(snap._snapshot.value.partidos);
       }
-
-      listaFechas = Object.values(snap._snapshot.value.fechas);
+      if (snap._snapshot.value.fechas) {
+         listaFechas = Object.values(snap._snapshot.value.fechas);
+      }
 
       lista.push({
          id: keyItem,
@@ -43,16 +45,31 @@ export const listenForItems = (itemsRef, fn, lista) => {
 
    // Se ejecuta cuando se modifica un elemento
    itemsRef.on('child_changed', snap => {
+      console.log('Se ejecuta al cambiar elemento' + snap);
       console.log('Se ejecuta al cambiar elemento' + snap.val().id);
-      let i = buscar(snap.val().id, lista);
-      lista[i] = snap.val();
+      let listaPartidos = [];
+      if (snap._snapshot.value.partidos) {
+         listaPartidos = Object.values(snap._snapshot.value.partidos);
+      }
+      if (snap._snapshot.value.fechas) {
+         listaFechas = Object.values(snap._snapshot.value.fechas);
+      }
+      let listao = [];
+      listao.push({
+         id: snap.key,
+         listaPartidos: listaPartidos,
+         listaFechas: listaFechas,
+      });
+      let i = buscar(snap.key, lista);
+
+      lista[i] = listao[0];
       //object.setState({ listCalendarios: listaResultado });
       fn(lista);
    });
 
    // Se ejecuta cuando se elimina un elemento
    itemsRef.on('child_removed', snap => {
-      let i = buscar(snap.val().id, lista);
+      let i = buscar(snap.key, lista);
       console.log('posicion ' + i);
       lista.splice(i, 1);
       console.log('borrado ' + snap.val().id);
@@ -67,6 +84,7 @@ export const cargarFechas = (categoria, fecha, fn) => {
    const refFechas = refFechasRoot.child(
       global.idTorneo + '/categorias/' + categoria + '/' + fecha + '/fechas'
    );
+
    console.log('refFechas ' + refFechas.path);
    const listaFechas = [];
 
@@ -95,7 +113,7 @@ export const cargarFechas = (categoria, fecha, fn) => {
 };
 export const eliminarFechas = (categoria, fecha, fechaEliminar, fn) => {
    console.log('ingresa a eliminar fechas v6');
-   const refFechasRoot = firebase.database().ref('calendario/torneos');
+   const refFechasRoot = firebase.database().ref('calendario/torneos/');
    const refFechas = refFechasRoot
       .child(
          global.idTorneo +
@@ -145,6 +163,7 @@ export const recuperarFecha = (categoria, fecha, fn) => {
             fecha +
             '/fechas'
       );
+
    fechasRef.on('value', snap => {
       console.log('recuperar Fecha' + snap);
       fn(snap.val());
