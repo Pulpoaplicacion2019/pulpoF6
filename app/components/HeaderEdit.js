@@ -9,14 +9,17 @@ import {
 import { Icon } from 'react-native-elements';
 import { createDrawerNavigator, DrawerActions } from 'react-navigation-drawer';
 
-const MenuHeader = props => {
+const HeaderEdit = props => {
    return (
       <View style={styles.container}>
+         <Text style={styles.txt}>
+            {props.nav.getParam('nombreTorneo', 'NO-ID')}
+         </Text>
          <TouchableOpacity
             hitSlop={{ top: 50, bottom: 50, left: 50, right: 50 }}
-            onPress={() => props.nav.dispatch(DrawerActions.toggleDrawer())}
+            onPress={() => props.nav.navigate('InfoPerfilTorneo')}
          >
-            <Icon name="md-menu" type="ionicon" style={styles.button} />
+            <Icon name="edit" type="material-icons" style={styles.button} />
          </TouchableOpacity>
       </View>
    );
@@ -25,15 +28,16 @@ const MenuHeader = props => {
 const styles = StyleSheet.create({
    container: {
       flex: 1,
-      alignItems: 'flex-start',
-      paddingLeft: 10,
       flexDirection: 'row',
+      marginRight: 20,
    },
    button: {
+      flex: 1,
       borderWidth: 1,
-      padding: 25,
+      marginRight: 30,
       borderColor: 'black',
    },
+   txt: { flex: 2, fontSize: 20 },
 });
 
-export default MenuHeader;
+export default HeaderEdit;

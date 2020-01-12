@@ -1,8 +1,15 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, FlatList } from 'react-native';
+import {
+   StyleSheet,
+   View,
+   Text,
+   FlatList,
+   Button,
+   ActivityIndicator,
+} from 'react-native';
 
 import { Image } from 'react-native-elements';
-
+import ActionButton from 'react-native-action-button';
 //Importación componente de navegación
 import NavegadorCategorias from '../components/NavegadorCategorias.js';
 
@@ -74,21 +81,51 @@ export default class Calendarios extends Component {
          </View>
       );
    };
-   renderRow = listCalendarios => {
-      const { id, listaPartidos } = listCalendarios.item;
 
-      return (
-         <View>
+   renderRow = listCalendarios => {
+      const { id, listaPartidos, listaFechas } = listCalendarios.item;
+      if (listaPartidos) {
+         return (
             <View>
-               <Text style={styles.fechas}>{id}</Text>
+               <View style={{ flexDirection: 'row', marginLeft: 30 }}>
+                  <Text style={styles.fechas}>{id}</Text>
+                  <Button
+                     title="E"
+                     onPress={() => {
+                        this.props.navigation.navigate('Partidos', {
+                           partidos: listaPartidos,
+                           fechas: listaFechas,
+                           id: id,
+                        });
+                     }}
+                  ></Button>
+               </View>
+               <FlatList
+                  data={listaPartidos}
+                  renderItem={this.renderRowPartidos}
+                  keyExtractor={(item, index) => index.toString()}
+               />
             </View>
-            <FlatList
-               data={listaPartidos}
-               renderItem={this.renderRowPartidos}
-               keyExtractor={(item, index) => index.toString()}
-            />
-         </View>
-      );
+         );
+      } else {
+         return (
+            <View>
+               <View style={{ flexDirection: 'row', marginLeft: 30 }}>
+                  <Text style={styles.fechas}>{id}</Text>
+                  <Button
+                     title="E"
+                     onPress={() => {
+                        this.props.navigation.navigate('Partidos', {
+                           partidos: listaPartidos,
+                           fechas: listaFechas,
+                           id: id,
+                        });
+                     }}
+                  ></Button>
+               </View>
+            </View>
+         );
+      }
    };
 
    renderFlatList = listCalendarios => {
@@ -122,9 +159,16 @@ export default class Calendarios extends Component {
                   }}
                />
             </Header>
+
             <Content>
                <View>{this.renderFlatList(listCalendarios)}</View>
             </Content>
+            <ActionButton
+               buttonColor="#00A680"
+               onPress={() => {
+                  this.props.navigation.navigate('CrearFecha');
+               }}
+            />
             <StatusBarGeneral />
          </Container>
       );

@@ -66,3 +66,15 @@ listenForItemsEquipos = (itemsRef, object) => {
       });
    });
 };
+
+buscar = id => {
+   let posicion = -1;
+   let iteracion = 0;
+   listaPersonas.forEach(element => {
+      if (element.id == id) {
+         posicion = iteracion;
+      }
+      iteracion++;
+   });
+   return posicion;
+};

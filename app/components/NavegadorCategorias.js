@@ -22,6 +22,7 @@ export default class NavegadorCategorias extends Component {
             index: indice,
             categoria: categ,
          });
+         global.categoria = categ;
       }
    };
    back = () => {
@@ -35,6 +36,7 @@ export default class NavegadorCategorias extends Component {
             index: indice,
             categoria: categ,
          });
+         global.categoria = categ;
       }
    };
    componentDidMount() {

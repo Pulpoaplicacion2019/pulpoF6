@@ -7,7 +7,6 @@ import {
    TouchableOpacity,
    Alert,
 } from 'react-native';
-import { Image } from 'react-native-elements';
 import { FlatGrid } from 'react-native-super-grid';
 import { IconButton } from 'react-native-paper';
 import styles from '../Styles/styles';
@@ -50,16 +49,12 @@ export default class Example extends Component {
    render() {
       return (
          <FlatGrid
-            itemDimension={150}
-            fixed={true}
+            itemDimension={130}
             items={this.props.torneos}
             style={styles.gridView}
             renderItem={({ item, index }) => (
-               <View style={[styles.itemContainer, border('#7A7A7A')]}>
-                  <TouchableOpacity
-                     style={border('#0000')}
-                     onPress={() => this.imagePressed(item)}
-                  >
+               <View style={[styles.itemContainer]}>
+                  <TouchableOpacity onPress={() => this.imagePressed(item)}>
                      <ImageBackground
                         source={{ uri: item.imagenTorneo }}
                         style={styles.image}
@@ -72,12 +67,10 @@ export default class Example extends Component {
                            onPress={() => this.addFavorito(item)}
                            style={styles.iconFav}
                         />
-                     </ImageBackground>
 
-                     <View style={border('#ffffff')}>
                         <Text style={styles.itemName}>{item.nombreTorneo}</Text>
                         <Text style={styles.itemYear}>{item.anio}</Text>
-                     </View>
+                     </ImageBackground>
                   </TouchableOpacity>
                </View>
             )}
@@ -85,7 +78,3 @@ export default class Example extends Component {
       );
    }
 }
-
-const border = color => {
-   return { borderColor: color, borderWidth: 2 };
-};

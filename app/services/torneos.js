@@ -7,7 +7,7 @@ export const cargarTorneos = object => {
 };
 export const recuperarTorneo = fn => {
    var torneoRef = firebase.database().ref('torneos/' + global.idTorneo);
-   torneoRef.once('value', snap => {
+   torneoRef.on('value', snap => {
       fn(snap.val());
    });
 };

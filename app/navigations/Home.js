@@ -19,6 +19,7 @@ import { createStackNavigator, HeaderTitle } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import { Icon } from 'react-native-elements';
 import MenuHeader from '../components/Header';
+import HeaderEdit from '../components/HeaderEdit';
 // Importacion de las Screen creadas para la navegacion
 import FavoritosScreen from '../screens/Torneos/Favoritos';
 import EnCursoScreen from '../screens/Torneos/EnCurso';
@@ -26,11 +27,14 @@ import PorIniciarScreen from '../screens/Torneos/PorIniciar';
 import MisTorneosScreen from '../screens/Torneos/MisTorneos';
 
 import CalendariosScreen from '../screens/Calendarios';
+import CrearFechaScreen from '../screens/CrearFecha';
+import PartidosScreen from '../screens/Partidos';
 import EquiposScreen from '../screens/Equipos/Equipos';
 import PosicionesScreen from '../screens/Posiciones';
 import ResultadosScreen from '../screens/Resultados';
 
 import PerfilTorneoScreen from '../screens/Torneos/PerfilTorneo';
+import InfoPerfilTorneoScreen from '../screens/Torneos/InfoPerfilTorneo';
 import CargarImagenScreen from '../components/CargarImagen';
 import CrearEquiposScreen from '../screens/Equipos/CrearEquipos';
 
@@ -75,7 +79,7 @@ const TorneosRootStack = createStackNavigator(
       TabEquipos: {
          screen: TabEquipos,
          navigationOptions: ({ navigation }) => ({
-            title: navigation.getParam('nombreTorneo', 'NO-ID'),
+            headerTitle: () => <HeaderEdit nav={navigation} />,
             headerStyle: {
                backgroundColor: '#f4511e',
             },
@@ -83,6 +87,15 @@ const TorneosRootStack = createStackNavigator(
       },
       PerfilTorneo: {
          screen: PerfilTorneoScreen,
+      },
+      InfoPerfilTorneo: {
+         screen: InfoPerfilTorneoScreen,
+      },
+      CrearFecha: {
+         screen: CrearFechaScreen,
+      },
+      Partidos: {
+         screen: PartidosScreen,
       },
       CargarImagen: {
          screen: CargarImagenScreen,
