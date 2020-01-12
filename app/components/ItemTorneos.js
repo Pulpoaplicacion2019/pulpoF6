@@ -8,20 +8,22 @@ import {
    Alert,
 } from 'react-native';
 import { FlatGrid } from 'react-native-super-grid';
+import { Image } from 'react-native-elements';
 import { IconButton } from 'react-native-paper';
 import styles from '../Styles/styles';
+import { COLOR_GRIS_CLARO, COLOR_CHRISTMAS_RED } from '../constants/colors';
 export default class Example extends Component {
    state = {
-      colorFavorito: '#ffffff',
+      colorFavorito: COLOR_GRIS_CLARO,
    };
 
    addFavorito = torneo => {
       if (torneo.favorito) {
          global.itemsRef.child(torneo.id).update({ favorito: false });
-         this.setState({ colorFavorito: '#ffffff' });
+         this.setState({ colorFavorito: COLOR_GRIS_CLARO });
       } else {
          global.itemsRef.child(torneo.id).update({ favorito: true });
-         this.setState({ colorFavorito: '#F79405' });
+         this.setState({ colorFavorito: COLOR_CHRISTMAS_RED });
       }
    };
 
@@ -30,7 +32,7 @@ export default class Example extends Component {
 
       console.log('torneo elegido ', item);
       let ruta = 'TabEquipos';
-      if (item.estado == 'A') {
+      if (item.estado === 'A') {
          ruta = 'PerfilTorneo';
       } else {
          global.listaCategorias = Object.getOwnPropertyNames(item.categorias);
@@ -40,9 +42,9 @@ export default class Example extends Component {
 
    pintarFavorito = favorito => {
       if (favorito) {
-         return '#F79405';
+         return COLOR_CHRISTMAS_RED;
       } else {
-         return '#ffffff';
+         return COLOR_GRIS_CLARO;
       }
    };
 
@@ -51,30 +53,41 @@ export default class Example extends Component {
          <FlatGrid
             itemDimension={130}
             items={this.props.torneos}
-            style={styles.gridView}
+            style={[styles.gridView]}
+            spacing={20}
             renderItem={({ item, index }) => (
-               <View style={[styles.itemContainer]}>
-                  <TouchableOpacity onPress={() => this.imagePressed(item)}>
-                     <ImageBackground
-                        source={{ uri: item.imagenTorneo }}
-                        style={styles.image}
-                     >
-                        <IconButton
-                           icon="star"
-                           color={this.pintarFavorito(item.favorito)}
-                           size={25}
-                           align="left"
-                           onPress={() => this.addFavorito(item)}
-                           style={styles.iconFav}
-                        />
-
+               <View style={styles.container}>
+                  <View style={styles.containerItemGrid}>
+                     <View>
                         <Text style={styles.itemName}>{item.nombreTorneo}</Text>
-                        <Text style={styles.itemYear}>{item.anio}</Text>
-                     </ImageBackground>
-                  </TouchableOpacity>
+                     </View>
+                     <TouchableOpacity
+                        style={styles.image}
+                        onPress={() => this.imagePressed(item)}
+                     >
+                        <Image
+                           style={styles.image}
+                           source={{ uri: item.imagenTorneo }}
+                        />
+                     </TouchableOpacity>
+                  </View>
+                  <View style={styles.containerItemColumGrid}>
+                     <Text style={styles.itemYear}>{item.anio}</Text>
+
+                     <IconButton
+                        icon="star"
+                        color={this.pintarFavorito(item.favorito)}
+                        size={25}
+                        onPress={() => this.addFavorito(item)}
+                     />
+                  </View>
                </View>
             )}
          />
       );
    }
 }
+
+const border = color => {
+   return { borderColor: color, borderWidth: 2 };
+};

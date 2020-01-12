@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import * as COLOR from '../constants/colors.js';
 
 const styles = StyleSheet.create({
    container: {
@@ -17,31 +18,40 @@ const styles = StyleSheet.create({
       height: 150,
    },
    itemName: {
-      fontSize: 16,
-      color: '#e67e22',
-      fontWeight: '600',
+      fontSize: 14,
+      color: COLOR.COLOR_BLANCO,
+      fontWeight: 'bold',
       //alignSelf: 'flex-start',
       //justifyContent: 'flex-end',
+      paddingBottom: 10,
    },
    itemYear: {
       fontWeight: '600',
       fontSize: 12,
-      color: '#e67e22',
-      //justifyContent: 'flex-end',
-      //position:'relative',
+      color: COLOR.COLOR_SNOWY_MOUNT,
+      paddingLeft: 10,
    },
    image: {
-      height: 150,
-      width: 150,
-      // alignItems:'flex-start',
-      // justifyContent: "space-evenly",
-      borderRadius: 5,
-      padding: 0,
-      margin: 0,
+      width: 120,
+      height: 120,
+      borderRadius: 10,
    },
-   iconFav: {
-      alignSelf: 'flex-end',
-      justifyContent: 'flex-start',
+
+   containerItemGrid: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      paddingBottom: 10,
+      backgroundColor: COLOR.COLOR_CHRISTMAS_RED,
+   },
+   containerItemColumGrid: {
+      flex: 1,
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      paddingLeft: 1,
+      paddingRight: 1,
+      backgroundColor: COLOR.COLOR_SECUNDARIO,
    },
 });
 
