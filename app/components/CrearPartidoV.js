@@ -51,7 +51,11 @@ export default class CrearPartidoV extends Component {
       ];
 
       return (
-         <View style={{ flexDirection: 'column', marginLeft: 30 }}>
+         <View
+            style={[
+               { flexDirection: 'column', marginLeft: 30, marginRight: 30 },
+            ]}
+         >
             <View style={{ flexDirection: 'row' }}>
                <View style={{ width: 150 }}>
                   <Dropdown
@@ -94,7 +98,7 @@ export default class CrearPartidoV extends Component {
                   </TouchableOpacity>
                </View>
             </View>
-            <View style={{ flexDirection: 'row' }}>
+            <View style={[{ flexDirection: 'row' }]}>
                <View style={{ width: 150 }}>
                   <Dropdown
                      label="Equipo1"
@@ -122,3 +126,6 @@ const styles = StyleSheet.create({
       marginRight: 20,
    },
 });
+const border = color => {
+   return { borderColor: color, borderWidth: 2 };
+};

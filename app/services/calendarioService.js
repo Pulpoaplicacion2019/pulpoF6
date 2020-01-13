@@ -20,24 +20,30 @@ export const listenForItems = (itemsRef, fn, lista) => {
    console.log('Metodo listenForItems >> itemsRef: ' + itemsRef);
 
    let listaFechas = [];
+   let i = 0;
+   let nombreItem = '';
    // Se ejecuta cuando se añade elementos
    itemsRef.on('child_added', snap => {
       console.log('Se ejecuta al añadir elemento');
 
       keyItem = snap.key;
+      nombreItem = snap.val().nombre;
       let listaPartidos = [];
-      if (snap._snapshot.value.partidos) {
-         listaPartidos = Object.values(snap._snapshot.value.partidos);
+      if (snap.val().partidos) {
+         listaPartidos = Object.values(snap.val().partidos);
       }
 
-      listaFechas = Object.values(snap._snapshot.value.fechas);
+      listaFechas = Object.values(snap.val().fechas);
 
       lista.push({
+         numeroItem: i,
+         nombreItem: nombreItem,
          id: keyItem,
          listaPartidos: listaPartidos,
          listaFechas: listaFechas,
       });
-      console.log('Lista: ' + lista);
+      i = i + 1;
+      console.log('Lista:', lista);
       fn(lista);
    });
 
