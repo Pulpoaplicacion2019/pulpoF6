@@ -4,6 +4,9 @@ import CrearPartidoV from '../components/CrearPartidoV';
 import ItemPartidos from '../components/ItemPartidos';
 import { cargarEquipos } from '../services/equipos.js';
 import { guardarPartido, cargarPartidos } from '../services/partidos.js';
+
+import * as COLOR from '../constants/colors.js';
+
 export default class Partidos extends Component {
    constructor(props) {
       super(props);
@@ -86,18 +89,31 @@ export default class Partidos extends Component {
 
       return listaF;
    };
+   separador = () => {
+      return (
+         <View
+            style={{
+               height: 10,
+               width: '100%',
+               backgroundColor: 'red',
+            }}
+         />
+      );
+   };
    render() {
       return (
-         <ScrollView>
-            <View style={styles.container}>
+         <ScrollView style={styles.viewBody}>
+            <View style={[styles.container, border('#B34A3E')]}>
                <Text>Partidos</Text>
                <CrearPartidoV
                   equipos={this.state.listaEquip}
                   fechas={this.state.listaFechas}
                   guardar={this.guardar}
+                  style={border('#36B32E')}
                ></CrearPartidoV>
                <FlatList
                   data={this.state.listaPartidos}
+                  //ItemSeparatorComponent={this.separador}
                   renderItem={({ item }) => (
                      <ItemPartidos
                         equipos={this.state.listaEquip}
@@ -114,6 +130,10 @@ export default class Partidos extends Component {
    }
 }
 
+const border = color => {
+   return { borderColor: color, borderWidth: 2 };
+};
+
 const styles = StyleSheet.create({
    container: {
       marginTop: 30,
@@ -124,4 +144,8 @@ const styles = StyleSheet.create({
       marginRight: 30,
    },
    txt: { flex: 2, fontSize: 20 },
+   viewBody: {
+      flex: 1,
+      backgroundColor: COLOR.COLOR_SNOWY_MOUNT,
+   },
 });

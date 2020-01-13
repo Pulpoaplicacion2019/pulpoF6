@@ -57,7 +57,7 @@ const TabEquipos = createBottomTabNavigator(
       Posiciones: { screen: PosicionesScreen },
       Resultados: { screen: ResultadosScreen },
    },
-   { initialRouteName: 'Equipos' }
+   { initialRouteName: 'Calendario' }
 );
 
 const TorneosRootStack = createStackNavigator(

@@ -8,8 +8,9 @@ import {
    ActivityIndicator,
 } from 'react-native';
 
-import { Image } from 'react-native-elements';
+import { Image, Icon } from 'react-native-elements';
 import ActionButton from 'react-native-action-button';
+
 //Importación componente de navegación
 import NavegadorCategorias from '../components/NavegadorCategorias.js';
 
@@ -21,8 +22,6 @@ import * as CONSTANTES from '../constants/constantes.js';
 // Importación componente de extración de firebase
 import { loadTeams } from '../services/calendarioService.js';
 import { Container, Content, Header } from 'native-base';
-
-const NOMBRE_CLASE = 'Calendarios';
 
 export default class Calendarios extends Component {
    constructor() {
@@ -36,9 +35,7 @@ export default class Calendarios extends Component {
    componentDidMount() {
       var listaCategorias = global.listaCategorias;
       var categ = listaCategorias[0];
-      console.log(
-         NOMBRE_CLASE + '>> Lista global de categorias:' + listaCategorias
-      );
+
       loadTeams(lista => {
          this.setState({ listCalendarios: lista });
       }, categ);
@@ -83,22 +80,39 @@ export default class Calendarios extends Component {
    };
 
    renderRow = listCalendarios => {
-      const { id, listaPartidos, listaFechas } = listCalendarios.item;
+      console.log('listCalendarios', listCalendarios);
+      const {
+         id,
+         nombreItem,
+         listaPartidos,
+         listaFechas,
+      } = listCalendarios.item;
       if (listaPartidos) {
          return (
             <View>
-               <View style={{ flexDirection: 'row', marginLeft: 30 }}>
-                  <Text style={styles.fechas}>{id}</Text>
-                  <Button
-                     title="E"
-                     onPress={() => {
-                        this.props.navigation.navigate('Partidos', {
-                           partidos: listaPartidos,
-                           fechas: listaFechas,
-                           id: id,
-                        });
-                     }}
-                  ></Button>
+               <View style={styles.viewHeaderFechas}>
+                  <Text style={styles.fechas}>{nombreItem}</Text>
+                  <View style={styles.viewHeaderFechasBton}>
+                     <Icon
+                        name="pencil"
+                        type="material-community"
+                        color={COLOR.COLOR_GRIS_CLARO}
+                        size={20}
+                        onPress={() => {
+                           this.props.navigation.navigate('Partidos', {
+                              partidos: listaPartidos,
+                              fechas: listaFechas,
+                              id: id,
+                           });
+                        }}
+                     />
+                     <Icon
+                        name="pencil-plus"
+                        type="material-community"
+                        color={COLOR.COLOR_GRIS_CLARO}
+                        size={20}
+                     />
+                  </View>
                </View>
                <FlatList
                   data={listaPartidos}
@@ -110,18 +124,27 @@ export default class Calendarios extends Component {
       } else {
          return (
             <View>
-               <View style={{ flexDirection: 'row', marginLeft: 30 }}>
-                  <Text style={styles.fechas}>{id}</Text>
-                  <Button
-                     title="E"
-                     onPress={() => {
-                        this.props.navigation.navigate('Partidos', {
-                           partidos: listaPartidos,
-                           fechas: listaFechas,
-                           id: id,
-                        });
-                     }}
-                  ></Button>
+               <View style={styles.viewHeaderFechas}>
+                  <Text style={styles.fechas}>{nombreItem}</Text>
+                  <View style={styles.viewHeaderFechas}>
+                     <Icon
+                        name="playlist-plus"
+                        type="material-community"
+                        color={COLOR.COLOR_GRIS_CLARO}
+                     />
+                     <Icon
+                        name="pencil"
+                        type="material-community"
+                        color={COLOR.COLOR_SECUNDARIO}
+                        onPress={() => {
+                           this.props.navigation.navigate('Partidos', {
+                              partidos: listaPartidos,
+                              fechas: listaFechas,
+                              id: id,
+                           });
+                        }}
+                     />
+                  </View>
                </View>
             </View>
          );
@@ -214,5 +237,17 @@ const styles = StyleSheet.create({
    header: {
       backgroundColor: COLOR.COLOR_SECUNDARIO,
       marginTop: 2,
+   },
+   viewHeaderFechas: {
+      justifyContent: 'space-between',
+      flexDirection: 'row',
+      marginRight: 15,
+      height: 50,
+      alignItems: 'center',
+   },
+   viewHeaderFechasBton: {
+      justifyContent: 'space-between',
+      flexDirection: 'row',
+      alignItems: 'center',
    },
 });

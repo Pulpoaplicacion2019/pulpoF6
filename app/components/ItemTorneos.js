@@ -87,7 +87,3 @@ export default class Example extends Component {
       );
    }
 }
-
-const border = color => {
-   return { borderColor: color, borderWidth: 2 };
-};

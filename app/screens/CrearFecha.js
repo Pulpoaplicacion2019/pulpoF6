@@ -99,6 +99,17 @@ export default class CrearFecha extends Component {
       });
       return objetoFechas;
    };
+   separador = () => {
+      return (
+         <View
+            style={{
+               height: 10,
+               width: '100%',
+               backgroundColor: 'red',
+            }}
+         />
+      );
+   };
    render() {
       return (
          <View>
@@ -134,6 +145,8 @@ export default class CrearFecha extends Component {
             <FlatList
                style={styles.lista}
                data={this.state.listaFechas}
+               ItemSeparatorComponent={this.separador}
+               horizontal={false}
                renderItem={({ item }) => (
                   <FilaFecha
                      fecha={item}

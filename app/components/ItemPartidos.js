@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, Button } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { Dropdown } from 'react-native-material-dropdown';
+import * as COLOR from '../constants/colors.js';
 
 export default class ItemPartidos extends Component {
    constructor(props) {
@@ -52,22 +53,18 @@ export default class ItemPartidos extends Component {
       ];
 
       return (
-         <View
-            style={{
-               flexDirection: 'column',
-               marginLeft: 30,
-               marginBottom: 20,
-            }}
-         >
-            <View style={{ flexDirection: 'row' }}>
-               <View style={{ width: 150 }}>
-                  <Dropdown
-                     label="Fecha"
-                     value={this.props.partidos.fecha}
-                     data={this.props.fechas}
-                  />
-               </View>
-               <View style={{ width: 70 }}>
+         <View style={[border('#00D300'), styles.viewBody]}>
+            <View style={{ flex: 1 }}>
+               <Dropdown
+                  label="Fecha"
+                  value={this.props.partidos.fecha}
+                  data={this.props.fechas}
+                  selectedItemColor={COLOR.COLOR_CHRISTMAS_RED}
+                  animationDuration={200}
+               />
+            </View>
+            <View style={[styles.time]}>
+               <View style={{ flex: 1 }}>
                   <Dropdown
                      label="Hora"
                      value={this.props.partidos.hora}
@@ -75,7 +72,7 @@ export default class ItemPartidos extends Component {
                      onChangeText={value => this.setState({ hora: value })}
                   />
                </View>
-               <View style={{ width: 60, marginLeft: 10 }}>
+               <View style={{ flex: 1, marginLeft: 10 }}>
                   <Dropdown
                      label="Min"
                      value={this.props.partidos.minuto}
@@ -83,40 +80,9 @@ export default class ItemPartidos extends Component {
                      onChangeText={value => this.setState({ minutos: value })}
                   />
                </View>
-               <View style={{ width: 50, marginLeft: 10, marginTop: 30 }}>
-                  <TouchableOpacity
-                     hitSlop={{ top: 50, bottom: 50, left: 50, right: 50 }}
-                     onPress={() => {
-                        this.props.guardar(
-                           this.state.equipo1 == ''
-                              ? this.props.partidos.equipoUno
-                              : this.state.equipo1,
-
-                           this.state.equipo2 == ''
-                              ? this.props.partidos.equipoDos
-                              : this.state.equipo2,
-
-                           this.state.hora == ''
-                              ? this.props.partidos.hora
-                              : this.state.hora,
-
-                           this.state.minutos == ''
-                              ? this.props.partidos.minuto
-                              : this.state.minutos,
-                           this.props.partidos.fecha
-                        );
-                     }}
-                  >
-                     <Icon
-                        name="check"
-                        type="material-icons"
-                        style={styles.button}
-                     />
-                  </TouchableOpacity>
-               </View>
             </View>
             <View style={{ flexDirection: 'row' }}>
-               <View style={{ width: 150 }}>
+               <View style={{ flex: 1 }}>
                   <Dropdown
                      label="Equipo1"
                      value={this.props.partidos.equipoUno}
@@ -124,7 +90,7 @@ export default class ItemPartidos extends Component {
                      onChangeText={value => this.setState({ equipo1: value })}
                   />
                </View>
-               <View style={{ width: 150, marginLeft: 50 }}>
+               <View style={{ flex: 1, marginLeft: 50 }}>
                   <Dropdown
                      label="Equipo2"
                      value={this.props.partidos.equipoDos}
@@ -133,15 +99,62 @@ export default class ItemPartidos extends Component {
                   />
                </View>
             </View>
+            <View style={{ width: 50, marginLeft: 10, marginTop: 30 }}>
+               <TouchableOpacity
+                  hitSlop={{ top: 50, bottom: 50, left: 50, right: 50 }}
+                  onPress={() => {
+                     this.props.guardar(
+                        this.state.equipo1 == ''
+                           ? this.props.partidos.equipoUno
+                           : this.state.equipo1,
+
+                        this.state.equipo2 == ''
+                           ? this.props.partidos.equipoDos
+                           : this.state.equipo2,
+
+                        this.state.hora == ''
+                           ? this.props.partidos.hora
+                           : this.state.hora,
+
+                        this.state.minutos == ''
+                           ? this.props.partidos.minuto
+                           : this.state.minutos,
+                        this.props.partidos.fecha
+                     );
+                  }}
+               >
+                  <Icon
+                     name="check"
+                     type="material-icons"
+                     style={styles.button}
+                  />
+               </TouchableOpacity>
+            </View>
          </View>
       );
    }
 }
 
+const border = color => {
+   return { borderColor: color, borderWidth: 2 };
+};
 const styles = StyleSheet.create({
    container: {
       flex: 1,
-      flexDirection: 'row',
       marginRight: 20,
+   },
+   time: {
+      flex: 1,
+      flexDirection: 'row',
+   },
+   viewBody: {
+      flex: 1,
+      backgroundColor: COLOR.COLOR_BLANCO,
+      flexDirection: 'column',
+      marginLeft: 2,
+      marginRight: 2,
+      marginBottom: 10,
+      borderRadius: 5,
+      paddingHorizontal: 15,
    },
 });
