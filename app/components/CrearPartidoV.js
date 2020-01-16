@@ -86,7 +86,8 @@ export default class CrearPartidoV extends Component {
                            this.state.equipo1,
                            this.state.equipo2,
                            this.state.hora,
-                           this.state.minutos
+                           this.state.minutos,
+                           this.state.fecha
                         );
                      }}
                   >
