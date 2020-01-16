@@ -189,7 +189,9 @@ export default class Calendarios extends Component {
             <ActionButton
                buttonColor="#00A680"
                onPress={() => {
-                  this.props.navigation.navigate('CrearFecha');
+                  this.props.navigation.navigate('CrearFecha', {
+                     id: listCalendarios.length,
+                  });
                }}
             />
             <StatusBarGeneral />

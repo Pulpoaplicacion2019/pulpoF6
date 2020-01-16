@@ -22,7 +22,7 @@ import DatePicker from 'react-native-datepicker';
 export default class CrearFecha extends Component {
    constructor(props) {
       super(props);
-      this.state = { date: this.date, listaFechas: [], fecha: 'Fecha' };
+      this.state = { date: this.date, listaFechas: [], fecha: '' };
    }
 
    elegirfecha = date => {
@@ -48,10 +48,11 @@ export default class CrearFecha extends Component {
    };
    eliminarFecha = date => {
       const fechasob = this.convertirFechas(this.state.listaFechas);
-      console.log('ingresa componentDidMount ');
+      console.log('ingresa eliminar fecha ');
 
       const categ = global.categoria;
-      const fecha = this.state.fecha + 1;
+      const fecha = this.state.fecha;
+      console.log('fecha  ', fecha);
 
       eliminarFechas(categ, fecha, date, fechas => {
          console.log('fechas: ' + fechas);
@@ -62,14 +63,18 @@ export default class CrearFecha extends Component {
    };
    componentDidMount() {
       console.log('ingresa componentDidMount ');
-
+      const num = this.props.navigation.state.params.id;
+      console.log('fe' + num);
       const categ = global.categoria;
-      const fecha = this.state.fecha + 1;
-      recuperarFecha(categ, fecha, fechas => {
-         console.log('fechas: ' + fechas);
-         this.setState({
-            listaFechas: this.convertirFechasLista(fechas),
-         });
+      const fechaId = 'Fecha' + (num + 1);
+      this.setState({ fecha: fechaId });
+      recuperarFecha(categ, this.state.fecha, fechas => {
+         if (fechas != null) {
+            console.log('fechas: ' + fechas);
+            this.setState({
+               listaFechas: this.convertirFechasLista(fechas),
+            });
+         }
       });
    }
 
@@ -86,7 +91,7 @@ export default class CrearFecha extends Component {
       let fechasO = this.convertirFechas(this.state.listaFechas);
 
       const categ = global.categoria;
-      const fecha = this.state.fecha + 1;
+      const fecha = this.state.fecha;
       const fechas = {
          fechas: fechasO,
       };
