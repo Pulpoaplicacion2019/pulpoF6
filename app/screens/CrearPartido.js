@@ -5,7 +5,7 @@ import { Dropdown } from 'react-native-material-dropdown';
 import {
    guardarPartido,
    cargarPartidos,
-   eliminarPartidos,
+   cargarJugadores,
 } from '../services/partidos.js';
 import { cargarEquipos } from '../services/equipos.js';
 import * as COLOR from '../constants/colors.js';
@@ -45,7 +45,7 @@ export default class CrearPartido extends Component {
          categ,
          this.props.navigation.state.params.id,
          listaPartidos => {
-            console.log('listaPartidos: ' + listaPartidos);
+            console.log('listaPartidos: ', listaPartidos);
             this.setState({
                listaPartidos: listaPartidos,
 
@@ -75,41 +75,58 @@ export default class CrearPartido extends Component {
       let fecha = this.state.fechaPartido;
       let hora = this.state.hora;
       let min = this.state.minuto;
-      if (equipo1 == '') {
-         equipo1 = this.props.navigation.state.params.partidos.equipoUno;
-      }
-      if (equipo2 == '') {
-         equipo2 = this.props.navigation.state.params.partidos.equipoDos;
-      }
-      if (fecha == '') {
-         fecha = this.props.navigation.state.params.partidos.fecha;
-      }
-      if (hora == '') {
-         hora = this.props.navigation.state.params.partidos.hora;
-      }
-      if (min == '') {
-         min = this.props.navigation.state.params.partidos.minuto;
-      }
+      let jugadores1 = this.state.jugadores1;
+      let jugadores2 = this.state.jugadores2;
 
       const partido = {
          equipoDos: equipo2,
          equipoUno: equipo1,
          fechaPartido: fecha,
          hora: hora,
-         id: this.props.navigation.state.params.partidos.id,
+         id: equipo1 + '_' + equipo2,
          minuto: min,
-         jugadores1: this.props.navigation.state.params.partidos.jugadores1,
-         jugadores2: this.props.navigation.state.params.partidos.jugadores2,
-         puntosEquiDos: this.props.navigation.state.params.partidos
-            .puntosEquiDos,
-         puntosEquiUno: this.props.navigation.state.params.partidos
-            .puntosEquiUno,
+         jugadores1: jugadores1,
+         jugadores2: jugadores2,
+         puntosEquiDos: '00',
+         puntosEquiUno: '00',
       };
       //const listaCategorias = global.listaCategorias;
       const categ = global.categoria;
       const fechaId = this.props.navigation.state.params.fechaId;
-      const id = this.props.navigation.state.params.partidos.id;
+      const id = equipo1 + '_' + equipo2;
       guardarPartido(categ, fechaId, id, partido);
+   };
+   jugadores1 = equipo => {
+      console.log('equipo', equipo);
+      const categ = global.categoria;
+      cargarJugadores(categ, equipo, listaJugadores => {
+         console.log('jugadores1: ', listaJugadores);
+         this.setState({
+            jugadores1: listaJugadores[0],
+         });
+      });
+   };
+   jugadores2 = equipo => {
+      console.log('equipo', equipo);
+      const categ = global.categoria;
+      cargarJugadores(categ, equipo, listaJugadores => {
+         console.log('jugadores2: ', listaJugadores);
+         this.setState({
+            jugadores2: listaJugadores[0],
+         });
+      });
+   };
+   convertirJugadoresLista = jugadores => {
+      let listaJugadores = [];
+      console.log(' convertirJugadoresLista ', jugadores);
+      if (jugadores) {
+         Object.keys(jugadores).forEach(item => {
+            console.log('itemconver ' + item);
+            listaJugadores.push(jugadores[item]);
+         });
+      }
+      console.log('listaJugadores ', listaJugadores);
+      return listaJugadores;
    };
    render() {
       const horas = [
@@ -179,14 +196,20 @@ export default class CrearPartido extends Component {
                   <Dropdown
                      label="Equipo1"
                      data={this.state.listaEquip}
-                     onChangeText={value => this.setState({ equipoUno: value })}
+                     onChangeText={value => {
+                        this.setState({ equipoUno: value }),
+                           this.jugadores1(value);
+                     }}
                   />
                </View>
                <View style={{ flex: 1, marginLeft: 50 }}>
                   <Dropdown
                      label="Equipo2"
                      data={this.state.listaEquip}
-                     onChangeText={value => this.setState({ equipoDos: value })}
+                     onChangeText={value => {
+                        this.setState({ equipoDos: value }),
+                           this.jugadores2(value);
+                     }}
                   />
                </View>
             </View>

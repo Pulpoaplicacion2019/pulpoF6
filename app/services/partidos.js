@@ -75,3 +75,37 @@ export const eliminarPartidos = (categoria, fecha, partidoEliminar, fn) => {
          console.log('Operation Complete');
       });
 };
+export const cargarJugadores = (categoria, equipo, fn) => {
+   console.log('ingresa a cargar equipos v6');
+   const refPartidosRoot = firebase.database().ref('equipos');
+   const refPartidos = refPartidosRoot.child(
+      global.idTorneo + '/categorias/' + categoria + '/equipos/' + equipo
+   );
+   console.log('refPartidos ' + refPartidos.path);
+   const listaJugadores = [];
+
+   refPartidos.once('child_added', snap => {
+      console.log('agrega partidos ', snap);
+      let objJugador = {};
+      if (snap.key == 'jugadores') {
+         let obj = {};
+
+         obj = snap.val();
+         Object.keys(snap.val()).forEach(item => {
+            console.log('itemconver ', item);
+            objJugador['num' + obj[item].numero] = {
+               numero: obj[item].numero,
+               nombre: obj[item].primerNombre + ' ' + obj[item].primerApellido,
+               puntosq1: '00',
+               puntosq2: '00',
+               puntosq3: '00',
+               puntosq4: '00',
+            };
+            console.log('obJugador ', objJugador);
+         });
+      }
+      listaJugadores.push(objJugador);
+      console.log('listaJugadores ', listaJugadores);
+      fn(listaJugadores);
+   });
+};

@@ -4,15 +4,16 @@ export const cargarEquipos = (categoria, fn) => {
    console.log('ingresa a cargar equipos v6');
    const refEquiposRoot = firebase.database().ref('equipos');
    const refEquipos = refEquiposRoot.child(
-      global.idTorneo + '/categorias/' + categoria + '/equipos'
+      global.idTorneo + '/categorias/' + categoria + '/equipos/'
    );
-   console.log('refEquipos ' + refEquipos.path);
+   console.log('refEquipos ', refEquipos.path);
    const listaEquipos = [];
 
    refEquipos.on('child_added', snap => {
       console.log('agrega equipo ', snap);
 
       listaEquipos.push(snap.val());
+      console.log('listaEquipos ', listaEquipos);
 
       fn(listaEquipos);
    });
