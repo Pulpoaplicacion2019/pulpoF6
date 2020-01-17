@@ -100,28 +100,35 @@ export default class Partidos extends Component {
    };
    render() {
       return (
-         <ScrollView style={styles.viewBody}>
-            <View style={[styles.container]}>
-               <Text>Partidos</Text>
+         <View style={[styles.container]}>
+            <Text>Partidos</Text>
 
-               <FlatList
-                  data={this.state.listaPartidos}
-                  //ItemSeparatorComponent={this.separador}
-                  renderItem={({ item }) => (
-                     <ItemPartidoV2
-                        equipos={this.state.listaEquip}
-                        fechas={this.state.listaFechas}
-                        partidos={item}
-                        eliminar={this.eliminar}
-                        guardar={this.guardar}
-                        nav={this.props.navigation}
-                        fechaId={this.props.navigation.state.params.id}
-                     />
-                  )}
-                  keyExtractor={item => item}
-               />
-            </View>
-         </ScrollView>
+            <FlatList
+               data={this.state.listaPartidos}
+               //ItemSeparatorComponent={this.separador}
+               renderItem={({ item }) => (
+                  <ItemPartidoV2
+                     equipos={this.state.listaEquip}
+                     fechas={this.state.listaFechas}
+                     partidos={item}
+                     eliminar={this.eliminar}
+                     guardar={this.guardar}
+                     nav={this.props.navigation}
+                     fechaId={this.props.navigation.state.params.id}
+                  />
+               )}
+               keyExtractor={item => item}
+            />
+            <ActionButton
+               buttonColor="#00A680"
+               onPress={() => {
+                  this.props.navigation.navigate('CrearPartido', {
+                     fechaId: this.props.navigation.state.params.id,
+                     fechas: this.state.listaFechas,
+                  });
+               }}
+            />
+         </View>
       );
    }
 }

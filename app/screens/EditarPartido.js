@@ -38,6 +38,9 @@ export default class EditarPartido extends Component {
             listaEquip: this.convertirEquiposLista(listaEquipos),
          });
       });
+      this.setState({
+         listaFechas: this.props.navigation.state.params.fechas,
+      });
       cargarPartidos(
          categ,
          this.props.navigation.state.params.id,
@@ -45,9 +48,7 @@ export default class EditarPartido extends Component {
             console.log('listaPartidos: ' + listaPartidos);
             this.setState({
                listaPartidos: listaPartidos,
-               listaFechas: this.convertirFechaLista(
-                  this.props.navigation.state.params.fechas
-               ),
+
                fecha: this.props.navigation.state.params.id,
             });
          }
@@ -67,17 +68,7 @@ export default class EditarPartido extends Component {
       console.log('listaCategoriasconver ' + listaEquipos);
       return listaEquipos;
    };
-   convertirFechaLista = fechas => {
-      let listaF = [];
-      fechas.map((item, index) => {
-         console.log('item:   ' + item);
-         listaF.push({
-            value: item,
-         });
-      });
 
-      return listaF;
-   };
    guardar = () => {
       let equipo1 = this.state.equipoUno;
       let equipo2 = this.state.equipoDos;

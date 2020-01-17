@@ -31,7 +31,7 @@ import CrearFechaScreen from '../screens/CrearFecha';
 //import PartidosScreen from '../screens/Partidos';
 import PartidosScreen from '../screens/PartidosV2';
 import EditarPartidoScreen from '../screens/EditarPartido';
-
+import CrearPartidoScreen from '../screens/CrearPartido';
 import EquiposScreen from '../screens/Equipos/Equipos';
 import PosicionesScreen from '../screens/Posiciones';
 import ResultadosScreen from '../screens/Resultados';
@@ -103,6 +103,9 @@ const TorneosRootStack = createStackNavigator(
       },
       EditarPartido: {
          screen: EditarPartidoScreen,
+      },
+      CrearPartido: {
+         screen: CrearPartidoScreen,
       },
       CargarImagen: {
          screen: CargarImagenScreen,
