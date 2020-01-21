@@ -6,6 +6,7 @@ import {
    FlatList,
    ScrollView,
    Button,
+   Alert,
 } from 'react-native';
 import ItemJugadoresVocalia from '../components/ItemJugadoresVocalia';
 import {
@@ -35,7 +36,7 @@ export default class Partidos extends Component {
          puntosEqui2Q4: '',
          puntosEqui2Total: '',
          puntosj: '',
-         estadoQ: '',
+         estadoQ: 'Q1',
       };
    }
    componentDidMount() {
@@ -174,63 +175,84 @@ export default class Partidos extends Component {
       return (
          <ScrollView>
             <View style={styles.container}>
-               <View>
-                  <Button
-                     style={styles.button}
-                     title="Q1"
-                     onPress={() => this.setState({ estadoQ: 'Q1' })}
-                  ></Button>
-                  <Button
-                     style={styles.button}
-                     title="Q2"
-                     onPress={() => this.setState({ estadoQ: 'Q2' })}
-                  ></Button>
-                  <Button
-                     style={styles.button}
-                     title="Q3"
-                     onPress={() => this.setState({ estadoQ: 'Q3' })}
-                  ></Button>
-                  <Button
-                     style={styles.button}
-                     title="Q4"
-                     onPress={() => this.setState({ estadoQ: 'Q4' })}
-                  ></Button>
-               </View>
-               <View style={styles.vocalia}>
-                  <View style={styles.container}>
-                     <Text style={styles.txt}>{this.state.equipo1}</Text>
-                     <Text style={styles.txt}>
-                        {this.state.puntosEqui1Total}
-                     </Text>
+               <View style={{ flexDirection: 'row' }}>
+                  <View style={{ flexDirection: 'row' }}>
+                     <View>
+                        <Text style={{ fontSize: 30, marginLeft: 10 }}>
+                           {this.state.estadoQ}
+                        </Text>
+                     </View>
+                     <Button
+                        style={styles.button}
+                        title="Fin"
+                        onPress={() => {
+                           Alert.alert(
+                              'Confirmación',
+                              'Terminar tiempo ' + this.state.estadoQ,
+                              [
+                                 {
+                                    text: 'Cancelar',
+                                    onPress: () =>
+                                       console.log('Cancel Pressed'),
+                                    style: 'cancel',
+                                 },
+                                 {
+                                    text: 'Aceptar',
+                                    onPress: () => {
+                                       if (this.state.estadoQ == 'Q1') {
+                                          this.setState({ estadoQ: 'Q2' });
+                                       } else if (this.state.estadoQ == 'Q2') {
+                                          this.setState({ estadoQ: 'Q3' });
+                                       } else if (this.state.estadoQ == 'Q3') {
+                                          this.setState({ estadoQ: 'Q4' });
+                                       }
+                                    },
+                                 },
+                              ],
+                              { cancelable: false }
+                           );
+                        }}
+                     ></Button>
                   </View>
-                  <FlatList
-                     data={this.state.listaJugadores1}
-                     renderItem={({ item }) => (
-                        <ItemJugadoresVocalia
-                           jugador={item}
-                           sumarPuntos={this.sumarP1}
-                        />
-                     )}
-                     keyExtractor={item => item}
-                  />
                </View>
-               <View style={styles.vocalia}>
-                  <View style={styles.container}>
-                     <Text style={styles.txt}>{this.state.equipo2}</Text>
-                     <Text style={styles.txt}>
-                        {this.state.puntosEqui2Total}
-                     </Text>
+
+               <View style={{ flexDirection: 'row' }}>
+                  <View style={styles.vocalia}>
+                     <View style={styles.container}>
+                        <Text style={styles.txt}>{this.state.equipo1}</Text>
+                        <Text style={styles.txt}>
+                           {this.state.puntosEqui1Total}
+                        </Text>
+                     </View>
+                     <FlatList
+                        data={this.state.listaJugadores1}
+                        renderItem={({ item }) => (
+                           <ItemJugadoresVocalia
+                              jugador={item}
+                              sumarPuntos={this.sumarP1}
+                           />
+                        )}
+                        keyExtractor={item => item}
+                     />
                   </View>
-                  <FlatList
-                     data={this.state.listaJugadores2}
-                     renderItem={({ item }) => (
-                        <ItemJugadoresVocalia
-                           jugador={item}
-                           sumarPuntos={this.sumarP2}
-                        />
-                     )}
-                     keyExtractor={item => item}
-                  />
+                  <View style={styles.vocalia}>
+                     <View style={styles.container}>
+                        <Text style={styles.txt}>{this.state.equipo2}</Text>
+                        <Text style={styles.txt}>
+                           {this.state.puntosEqui2Total}
+                        </Text>
+                     </View>
+                     <FlatList
+                        data={this.state.listaJugadores2}
+                        renderItem={({ item }) => (
+                           <ItemJugadoresVocalia
+                              jugador={item}
+                              sumarPuntos={this.sumarP2}
+                           />
+                        )}
+                        keyExtractor={item => item}
+                     />
+                  </View>
                </View>
             </View>
          </ScrollView>
@@ -240,7 +262,7 @@ export default class Partidos extends Component {
 
 const styles = StyleSheet.create({
    container: {
-      flexDirection: 'row',
+      flexDirection: 'column',
    },
    vocalia: {
       margin: 20,
