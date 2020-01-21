@@ -1,41 +1,49 @@
-import React, { Component } from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
-import PropTypes from 'prop-types';
+import React, { Component } from "react";
+import { View, Text, StyleSheet, ImageBackground, TouchableHighlight } from "react-native";
+import styles from "../Styles/styles";
 
 export default class ItemEquipos extends Component {
-   static propTypes = {};
-   state = {
-      lista: [{ id: 'Prueba_2019', nombreEquipo: 'Prueba_2019' }],
-   };
+  static navigationOptions = {
+    tabBarLabel: "Equipos",
+    tabBarIcon: ({ tintColor }) => {
+      let iconName = Platform.select({
+        ios: "ios-basketball",
+        android: "md-basketball"
+      });
+      return <Icon name={iconName} type="ionicon" color={tintColor} />;
+    }
+  };
 
-   render() {
-      return (
-         <View style={styles.itemsList}>
-            {this.props.lista.map((item, index) => {
-               return (
-                  <View key={index}>
-                     <Text style={styles.itemtext}>{item.nombreEquipo}</Text>
-                     <Image
-                        source={{ uri: item.imagenEquipo }}
-                        style={{ width: 100, height: 100 }}
-                     />
-                  </View>
-               );
-            })}
-         </View>
-      );
-   }
+  state = {
+    lista: []
+  };
+  editarEquipo = (item) => {
+	console.log("equipo elegido ", item);
+	let categoriaActual = this.props.categoria;
+	let equipo ={categoria: categoriaActual,  id: item.id }
+    let ruta = "CrearEquipos";
+    this.props.nav.navigate(ruta, {equipo:equipo});
+  };
+  render() {
+    return (
+		
+      <View >
+        {this.props.lista.map((item, index) => {
+          return (
+            <View key={index} style={styles.itemContainer}>
+              <TouchableHighlight onPress={()=>this.editarEquipo(item)}>
+               
+                <ImageBackground
+                  source={{ uri: item.imagenEquipo }}
+                  style={{ width: 100, height: 100 }}
+                >
+					 <Text style={styles.itemName}>{item.nombreEquipo}</Text>
+				</ImageBackground> 
+              </TouchableHighlight>
+            </View>
+          );
+        })}
+      </View>
+    );
+  }
 }
-
-const styles = StyleSheet.create({
-   itemsList: {
-      flex: 2,
-      flexDirection: 'column',
-      justifyContent: 'space-around',
-   },
-   itemtext: {
-      fontSize: 24,
-      fontWeight: 'bold',
-      textAlign: 'center',
-   },
-});

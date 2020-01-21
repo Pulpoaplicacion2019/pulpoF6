@@ -33,10 +33,11 @@ import EquiposScreen from '../screens/Equipos/Equipos';
 import PosicionesScreen from '../screens/Posiciones';
 import ResultadosScreen from '../screens/Resultados';
 
-import PerfilTorneoScreen from '../screens/Torneos/PerfilTorneo';
-import InfoPerfilTorneoScreen from '../screens/Torneos/InfoPerfilTorneo';
-import CargarImagenScreen from '../components/CargarImagen';
-import CrearEquiposScreen from '../screens/Equipos/CrearEquipos';
+import PerfilTorneoScreen from "../screens/Torneos/PerfilTorneo";
+import InfoPerfilTorneoScreen from "../screens/Torneos/InfoPerfilTorneo";
+import CargarImagenScreen from "../components/CargarImagen";
+import CrearEquiposScreen from "../screens/Equipos/CrearEquipos";
+import ItemEquiposScreen from "../components/ItemEquipos";
 
 import LoginScreen from '../screens/Login';
 import VocaliaScreen from '../screens/vocalia';
@@ -104,6 +105,9 @@ const TorneosRootStack = createStackNavigator(
       CrearEquipos: {
          screen: CrearEquiposScreen,
       },
+      ItemEquipos:{
+		screen:ItemEquiposScreen,
+	}
    },
    { initialRouteName: 'TabTorneos' }
 );
