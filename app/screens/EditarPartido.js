@@ -26,8 +26,14 @@ export default class EditarPartido extends Component {
          minuto: '',
          jugadores1: [],
          jugadores2: [],
-         puntosEquiDos: '',
-         puntosEquiUno: '',
+         puntosEqui1Q1: '',
+         puntosEqui1Q2: '',
+         puntosEqui1Q3: '',
+         puntosEqui1Q4: '',
+         puntosEqui2Q1: '',
+         puntosEqui2Q2: '',
+         puntosEqui2Q3: '',
+         puntosEqui2Q4: '',
       };
    }
    componentDidMount() {
@@ -100,10 +106,28 @@ export default class EditarPartido extends Component {
          minuto: min,
          jugadores1: this.props.navigation.state.params.partidos.jugadores1,
          jugadores2: this.props.navigation.state.params.partidos.jugadores2,
-         puntosEquiDos: this.props.navigation.state.params.partidos
-            .puntosEquiDos,
-         puntosEquiUno: this.props.navigation.state.params.partidos
-            .puntosEquiUno,
+         puntosEqui1Q1: this.props.navigation.state.params.partidos
+            .puntosEqui1Q1,
+         puntosEqui1Q2: this.props.navigation.state.params.partidos
+            .puntosEqui1Q2,
+         puntosEqui1Q3: this.props.navigation.state.params.partidos
+            .puntosEqui1Q3,
+         puntosEqui1Q4: this.props.navigation.state.params.partidos
+            .puntosEqui1Q4,
+
+         puntosEqui1Total: this.props.navigation.state.params.partidos
+            .puntosEqui1Total,
+
+         puntosEqui2Q1: this.props.navigation.state.params.partidos
+            .puntosEqui2Q1,
+         puntosEqui2Q2: this.props.navigation.state.params.partidos
+            .puntosEqui2Q2,
+         puntosEqui2Q3: this.props.navigation.state.params.partidos
+            .puntosEqui2Q3,
+         puntosEqui2Q4: this.props.navigation.state.params.partidos
+            .puntosEqui2Q4,
+         puntosEqui2Total: this.props.navigation.state.params.partidos
+            .puntosEqui2Total,
       };
       //const listaCategorias = global.listaCategorias;
       const categ = global.categoria;

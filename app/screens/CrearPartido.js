@@ -26,8 +26,8 @@ export default class CrearPartido extends Component {
          minuto: '',
          jugadores1: [],
          jugadores2: [],
-         puntosEquiDos: '',
-         puntosEquiUno: '',
+         puntosEqui1Total: '',
+         puntosEqui2Total: '',
       };
    }
    componentDidMount() {
@@ -87,8 +87,16 @@ export default class CrearPartido extends Component {
          minuto: min,
          jugadores1: jugadores1,
          jugadores2: jugadores2,
-         puntosEquiDos: '00',
-         puntosEquiUno: '00',
+         puntosEqui1Q1: '00',
+         puntosEqui1Q2: '00',
+         puntosEqui1Q3: '00',
+         puntosEqui1Q4: '00',
+         puntosEqui1Total: '00',
+         puntosEqui2Q1: '00',
+         puntosEqui2Q2: '00',
+         puntosEqui2Q3: '00',
+         puntosEqui2Q4: '00',
+         puntosEqui2Total: '00',
       };
       //const listaCategorias = global.listaCategorias;
       const categ = global.categoria;

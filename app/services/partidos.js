@@ -96,10 +96,10 @@ export const cargarJugadores = (categoria, equipo, fn) => {
             objJugador['num' + obj[item].numero] = {
                numero: obj[item].numero,
                nombre: obj[item].primerNombre + ' ' + obj[item].primerApellido,
-               puntosq1: '00',
-               puntosq2: '00',
-               puntosq3: '00',
-               puntosq4: '00',
+               puntosQ1: '00',
+               puntosQ2: '00',
+               puntosQ3: '00',
+               puntosQ4: '00',
             };
             console.log('obJugador ', objJugador);
          });

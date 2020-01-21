@@ -22,8 +22,16 @@ export const cargarPartidos = (categoria, fecha, partido, fn) => {
    let lista = [];
    let equipoUno = '';
    let equipoDos = '';
-   let puntos1 = '';
-   let puntos2 = '';
+   let puntosEqui1Q1 = '';
+   let puntosEqui1Q2 = '';
+   let puntosEqui1Q3 = '';
+   let puntosEqui1Q4 = '';
+   let puntosEqui2Q1 = '';
+   let puntosEqui2Q2 = '';
+   let puntosEqui2Q3 = '';
+   let puntosEqui2Q4 = '';
+   let puntosEqui1Total = '';
+   let puntosEqui2Total = '';
    let partidoO = {};
 
    refPartidos.on('child_added', snap => {
@@ -34,11 +42,30 @@ export const cargarPartidos = (categoria, fecha, partido, fn) => {
       if (snap.key == 'equipoDos') {
          equipoDos = snap.val();
       }
-      if (snap.key == 'puntosEquiUno') {
-         puntos1 = snap.val();
+      if (snap.key == 'puntosEqui1Q1') {
+         puntosEqui1Q1 = snap.val();
       }
-      if (snap.key == 'puntosEquiDos') {
-         puntos2 = snap.val();
+
+      if (snap.key == 'puntosEqui1Q2') {
+         puntosEqui1Q2 = snap.val();
+      }
+      if (snap.key == 'puntosEqui1Q3') {
+         puntosEqui1Q3 = snap.val();
+      }
+      if (snap.key == 'puntosEqui1Q4') {
+         puntosEqui1Q4 = snap.val();
+      }
+      if (snap.key == 'puntosEqui2Q1') {
+         puntosEqui2Q1 = snap.val();
+      }
+      if (snap.key == 'puntosEqui2Q2') {
+         puntosEqui2Q2 = snap.val();
+      }
+      if (snap.key == 'puntosEqui2Q3') {
+         puntosEqui2Q3 = snap.val();
+      }
+      if (snap.key == 'puntosEqui2Q4') {
+         puntosEqui2Q4 = snap.val();
       }
       if (snap.key == 'jugadores1') {
          listaJugadores1 = snap.val();
@@ -46,19 +73,28 @@ export const cargarPartidos = (categoria, fecha, partido, fn) => {
       if (snap.key == 'jugadores2') {
          listaJugadores2 = snap.val();
       }
+      if (snap.key == 'puntosEqui1Total') {
+         puntosEqui1Total = snap.val();
+      }
+      if (snap.key == 'puntosEqui2Total') {
+         puntosEqui2Total = snap.val();
+      }
       // partidoO[snap.key] = snap.val();
       //console.log('listaPartidos vocalia ', partidoO);
-      if (
-         equipoUno != '' &&
-         equipoDos != '' &&
-         puntos1 != '' &&
-         puntos2 != ''
-      ) {
+      if (equipoUno != '' && equipoDos != '') {
          partidoO = {
             equipoUno: equipoUno,
             equipoDos: equipoDos,
-            puntos1: puntos1,
-            puntos2: puntos2,
+            puntosEqui1Q1: puntosEqui1Q1,
+            puntosEqui1Q2: puntosEqui1Q2,
+            puntosEqui1Q3: puntosEqui1Q3,
+            puntosEqui1Q4: puntosEqui1Q4,
+            puntosEqui1Total: puntosEqui1Total,
+            puntosEqui2Q1: puntosEqui2Q1,
+            puntosEqui2Q2: puntosEqui2Q2,
+            puntosEqui2Q3: puntosEqui2Q3,
+            puntosEqui2Q4: puntosEqui2Q4,
+            puntosEqui2Total: puntosEqui2Total,
             listaJugadores1: listaJugadores1,
             listaJugadores2: listaJugadores2,
          };
@@ -67,20 +103,74 @@ export const cargarPartidos = (categoria, fecha, partido, fn) => {
       fn(partidoO);
    });
 
-   /* refPartidos.on('child_changed', snap => {
-      console.log('child_changed ');
-      let i = buscarP(listaPartidos, snap.val().id);
-      listaPartidos[i] = snap.val();
-      fn(listaPartidos);
-   });
+   refPartidos.on('child_changed', snap => {
+      console.log('agrega partidos vocalia', snap);
+      if (snap.key == 'equipoUno') {
+         equipoUno = snap.val();
+      }
+      if (snap.key == 'equipoDos') {
+         equipoDos = snap.val();
+      }
+      if (snap.key == 'puntosEqui1Q1') {
+         puntosEqui1Q1 = snap.val();
+      }
 
-   refPartidos.on('child_removed', snap => {
-      let i = buscarP(listaPartidos, snap.val().id);
-      console.log('posicion ' + i);
-      listaPartidos.splice(i, 1);
-      console.log('borrado ' + snap.val().id);
-      fn(listaPartidos);
-   });*/
+      if (snap.key == 'puntosEqui1Q2') {
+         puntosEqui1Q2 = snap.val();
+      }
+      if (snap.key == 'puntosEqui1Q3') {
+         puntosEqui1Q3 = snap.val();
+      }
+      if (snap.key == 'puntosEqui1Q4') {
+         puntosEqui1Q4 = snap.val();
+      }
+      if (snap.key == 'puntosEqui2Q1') {
+         puntosEqui2Q1 = snap.val();
+      }
+      if (snap.key == 'puntosEqui2Q2') {
+         puntosEqui2Q2 = snap.val();
+      }
+      if (snap.key == 'puntosEqui2Q3') {
+         puntosEqui2Q3 = snap.val();
+      }
+      if (snap.key == 'puntosEqui2Q4') {
+         puntosEqui2Q4 = snap.val();
+      }
+      if (snap.key == 'jugadores1') {
+         listaJugadores1 = snap.val();
+      }
+      if (snap.key == 'jugadores2') {
+         listaJugadores2 = snap.val();
+      }
+      if (snap.key == 'puntosEqui1Total') {
+         puntosEqui1Total = snap.val();
+      }
+      if (snap.key == 'puntosEqui2Total') {
+         puntosEqui2Total = snap.val();
+      }
+      // partidoO[snap.key] = snap.val();
+      //console.log('listaPartidos vocalia ', partidoO);
+      if (equipoUno != '' && equipoDos != '') {
+         partidoO = {
+            equipoUno: equipoUno,
+            equipoDos: equipoDos,
+            puntosEqui1Q1: puntosEqui1Q1,
+            puntosEqui1Q2: puntosEqui1Q2,
+            puntosEqui1Q3: puntosEqui1Q3,
+            puntosEqui1Q4: puntosEqui1Q4,
+            puntosEqui1Total: puntosEqui1Total,
+            puntosEqui2Q1: puntosEqui2Q1,
+            puntosEqui2Q2: puntosEqui2Q2,
+            puntosEqui2Q3: puntosEqui2Q3,
+            puntosEqui2Q4: puntosEqui2Q4,
+            puntosEqui2Total: puntosEqui2Total,
+            listaJugadores1: listaJugadores1,
+            listaJugadores2: listaJugadores2,
+         };
+      }
+
+      fn(partidoO);
+   });
 };
 
 buscarP = (listaPartidos, id) => {
@@ -103,12 +193,21 @@ export const guardarPuntos = (equipo, puntos) => {
    console.log('guardar puntos', refPuntos);
    refPuntos.set(puntos);
 };
-export const guardarPuntosJugador = (puntosJ, jugadores, ref) => {
+export const guardarPuntosTotal = (equipo, puntos) => {
+   console.log('ingresa a guardar puntos');
+
+   const itemsRef = firebase.database().ref('calendario/torneos');
+   const refPuntos = itemsRef.child(global.ref + '/' + equipo);
+
+   console.log('guardar puntos', refPuntos);
+   refPuntos.set(puntos);
+};
+export const guardarPuntosJugador = (puntosJ, jugadores, ref, equi) => {
    console.log('ingresa a guardar puntos');
 
    const itemsRef = firebase.database().ref('calendario/torneos');
    const refPuntosJ = itemsRef.child(
-      global.ref + '/' + jugadores + '/' + ref + '/puntos'
+      global.ref + '/' + jugadores + '/' + ref + '/' + equi
    );
 
    console.log('guardar puntos', refPuntosJ);

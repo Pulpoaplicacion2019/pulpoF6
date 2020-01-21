@@ -6,6 +6,7 @@ export default class ItemJugadoresVocalia extends Component {
       return (
          <View style={{ flex: 1, flexDirection: 'row' }}>
             <Text style={styles.txt}>{this.props.jugador.nombre}</Text>
+
             <Button
                style={styles.button}
                title="1"
@@ -13,7 +14,10 @@ export default class ItemJugadoresVocalia extends Component {
                   this.props.sumarPuntos(
                      1,
                      this.props.jugador.numero,
-                     this.props.jugador.puntos
+                     this.props.jugador.puntosQ1,
+                     this.props.jugador.puntosQ2,
+                     this.props.jugador.puntosQ3,
+                     this.props.jugador.puntosQ4
                   );
                }}
             ></Button>
@@ -24,7 +28,10 @@ export default class ItemJugadoresVocalia extends Component {
                   this.props.sumarPuntos(
                      2,
                      this.props.jugador.numero,
-                     this.props.jugador.puntos
+                     this.props.jugador.puntosQ1,
+                     this.props.jugador.puntosQ2,
+                     this.props.jugador.puntosQ3,
+                     this.props.jugador.puntosQ4
                   );
                }}
             ></Button>
@@ -35,7 +42,10 @@ export default class ItemJugadoresVocalia extends Component {
                   this.props.sumarPuntos(
                      3,
                      this.props.jugador.numero,
-                     this.props.jugador.puntos
+                     this.props.jugador.puntosQ1,
+                     this.props.jugador.puntosQ2,
+                     this.props.jugador.puntosQ3,
+                     this.props.jugador.puntosQ4
                   );
                }}
             ></Button>

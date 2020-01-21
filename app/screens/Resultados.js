@@ -52,8 +52,8 @@ export default class Resultados extends Component {
          hora,
          minuto,
          cancha,
-         puntosEquiUno,
-         puntosEquiDos,
+         puntosEqui1Total,
+         puntosEqui2Total,
       } = listaPartidos.item;
       return (
          <View style={styles.viewPartidos}>
@@ -67,7 +67,7 @@ export default class Resultados extends Component {
             </View>
             <View style={[styles.viewDatos]}>
                <Text style={styles.puntos}>
-                  {puntosEquiUno}:{puntosEquiDos}
+                  {puntosEqui1Total}:{puntosEqui2Total}
                </Text>
             </View>
             <View style={styles.viewEquipoUno}>
