@@ -59,6 +59,7 @@ export default class ItemPartidos extends Component {
                   label="Fecha"
                   value={this.props.partidos.fecha}
                   data={this.props.fechas}
+                  onChangeText={value => this.setState({ fecha: value })}
                   selectedItemColor={COLOR.COLOR_CHRISTMAS_RED}
                   animationDuration={200}
                />
@@ -119,7 +120,9 @@ export default class ItemPartidos extends Component {
                         this.state.minutos == ''
                            ? this.props.partidos.minuto
                            : this.state.minutos,
-                        this.props.partidos.fecha
+                        this.state.fecha == ''
+                           ? this.props.partidos.fecha
+                           : this.state.fecha
                      );
                   }}
                >
@@ -129,6 +132,39 @@ export default class ItemPartidos extends Component {
                      style={styles.button}
                   />
                </TouchableOpacity>
+            </View>
+            <View style={{ width: 30, marginLeft: 1, marginTop: 30 }}>
+               <TouchableOpacity
+                  hitSlop={{ top: 50, bottom: 50, left: 50, right: 50 }}
+                  onPress={() => {
+                     this.props.eliminar(this.props.partidos.id);
+                  }}
+               >
+                  <Icon
+                     name="delete"
+                     type="material-icons"
+                     style={styles.button}
+                  />
+               </TouchableOpacity>
+            </View>
+
+            <View style={{ flexDirection: 'row' }}>
+               <View style={{ width: 150 }}>
+                  <Dropdown
+                     label="Equipo1"
+                     value={this.props.partidos.equipoUno}
+                     data={this.props.equipos}
+                     onChangeText={value => this.setState({ equipo1: value })}
+                  />
+               </View>
+               <View style={{ width: 150, marginLeft: 50 }}>
+                  <Dropdown
+                     label="Equipo2"
+                     value={this.props.partidos.equipoDos}
+                     data={this.props.equipos}
+                     onChangeText={value => this.setState({ equipo2: value })}
+                  />
+               </View>
             </View>
          </View>
       );
