@@ -7,6 +7,9 @@ import { DrawerActions } from 'react-navigation-drawer';
 import styles from '../../Styles/styles';
 import ActionButton from 'react-native-action-button';
 
+// importación del archivo de colores
+import * as COLOR from '../../constants/colors.js';
+
 export default class Example extends Component {
    static navigationOptions = {
       tabBarLabel: 'Mis Torneos',
@@ -47,7 +50,7 @@ export default class Example extends Component {
                nav={this.props.navigation}
             />
             <ActionButton
-               buttonColor="#00A680"
+               buttonColor={COLOR.COLOR_AMARILLO}
                onPress={() => {
                   global.idTorneo = null;
                   this.props.navigation.navigate('PerfilTorneo');

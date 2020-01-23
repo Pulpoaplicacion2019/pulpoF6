@@ -6,6 +6,7 @@ import {
    FlatList,
    Button,
    ActivityIndicator,
+   Platform,
 } from 'react-native';
 
 import { Image, Icon } from 'react-native-elements';

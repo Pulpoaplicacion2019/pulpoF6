@@ -41,6 +41,9 @@ import CrearEquiposScreen from '../screens/Equipos/CrearEquipos';
 import LoginScreen from '../screens/Login';
 import VocaliaScreen from '../screens/vocalia';
 
+// importación del archivo de colores
+import * as COLOR from '../constants/colors.js';
+
 const TabTorneos = createBottomTabNavigator(
    {
       MisTorneos: { screen: MisTorneosScreen },
@@ -48,7 +51,13 @@ const TabTorneos = createBottomTabNavigator(
       PorIniciar: { screen: PorIniciarScreen },
       Favoritos: { screen: FavoritosScreen },
    },
-   { initialRouteName: 'MisTorneos' }
+   {
+      initialRouteName: 'MisTorneos',
+      tabBarOptions: {
+         inactiveTintColor: COLOR.COLOR_SECUNDARIO,
+         activeTintColor: COLOR.COLOR_PRINCIPAL,
+      },
+   }
 );
 
 const TabEquipos = createBottomTabNavigator(
@@ -58,7 +67,13 @@ const TabEquipos = createBottomTabNavigator(
       Posiciones: { screen: PosicionesScreen },
       Resultados: { screen: ResultadosScreen },
    },
-   { initialRouteName: 'Calendario' }
+   {
+      initialRouteName: 'Calendario',
+      tabBarOptions: {
+         inactiveTintColor: COLOR.COLOR_SECUNDARIO,
+         activeTintColor: COLOR.COLOR_PRINCIPAL,
+      },
+   }
 );
 
 const TorneosRootStack = createStackNavigator(
@@ -68,7 +83,7 @@ const TorneosRootStack = createStackNavigator(
          navigationOptions: ({ navigation }) => ({
             title: 'TORNEOS',
             headerStyle: {
-               backgroundColor: '#f4511e',
+               backgroundColor: COLOR.COLOR_PRINCIPAL,
             },
             headerTitle: () => <MenuHeader nav={navigation} />,
             drawerLabel: 'Torneos',
@@ -82,7 +97,7 @@ const TorneosRootStack = createStackNavigator(
          navigationOptions: ({ navigation }) => ({
             headerTitle: () => <HeaderEdit nav={navigation} />,
             headerStyle: {
-               backgroundColor: '#f4511e',
+               backgroundColor: COLOR.COLOR_PRINCIPAL,
             },
          }),
       },
