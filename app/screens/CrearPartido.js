@@ -107,7 +107,8 @@ export default class CrearPartido extends Component {
    jugadores1 = equipo => {
       console.log('equipo', equipo);
       const categ = global.categoria;
-      cargarJugadores(categ, equipo, listaJugadores => {
+      let equi = equipo + '_' + categ;
+      cargarJugadores(categ, equi, listaJugadores => {
          console.log('jugadores1: ', listaJugadores);
          this.setState({
             jugadores1: listaJugadores[0],
@@ -117,7 +118,8 @@ export default class CrearPartido extends Component {
    jugadores2 = equipo => {
       console.log('equipo', equipo);
       const categ = global.categoria;
-      cargarJugadores(categ, equipo, listaJugadores => {
+      let equi = equipo + '_' + categ;
+      cargarJugadores(categ, equi, listaJugadores => {
          console.log('jugadores2: ', listaJugadores);
          this.setState({
             jugadores2: listaJugadores[0],

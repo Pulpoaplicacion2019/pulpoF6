@@ -265,12 +265,12 @@ const styles = StyleSheet.create({
       flexDirection: 'column',
    },
    vocalia: {
-      margin: 20,
+      margin: 1,
       borderRadius: 4,
       borderWidth: 0.5,
       borderColor: '#d6d7da',
       padding: 5,
-      marginLeft: 10,
+      marginLeft: 1,
    },
    button: {
       flex: 1,

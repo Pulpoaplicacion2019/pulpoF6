@@ -43,7 +43,7 @@ import CrearEquiposScreen from '../screens/Equipos/CrearEquipos';
 
 import LoginScreen from '../screens/Login';
 import VocaliaScreen from '../screens/vocalia';
-
+import RankingScreen from '../screens/Ranking';
 const TabTorneos = createBottomTabNavigator(
    {
       MisTorneos: { screen: MisTorneosScreen },
@@ -119,6 +119,7 @@ const TorneosRootStack = createStackNavigator(
 
 const LoginStack = createStackNavigator({ LoginScreen });
 const VocaliaStack = createStackNavigator({ VocaliaScreen });
+const RankingStack = createStackNavigator({ RankingScreen });
 const MainNavigator = Platform.select({
    //ios: createBottomTabNavigator({LoginStack }),
    android: createDrawerNavigator({
@@ -144,6 +145,15 @@ const MainNavigator = Platform.select({
          screen: VocaliaScreen,
          navigationOptions: {
             drawerLabel: 'Vocalia',
+            drawerIcon: ({ tintColor }) => (
+               <Icon name="md-cog" type="ionicon" color={tintColor} />
+            ),
+         },
+      },
+      RankingScreen: {
+         screen: RankingScreen,
+         navigationOptions: {
+            drawerLabel: 'Ranking',
             drawerIcon: ({ tintColor }) => (
                <Icon name="md-cog" type="ionicon" color={tintColor} />
             ),

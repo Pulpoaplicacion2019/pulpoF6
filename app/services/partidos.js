@@ -79,31 +79,32 @@ export const cargarJugadores = (categoria, equipo, fn) => {
    console.log('ingresa a cargar equipos v6');
    const refPartidosRoot = firebase.database().ref('equipos');
    const refPartidos = refPartidosRoot.child(
-      global.idTorneo + '/categorias/' + categoria + '/equipos/' + equipo
+      global.idTorneo +
+         '/categorias/' +
+         categoria +
+         '/equipos/' +
+         equipo +
+         '/jugadores'
    );
    console.log('refPartidos ' + refPartidos.path);
    const listaJugadores = [];
-
+   let objJugador = {};
+   let obj = {};
    refPartidos.once('child_added', snap => {
-      console.log('agrega partidos ', snap);
-      let objJugador = {};
-      if (snap.key == 'jugadores') {
-         let obj = {};
+      console.log('agrega jugadores ', snap);
 
-         obj = snap.val();
-         Object.keys(snap.val()).forEach(item => {
-            console.log('itemconver ', item);
-            objJugador['num' + obj[item].numero] = {
-               numero: obj[item].numero,
-               nombre: obj[item].primerNombre + ' ' + obj[item].primerApellido,
-               puntosQ1: '00',
-               puntosQ2: '00',
-               puntosQ3: '00',
-               puntosQ4: '00',
-            };
-            console.log('obJugador ', objJugador);
-         });
-      }
+      obj = snap.val();
+
+      objJugador['num' + obj.numero] = {
+         numero: obj.numero,
+         nombre: obj.primerNombre + ' ' + obj.primerApellido,
+         puntosQ1: '00',
+         puntosQ2: '00',
+         puntosQ3: '00',
+         puntosQ4: '00',
+      };
+      console.log('obJugador ', objJugador);
+
       listaJugadores.push(objJugador);
       console.log('listaJugadores ', listaJugadores);
       fn(listaJugadores);
