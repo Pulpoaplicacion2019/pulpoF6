@@ -12,7 +12,7 @@ import {
    Body,
 } from 'native-base';
 import { Icon, Input, Avatar, Button } from 'react-native-elements';
-import { loadTeams } from '../../services/equipos.js';
+import { guardarEquipos, recuperarEquipo } from '../../services/equipos.js';
 
 // importación archivo de colores
 import * as COLOR from '../../constants/colors.js';
@@ -43,19 +43,56 @@ const border = color => {
 
 export default class CrearEquipos extends Component {
    state = {
-      listaCat: [],
-      index: 0,
+      uri: '',
+      id: '',
+      nombreEquipo: '',
       categoria: '',
-      listaEquip: [],
+      nombreRepresentante: '',
+      apellidoRepresentante: '',
+      telefono: '',
+      mail: '',
+      imagenEquipo: '',
    };
-   save = () => {
-      var indice = this.state.index;
+   guardar = () => {
+      let idEquipo = this.state.nombreEquipo + '_' + this.state.categoria;
+      let equipo = {
+         id: idEquipo,
+         nombreEquipo: this.state.nombreEquipo,
+         categoria: this.state.categoria,
+         nombreRepresentante: this.state.nombreRepresentante,
+         apellidoRepresentante: this.state.apellidoRepresentante,
+         telefono: this.state.telefono,
+         mail: this.state.mail,
+         imagenEquipo: this.state.uri,
+      };
+      guardarEquipos(this.state.categoria, equipo);
+      this.props.navigation.goBack();
+   };
+   pintarImagen = uriCargado => {
+      this.setState({ uri: uriCargado });
    };
 
    componentDidMount() {
-      var lista = global.listaCategorias;
+      let equipoDatos = this.props.navigation.getParam('equipo', {
+         categoria: this.props.navigation.getParam('categoria', null),
+      });
       this.setState({
-         listaCat: lista,
+         categoria: equipoDatos.categoria,
+      });
+      recuperarEquipo(equipoDatos, equipo => {
+         if (equipo != null) {
+            this.setState({
+               id: equipo.id,
+               nombreEquipo: equipo.nombreEquipo,
+               categoria: equipo.categoria,
+               nombreRepresentante: equipo.nombreRepresentante,
+               apellidoRepresentante: equipo.apellidoRepresentante,
+               telefono: equipo.telefono,
+               mail: equipo.mail,
+               imagenEquipo: equipo.imagenEquipo,
+               uri: equipo.imagenEquipo,
+            });
+         }
       });
    }
    render() {
@@ -71,59 +108,91 @@ export default class CrearEquipos extends Component {
                <Avatar
                   size="xlarge"
                   rounded
-                  icon={{ name: 'dribbble', type: 'font-awesome' }}
-                  onPress={() => console.log('Works!')}
+                  title="CR"
+                  source={this.state.uri ? { uri: this.state.uri } : null}
+                  onEditPress={() =>
+                     this.props.navigation.navigate('CargarImagen', {
+                        url: 'torneos',
+                        fn: this.pintarImagen,
+                        imagenActual: { uri: this.state.uri },
+                     })
+                  }
+                  activeOpacity={0.7}
+                  showEditButton={true}
+                  editButton={{
+                     underlayColor: '#000',
+                     color: '#6E2665',
+                     name: 'mode-edit',
+                     type: 'material',
+                     containerStyle: '#6E2665',
+                     reverse: true,
+                     size: 30,
+                  }}
                />
-            </View>
-
-            <Button
-               icon={{ name: 'insert-photo' }}
-               title="Cargar"
-               buttonStyle={{
-                  backgroundColor: COLOR.COLOR_CHRISTMAS_RED,
-                  borderRadius: 0,
-               }}
-            />
-            <View style={[styles.viewContainer]}>
-               <Input
-                  containerStyle={[styles.inputStilo]}
-                  inputContainerStyle={styles.inputContentEstilo}
-                  labelStyle={styles.labelEstilo}
-                  label={'Nombre Equipo'}
-                  placeholder="Pitufitos"
-                  errorStyle={{ color: 'red' }}
-               />
-               <Input
-                  containerStyle={[styles.inputStilo]}
-                  inputContainerStyle={styles.inputContentEstilo}
-                  labelStyle={styles.labelEstilo}
-                  label={'Nombre Representante'}
-                  placeholder="Mariana"
-               />
-               <Input
-                  containerStyle={[styles.inputStilo]}
-                  inputContainerStyle={styles.inputContentEstilo}
-                  labelStyle={styles.labelEstilo}
-                  label={'Apellido del representante'}
-                  placeholder="Solis"
-                  onChangeText={value => this.setState({ apellido: value })}
-               />
-               <Input
-                  containerStyle={[styles.inputStilo]}
-                  inputContainerStyle={styles.inputContentEstilo}
-                  labelStyle={styles.labelEstilo}
-                  label={'Correo'}
-                  placeholder="equipo@torneo.com"
-                  onChangeText={value => this.setState({ mail: value })}
-               />
-               <Input
-                  containerStyle={[styles.inputStilo]}
-                  inputContainerStyle={styles.inputContentEstilo}
-                  labelStyle={styles.labelEstilo}
-                  label={'Teléfono'}
-                  placeholder="0999999999"
-                  onChangeText={value => this.setState({ phone: value })}
-               />
+	       </View>
+               <View style={[styles.viewContainer]}>
+                  <Input
+                     containerStyle={[styles.inputStilo]}
+                     inputContainerStyle={styles.inputContentEstilo}
+                     labelStyle={styles.labelEstilo}
+                     label={'Nombre Equipo'}
+                     placeholder="Pitufitos"
+                     onChangeText={value =>
+                        this.setState({ nombreEquipo: value })
+                     }
+                     value={this.state.nombreEquipo}
+                     errorStyle={{ color: 'red' }}
+                  />
+                  <Input
+                     containerStyle={[styles.inputStilo]}
+                     inputContainerStyle={styles.inputContentEstilo}
+                     labelStyle={styles.labelEstilo}
+                     label={'Nombre Representante'}
+                     placeholder="Mariana"
+                     onChangeText={value =>
+                        this.setState({ nombreRepresentante: value })
+                     }
+                     value={this.state.nombreRepresentante}
+                  />
+                  <Input
+                     containerStyle={[styles.inputStilo]}
+                     inputContainerStyle={styles.inputContentEstilo}
+                     labelStyle={styles.labelEstilo}
+                     label={'Apellido del representante'}
+                     placeholder="Solis"
+                     onChangeText={value =>
+                        this.setState({ apellidoRepresentante: value })
+                     }
+                     value={this.state.apellidoRepresentante}
+                  />
+                  <Input
+                     containerStyle={[styles.inputStilo]}
+                     inputContainerStyle={styles.inputContentEstilo}
+                     labelStyle={styles.labelEstilo}
+		     disabled={true}
+                     label={'Categoria'}
+                     placeholder="Masculino"
+                     value={this.state.categoria}
+                  />
+                  <Input
+                     containerStyle={[styles.inputStilo]}
+                     inputContainerStyle={styles.inputContentEstilo}
+                     labelStyle={styles.labelEstilo}
+                     label={'Correo'}
+                     placeholder="equipo@torneo.com"
+                     onChangeText={value => this.setState({ mail: value })}
+                     value={this.state.mail}
+                  />
+                  <Input
+                     containerStyle={[styles.inputStilo]}
+                     inputContainerStyle={styles.inputContentEstilo}
+                     labelStyle={styles.labelEstilo}
+                     label={'Teléfono'}
+                     placeholder="0999999999"
+                     onChangeText={value => this.setState({ telefono: value })}
+                     value={this.state.telefono}
+                  />
+              
                <View
                   style={{
                      marginTop: 20,
@@ -134,14 +203,14 @@ export default class CrearEquipos extends Component {
                      large
                      icon={{ name: 'cached' }}
                      title="Guardar"
-                     onPress={this.save}
+                     onPress={this.guardar}
                      buttonStyle={{
                         backgroundColor: COLOR.COLOR_CHRISTMAS_RED,
                         borderRadius: 0,
                      }}
                   />
                </View>
-            </View>
+             </View>
          </ScrollView>
       );
    }

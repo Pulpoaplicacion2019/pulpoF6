@@ -17,7 +17,7 @@ import ActionButton from 'react-native-action-button';
 import { cargarEquipos } from '../../services/equipos.js';
 import ItemEquipos from '../../components/ItemEquipos';
 import NavegadorCategorias from '../../components/NavegadorCategorias.js';
-
+import * as COLOR from '../../constants/colors.js';
 //importación barra de estado
 import StatusBarGeneral from '../../components/StatusBarGeneral.js';
 
@@ -34,9 +34,9 @@ const styles = StyleSheet.create({
       backgroundColor: '#ebebeb',
    },
    header: {
-      backgroundColor: '#E67E22',
-      justifyContent: 'center',
-   },
+   backgroundColor: COLOR.COLOR_SECUNDARIO,
+   marginTop: 2,
+  }
 });
 export default class Equipos extends Component {
    static navigationOptions = {
@@ -78,12 +78,13 @@ export default class Equipos extends Component {
                         cargarEquipos(categ, listaEquipos => {
                            this.setState({ listaEquip: listaEquipos });
                         });
+			this.setState({ categoria: categ});
                      }}
                   ></NavegadorCategorias>
                </Header>
                <Content>
                   <View style={styles.container}>
-                     <ItemEquipos lista={this.state.listaEquip} />
+                     <ItemEquipos lista={this.state.listaEquip} nav = {this.props.navigation} categoria={this.state.categoria}/>
                   </View>
                </Content>
             </Container>
@@ -92,7 +93,7 @@ export default class Equipos extends Component {
                onPress={() => {
                   this.props.navigation.navigate(
                      'CrearEquipos',
-                     this.state.categoria
+                     { categoria: this.state.categoria }
                   );
                }}
             />
