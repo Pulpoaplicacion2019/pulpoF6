@@ -27,25 +27,26 @@ export default class Example extends Component {
       urlResult: '',
       idLayout: 'torneo',
       listaTorneos: [],
+      user: '',
    };
 
    componentDidMount() {
+      this.setState({ user: global.usuario });
       cargarTorneos(this);
       this.setState({
          listaTorneos: global.torneos,
       });
+      global.objTorneos = this;
    }
    componentWillUnmount() {
       console.log('salir');
    }
 
-   render() {
-      return (
-         <View style={[styles.container]}>
-            <ItemTorneos
-               torneos={this.state.listaTorneos}
-               nav={this.props.navigation}
-            />
+   renderActionButton = () => {
+      let usuario = this.state.user;
+      console.log('renderActionButton' + usuario);
+      if (usuario) {
+         return (
             <ActionButton
                buttonColor="#00A680"
                onPress={() => {
@@ -53,6 +54,17 @@ export default class Example extends Component {
                   this.props.navigation.navigate('PerfilTorneo');
                }}
             />
+         );
+      }
+   };
+   render() {
+      return (
+         <View style={[styles.container]}>
+            <ItemTorneos
+               torneos={this.state.listaTorneos}
+               nav={this.props.navigation}
+            />
+            {this.renderActionButton()}
          </View>
       );
    }
