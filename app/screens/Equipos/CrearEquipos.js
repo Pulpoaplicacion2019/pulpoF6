@@ -14,14 +14,32 @@ import {
 import { Icon, Input, Avatar, Button } from 'react-native-elements';
 import { loadTeams } from '../../services/equipos.js';
 
+// importación archivo de colores
+import * as COLOR from '../../constants/colors.js';
+
 const styles = StyleSheet.create({
-   viewBody: {
+   viewContainer: {
       flex: 1,
-      alignItems: 'center',
-      justifyContent: 'center',
-      backgroundColor: '#FFF',
+      backgroundColor: COLOR.COLOR_SNOWY_MOUNT,
+      padding: 20,
+      //alignItems: 'center',
+   },
+   inputStilo: {
+      padding: 2,
+      marginTop: 20,
+   },
+   labelEstilo: { color: COLOR.COLOR_SECUNDARIO },
+   inputContentEstilo: {
+      backgroundColor: '#ffff',
+      borderWidth: 1,
+      borderColor: COLOR.COLOR_GRIS_CLARO,
+      borderRadius: 8,
+      paddingStart: 5,
    },
 });
+const border = color => {
+   return { borderColor: color, borderWidth: 2 };
+};
 
 export default class CrearEquipos extends Component {
    state = {
@@ -42,45 +60,89 @@ export default class CrearEquipos extends Component {
    }
    render() {
       return (
-         <View style={styles.viewBody}>
-            <Avatar
-               medium
-               rounded
-               icon={{ name: 'dribbble', type: 'font-awesome' }}
-               onPress={() => console.log('Works!')}
-            />
-            <Button icon={{ name: 'insert-photo' }} title="Cargar" />
-            <Input
-               placeholder="Nombre Equipo"
-               leftIcon={{ type: 'font-awesome', name: 'dribbble' }}
-            />
-            <Input
-               placeholder="Nombre Representante"
-               leftIcon={{ type: 'font-awesome', name: 'user-circle' }}
-            />
+         <ScrollView>
+            <View
+               style={{
+                  backgroundColor: COLOR.COLOR_SECUNDARIO,
+                  alignItems: 'center',
+                  padding: 20,
+               }}
+            >
+               <Avatar
+                  size="xlarge"
+                  rounded
+                  icon={{ name: 'dribbble', type: 'font-awesome' }}
+                  onPress={() => console.log('Works!')}
+               />
+            </View>
 
-            <Input
-               placeholder="Apellido Representante"
-               leftIcon={{ type: 'font-awesome', name: 'user-circle' }}
-               onChangeText={value => this.setState({ apellido: value })}
-            />
-            <Input
-               placeholder="Correo"
-               leftIcon={{ type: 'font-awesome', name: 'inbox' }}
-               onChangeText={value => this.setState({ mail: value })}
-            />
-            <Input
-               placeholder="Teléfono"
-               leftIcon={{ type: 'font-awesome', name: 'phone' }}
-               onChangeText={value => this.setState({ phone: value })}
-            />
             <Button
-               large
-               icon={{ name: 'cached' }}
-               title="Guardar"
-               onPress={this.save}
+               icon={{ name: 'insert-photo' }}
+               title="Cargar"
+               buttonStyle={{
+                  backgroundColor: COLOR.COLOR_CHRISTMAS_RED,
+                  borderRadius: 0,
+               }}
             />
-         </View>
+            <View style={[styles.viewContainer]}>
+               <Input
+                  containerStyle={[styles.inputStilo]}
+                  inputContainerStyle={styles.inputContentEstilo}
+                  labelStyle={styles.labelEstilo}
+                  label={'Nombre Equipo'}
+                  placeholder="Pitufitos"
+                  errorStyle={{ color: 'red' }}
+               />
+               <Input
+                  containerStyle={[styles.inputStilo]}
+                  inputContainerStyle={styles.inputContentEstilo}
+                  labelStyle={styles.labelEstilo}
+                  label={'Nombre Representante'}
+                  placeholder="Mariana"
+               />
+               <Input
+                  containerStyle={[styles.inputStilo]}
+                  inputContainerStyle={styles.inputContentEstilo}
+                  labelStyle={styles.labelEstilo}
+                  label={'Apellido del representante'}
+                  placeholder="Solis"
+                  onChangeText={value => this.setState({ apellido: value })}
+               />
+               <Input
+                  containerStyle={[styles.inputStilo]}
+                  inputContainerStyle={styles.inputContentEstilo}
+                  labelStyle={styles.labelEstilo}
+                  label={'Correo'}
+                  placeholder="equipo@torneo.com"
+                  onChangeText={value => this.setState({ mail: value })}
+               />
+               <Input
+                  containerStyle={[styles.inputStilo]}
+                  inputContainerStyle={styles.inputContentEstilo}
+                  labelStyle={styles.labelEstilo}
+                  label={'Teléfono'}
+                  placeholder="0999999999"
+                  onChangeText={value => this.setState({ phone: value })}
+               />
+               <View
+                  style={{
+                     marginTop: 20,
+                     height: 100,
+                  }}
+               >
+                  <Button
+                     large
+                     icon={{ name: 'cached' }}
+                     title="Guardar"
+                     onPress={this.save}
+                     buttonStyle={{
+                        backgroundColor: COLOR.COLOR_CHRISTMAS_RED,
+                        borderRadius: 0,
+                     }}
+                  />
+               </View>
+            </View>
+         </ScrollView>
       );
    }
 }

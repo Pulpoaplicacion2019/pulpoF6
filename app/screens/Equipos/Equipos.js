@@ -18,6 +18,9 @@ import { cargarEquipos } from '../../services/equipos.js';
 import ItemEquipos from '../../components/ItemEquipos';
 import NavegadorCategorias from '../../components/NavegadorCategorias.js';
 
+//importación barra de estado
+import StatusBarGeneral from '../../components/StatusBarGeneral.js';
+
 const styles = StyleSheet.create({
    viewBody: {
       flex: 1,
@@ -93,6 +96,7 @@ export default class Equipos extends Component {
                   );
                }}
             />
+            <StatusBarGeneral />
          </View>
       );
    }
