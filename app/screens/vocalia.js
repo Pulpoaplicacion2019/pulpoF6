@@ -5,7 +5,6 @@ import {
    Text,
    FlatList,
    ScrollView,
-   Button,
    Alert,
 } from 'react-native';
 import ItemJugadoresVocalia from '../components/ItemJugadoresVocalia';
@@ -15,6 +14,10 @@ import {
    guardarPuntosJugador,
    guardarPuntosTotal,
 } from '../services/vocalia.js';
+import { Icon, Input, Avatar, Button } from 'react-native-elements';
+
+// importación de constantes de color
+import * as COLOR from '../constants/colors.js';
 
 export default class Partidos extends Component {
    constructor(props) {
@@ -212,48 +215,79 @@ export default class Partidos extends Component {
                               { cancelable: false }
                            );
                         }}
-                     ></Button>
+                     />
                   </View>
                </View>
 
-               <View style={{ flexDirection: 'row' }}>
-                  <View style={styles.vocalia}>
-                     <View style={styles.container}>
-                        <Text style={styles.txt}>{this.state.equipo1}</Text>
-                        <Text style={styles.txt}>
+               <View style={styles.vocalia}>
+                  <View style={styles.container}>
+                     <View
+                        style={{
+                           flexDirection: 'row',
+                           backgroundColor: COLOR.COLOR_CHRISTMAS_RED,
+                        }}
+                     >
+                        <Text style={[styles.txt, { flex: 2, color: '#fff' }]}>
+                           {this.state.equipo1}
+                        </Text>
+                        <Text
+                           style={[
+                              styles.txt,
+                              ,
+                              { fontSize: 25, color: '#fff' },
+                           ]}
+                        >
                            {this.state.puntosEqui1Total}
                         </Text>
                      </View>
-                     <FlatList
-                        data={this.state.listaJugadores1}
-                        renderItem={({ item }) => (
-                           <ItemJugadoresVocalia
-                              jugador={item}
-                              sumarPuntos={this.sumarP1}
-                           />
-                        )}
-                        keyExtractor={item => item}
-                     />
                   </View>
-                  <View style={styles.vocalia}>
-                     <View style={styles.container}>
-                        <Text style={styles.txt}>{this.state.equipo2}</Text>
-                        <Text style={styles.txt}>
+                  <FlatList
+                     data={this.state.listaJugadores1}
+                     renderItem={({ item }) => (
+                        <ItemJugadoresVocalia
+                           jugador={item}
+                           sumarPuntos={this.sumarP1}
+                        />
+                     )}
+                     keyExtractor={item => item}
+                  />
+               </View>
+               <View style={[styles.vocalia, { marginTop: 15 }]}>
+                  <View style={styles.container}>
+                     <View
+                        style={{
+                           flexDirection: 'row',
+                           backgroundColor: COLOR.COLOR_CHRISTMAS_RED,
+                        }}
+                     >
+                        <Text style={[styles.txt, { flex: 2, color: '#fff' }]}>
+                           {this.state.equipo2}
+                        </Text>
+                        <Text
+                           style={[
+                              styles.txt,
+                              ,
+                              { fontSize: 25, color: '#fff' },
+                           ]}
+                        >
                            {this.state.puntosEqui2Total}
                         </Text>
                      </View>
-                     <FlatList
-                        data={this.state.listaJugadores2}
-                        renderItem={({ item }) => (
-                           <ItemJugadoresVocalia
-                              jugador={item}
-                              sumarPuntos={this.sumarP2}
-                           />
-                        )}
-                        keyExtractor={item => item}
-                     />
                   </View>
+                  <FlatList
+                     data={this.state.listaJugadores2}
+                     renderItem={({ item }) => (
+                        <ItemJugadoresVocalia
+                           jugador={item}
+                           sumarPuntos={this.sumarP2}
+                        />
+                     )}
+                     keyExtractor={item => item}
+                  />
                </View>
+            </View>
+            <View style={{ padding: 25 }}>
+               <Button large title="Fin Partido" />
             </View>
          </ScrollView>
       );
