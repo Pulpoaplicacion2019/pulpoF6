@@ -28,7 +28,10 @@ import MisTorneosScreen from '../screens/Torneos/MisTorneos';
 
 import CalendariosScreen from '../screens/Calendarios';
 import CrearFechaScreen from '../screens/CrearFecha';
-import PartidosScreen from '../screens/Partidos';
+//import PartidosScreen from '../screens/Partidos';
+import PartidosScreen from '../screens/PartidosV2';
+import EditarPartidoScreen from '../screens/EditarPartido';
+import CrearPartidoScreen from '../screens/CrearPartido';
 import EquiposScreen from '../screens/Equipos/Equipos';
 import PosicionesScreen from '../screens/Posiciones';
 import ResultadosScreen from '../screens/Resultados';
@@ -40,7 +43,7 @@ import CrearEquiposScreen from '../screens/Equipos/CrearEquipos';
 
 import LoginScreen from '../screens/Login';
 import VocaliaScreen from '../screens/vocalia';
-
+import RankingScreen from '../screens/Ranking';
 const TabTorneos = createBottomTabNavigator(
    {
       MisTorneos: { screen: MisTorneosScreen },
@@ -98,6 +101,12 @@ const TorneosRootStack = createStackNavigator(
       Partidos: {
          screen: PartidosScreen,
       },
+      EditarPartido: {
+         screen: EditarPartidoScreen,
+      },
+      CrearPartido: {
+         screen: CrearPartidoScreen,
+      },
       CargarImagen: {
          screen: CargarImagenScreen,
       },
@@ -110,6 +119,7 @@ const TorneosRootStack = createStackNavigator(
 
 const LoginStack = createStackNavigator({ LoginScreen });
 const VocaliaStack = createStackNavigator({ VocaliaScreen });
+const RankingStack = createStackNavigator({ RankingScreen });
 const MainNavigator = Platform.select({
    //ios: createBottomTabNavigator({LoginStack }),
    android: createDrawerNavigator({
@@ -135,6 +145,15 @@ const MainNavigator = Platform.select({
          screen: VocaliaScreen,
          navigationOptions: {
             drawerLabel: 'Vocalia',
+            drawerIcon: ({ tintColor }) => (
+               <Icon name="md-cog" type="ionicon" color={tintColor} />
+            ),
+         },
+      },
+      RankingScreen: {
+         screen: RankingScreen,
+         navigationOptions: {
+            drawerLabel: 'Ranking',
             drawerIcon: ({ tintColor }) => (
                <Icon name="md-cog" type="ionicon" color={tintColor} />
             ),
