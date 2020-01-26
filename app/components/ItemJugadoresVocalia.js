@@ -11,14 +11,23 @@ import {
 } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { COLOR_CHRISTMAS_RED, COLOR_BLANCO } from '../constants/colors';
+import ModalSuplentes from '../modales/VacaliaSuplentes.js';
+
 export default class ItemJugadoresVocalia extends Component {
    state = {
       modalVisible: false,
+      modalVisibleSuplente: false,
    };
 
    setModalVisible(visible) {
       this.setState({ modalVisible: visible });
    }
+   setModalVisibleSuplentes(visible) {
+      console.log('Visible:', visible);
+      this.setState({ modalVisibleSuplente: visible });
+      console.log(this.state.modalVisibleSuplente);
+   }
+
    render() {
       return (
          <View style={{ flexDirection: 'row' }}>
@@ -205,6 +214,7 @@ export default class ItemJugadoresVocalia extends Component {
                         marginLeft: 8,
                      }}
                      hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
+                     onPress={() => this.setModalVisibleSuplentes(true)}
                   >
                      <Icon
                         name="account-arrow-right"
@@ -212,6 +222,13 @@ export default class ItemJugadoresVocalia extends Component {
                         style={styles.button}
                      />
                   </TouchableOpacity>
+                  <ModalSuplentes
+                     isModalVisible={this.state.modalVisibleSuplente}
+                     suplente={valorSuplente => {
+                        this.setState({ modalVisibleSuplente: valorSuplente });
+                     }}
+                     listaSuplente={this.props.listaSuplentes}
+                  />
                </View>
                <View
                   style={[

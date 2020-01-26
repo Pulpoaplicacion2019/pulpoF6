@@ -40,6 +40,8 @@ export default class Partidos extends Component {
          puntosEqui2Total: '',
          puntosj: '',
          estadoQ: 'Q1',
+         listaJ1Suplentes: [],
+         listaJ1Titulares: [],
       };
    }
    componentDidMount() {
@@ -63,6 +65,12 @@ export default class Partidos extends Component {
             listaJugadores1: this.convertirJugadoresLista(
                partidoDatos.listaJugadores1
             ),
+            listaJ1Suplentes: this.convertirJugadoresListaSuplentes(
+               partidoDatos.listaJugadores1
+            ),
+            listaJ1Titulares: this.convertirJugadoresListaTitulares(
+               partidoDatos.listaJugadores1
+            ),
             listaJugadores2: this.convertirJugadoresLista(
                partidoDatos.listaJugadores2
             ),
@@ -72,14 +80,56 @@ export default class Partidos extends Component {
 
    convertirJugadoresLista = jugadores => {
       let listaJugadores = [];
+      let listaJugadoresSuplentes = [];
+      let listaJugadoresTitulares = [];
 
       if (jugadores) {
          Object.keys(jugadores).forEach(item => {
             console.log('itemconver ' + item);
             listaJugadores.push(jugadores[item]);
+            if (jugadores[item].estado === 'S') {
+               listaJugadoresSuplentes.push(jugadores[item]);
+            }
+            if (jugadores[item].estado === 'T') {
+               listaJugadoresTitulares.push(jugadores[item]);
+            }
          });
       }
+
+      console.log('Lista Suplente:', listaJugadoresSuplentes);
+      console.log('Lista Titulares:', listaJugadoresTitulares);
+
       return listaJugadores;
+   };
+   convertirJugadoresListaTitulares = jugadores => {
+      let listaJugadoresTitulares = [];
+
+      if (jugadores) {
+         Object.keys(jugadores).forEach(item => {
+            if (jugadores[item].estado === 'T') {
+               listaJugadoresTitulares.push(jugadores[item]);
+            }
+         });
+      }
+
+      console.log('Lista Titulares:', listaJugadoresTitulares);
+
+      return listaJugadoresTitulares;
+   };
+   convertirJugadoresListaSuplentes = jugadores => {
+      let listaJugadoresSuplentes = [];
+
+      if (jugadores) {
+         Object.keys(jugadores).forEach(item => {
+            if (jugadores[item].estado === 'S') {
+               listaJugadoresSuplentes.push(jugadores[item]);
+            }
+         });
+      }
+
+      console.log('Lista Suplente:', listaJugadoresSuplentes);
+
+      return listaJugadoresSuplentes;
    };
    sumarP1 = (num, numeroJugador, puntosQ1, puntosQ2, puntosQ3, puntosQ4) => {
       const estadoQ = this.state.estadoQ;
@@ -242,11 +292,12 @@ export default class Partidos extends Component {
                      </View>
                   </View>
                   <FlatList
-                     data={this.state.listaJugadores1}
+                     data={this.state.listaJ1Titulares}
                      renderItem={({ item }) => (
                         <ItemJugadoresVocalia
                            jugador={item}
                            sumarPuntos={this.sumarP1}
+                           listaSuplentes={this.state.listaJ1Suplentes}
                         />
                      )}
                      keyExtractor={item => item}
