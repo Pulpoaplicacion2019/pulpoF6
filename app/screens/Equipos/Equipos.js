@@ -34,9 +34,9 @@ const styles = StyleSheet.create({
       backgroundColor: '#ebebeb',
    },
    header: {
-   backgroundColor: COLOR.COLOR_SECUNDARIO,
-   marginTop: 2,
-  }
+      backgroundColor: COLOR.COLOR_SECUNDARIO,
+      marginTop: 2,
+   },
 });
 export default class Equipos extends Component {
    static navigationOptions = {
@@ -80,10 +80,9 @@ export default class Equipos extends Component {
             <ActionButton
                buttonColor="#00A680"
                onPress={() => {
-                  this.props.navigation.navigate(
-                     'CrearEquipos',
-                     this.state.categoria
-                  );
+                  this.props.navigation.navigate('CrearEquipos', {
+                     categoria: this.state.categoria,
+                  });
                }}
             />
          );
@@ -113,13 +112,17 @@ export default class Equipos extends Component {
                         cargarEquipos(categ, listaEquipos => {
                            this.setState({ listaEquip: listaEquipos });
                         });
-			this.setState({ categoria: categ});
+                        this.setState({ categoria: categ });
                      }}
                   ></NavegadorCategorias>
                </Header>
                <Content>
                   <View style={styles.container}>
-                     <ItemEquipos lista={this.state.listaEquip} nav = {this.props.navigation} categoria={this.state.categoria}/>
+                     <ItemEquipos
+                        lista={this.state.listaEquip}
+                        nav={this.props.navigation}
+                        categoria={this.state.categoria}
+                     />
                   </View>
                </Content>
             </Container>

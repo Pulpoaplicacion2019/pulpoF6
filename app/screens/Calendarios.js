@@ -68,7 +68,7 @@ export default class Calendarios extends Component {
          );
       }
    };
-   renderActionButton = () => {
+   renderActionButton = listCalendarios => {
       let usuario = global.usuario;
       let torneoActual = global.idTorneo;
       let listaTorneos = global.listaTorneos;
@@ -227,7 +227,7 @@ export default class Calendarios extends Component {
             <Content>
                <View>{this.renderFlatList(listCalendarios)}</View>
             </Content>
-            {this.renderActionButton()}
+            {this.renderActionButton(listCalendarios)}
             <StatusBarGeneral />
          </Container>
       );
