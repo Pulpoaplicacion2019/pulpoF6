@@ -1,17 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, ScrollView } from 'react-native';
-import {
-   Container,
-   Header,
-   Title,
-   Content,
-   Footer,
-   FooterTab,
-   Button,
-   Left,
-   Right,
-   Body,
-} from 'native-base';
+import { Container, Header, Content } from 'native-base';
 import { Icon } from 'react-native-elements';
 import ActionButton from 'react-native-action-button';
 import { cargarEquipos } from '../../services/equipos.js';
@@ -34,9 +23,9 @@ const styles = StyleSheet.create({
       backgroundColor: '#ebebeb',
    },
    header: {
-   backgroundColor: COLOR.COLOR_SECUNDARIO,
-   marginTop: 2,
-  }
+      backgroundColor: COLOR.COLOR_SECUNDARIO,
+      marginTop: 2,
+   },
 });
 export default class Equipos extends Component {
    static navigationOptions = {
@@ -78,23 +67,26 @@ export default class Equipos extends Component {
                         cargarEquipos(categ, listaEquipos => {
                            this.setState({ listaEquip: listaEquipos });
                         });
-			this.setState({ categoria: categ});
+                        this.setState({ categoria: categ });
                      }}
                   ></NavegadorCategorias>
                </Header>
                <Content>
                   <View style={styles.container}>
-                     <ItemEquipos lista={this.state.listaEquip} nav = {this.props.navigation} categoria={this.state.categoria}/>
+                     <ItemEquipos
+                        lista={this.state.listaEquip}
+                        nav={this.props.navigation}
+                        categoria={this.state.categoria}
+                     />
                   </View>
                </Content>
             </Container>
             <ActionButton
                buttonColor="#00A680"
                onPress={() => {
-                  this.props.navigation.navigate(
-                     'CrearEquipos',
-                     { categoria: this.state.categoria }
-                  );
+                  this.props.navigation.navigate('CrearEquipos', {
+                     categoria: this.state.categoria,
+                  });
                }}
             />
             <StatusBarGeneral />

@@ -1,16 +1,5 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, ScrollView, TextInput } from 'react-native';
-import {
-   Container,
-   Header,
-   Title,
-   Content,
-   Footer,
-   FooterTab,
-   Left,
-   Right,
-   Body,
-} from 'native-base';
 import { Icon, Input, Avatar, Button } from 'react-native-elements';
 import { guardarEquipos, recuperarEquipo } from '../../services/equipos.js';
 
@@ -129,70 +118,68 @@ export default class CrearEquipos extends Component {
                      size: 30,
                   }}
                />
-	       </View>
-               <View style={[styles.viewContainer]}>
-                  <Input
-                     containerStyle={[styles.inputStilo]}
-                     inputContainerStyle={styles.inputContentEstilo}
-                     labelStyle={styles.labelEstilo}
-                     label={'Nombre Equipo'}
-                     placeholder="Pitufitos"
-                     onChangeText={value =>
-                        this.setState({ nombreEquipo: value })
-                     }
-                     value={this.state.nombreEquipo}
-                     errorStyle={{ color: 'red' }}
-                  />
-                  <Input
-                     containerStyle={[styles.inputStilo]}
-                     inputContainerStyle={styles.inputContentEstilo}
-                     labelStyle={styles.labelEstilo}
-                     label={'Nombre Representante'}
-                     placeholder="Mariana"
-                     onChangeText={value =>
-                        this.setState({ nombreRepresentante: value })
-                     }
-                     value={this.state.nombreRepresentante}
-                  />
-                  <Input
-                     containerStyle={[styles.inputStilo]}
-                     inputContainerStyle={styles.inputContentEstilo}
-                     labelStyle={styles.labelEstilo}
-                     label={'Apellido del representante'}
-                     placeholder="Solis"
-                     onChangeText={value =>
-                        this.setState({ apellidoRepresentante: value })
-                     }
-                     value={this.state.apellidoRepresentante}
-                  />
-                  <Input
-                     containerStyle={[styles.inputStilo]}
-                     inputContainerStyle={styles.inputContentEstilo}
-                     labelStyle={styles.labelEstilo}
-		     disabled={true}
-                     label={'Categoria'}
-                     placeholder="Masculino"
-                     value={this.state.categoria}
-                  />
-                  <Input
-                     containerStyle={[styles.inputStilo]}
-                     inputContainerStyle={styles.inputContentEstilo}
-                     labelStyle={styles.labelEstilo}
-                     label={'Correo'}
-                     placeholder="equipo@torneo.com"
-                     onChangeText={value => this.setState({ mail: value })}
-                     value={this.state.mail}
-                  />
-                  <Input
-                     containerStyle={[styles.inputStilo]}
-                     inputContainerStyle={styles.inputContentEstilo}
-                     labelStyle={styles.labelEstilo}
-                     label={'Teléfono'}
-                     placeholder="0999999999"
-                     onChangeText={value => this.setState({ telefono: value })}
-                     value={this.state.telefono}
-                  />
-              
+            </View>
+            <View style={[styles.viewContainer]}>
+               <Input
+                  containerStyle={[styles.inputStilo]}
+                  inputContainerStyle={styles.inputContentEstilo}
+                  labelStyle={styles.labelEstilo}
+                  label={'Nombre Equipo'}
+                  placeholder="Pitufitos"
+                  onChangeText={value => this.setState({ nombreEquipo: value })}
+                  value={this.state.nombreEquipo}
+                  errorStyle={{ color: 'red' }}
+               />
+               <Input
+                  containerStyle={[styles.inputStilo]}
+                  inputContainerStyle={styles.inputContentEstilo}
+                  labelStyle={styles.labelEstilo}
+                  label={'Nombre Representante'}
+                  placeholder="Mariana"
+                  onChangeText={value =>
+                     this.setState({ nombreRepresentante: value })
+                  }
+                  value={this.state.nombreRepresentante}
+               />
+               <Input
+                  containerStyle={[styles.inputStilo]}
+                  inputContainerStyle={styles.inputContentEstilo}
+                  labelStyle={styles.labelEstilo}
+                  label={'Apellido del representante'}
+                  placeholder="Solis"
+                  onChangeText={value =>
+                     this.setState({ apellidoRepresentante: value })
+                  }
+                  value={this.state.apellidoRepresentante}
+               />
+               <Input
+                  containerStyle={[styles.inputStilo]}
+                  inputContainerStyle={styles.inputContentEstilo}
+                  labelStyle={styles.labelEstilo}
+                  disabled={true}
+                  label={'Categoria'}
+                  placeholder="Masculino"
+                  value={this.state.categoria}
+               />
+               <Input
+                  containerStyle={[styles.inputStilo]}
+                  inputContainerStyle={styles.inputContentEstilo}
+                  labelStyle={styles.labelEstilo}
+                  label={'Correo'}
+                  placeholder="equipo@torneo.com"
+                  onChangeText={value => this.setState({ mail: value })}
+                  value={this.state.mail}
+               />
+               <Input
+                  containerStyle={[styles.inputStilo]}
+                  inputContainerStyle={styles.inputContentEstilo}
+                  labelStyle={styles.labelEstilo}
+                  label={'Teléfono'}
+                  placeholder="0999999999"
+                  onChangeText={value => this.setState({ telefono: value })}
+                  value={this.state.telefono}
+               />
+
                <View
                   style={{
                      marginTop: 20,
@@ -210,7 +197,7 @@ export default class CrearEquipos extends Component {
                      }}
                   />
                </View>
-             </View>
+            </View>
          </ScrollView>
       );
    }
