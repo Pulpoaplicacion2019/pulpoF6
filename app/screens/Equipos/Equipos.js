@@ -1,17 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, ScrollView } from 'react-native';
-import {
-   Container,
-   Header,
-   Title,
-   Content,
-   Footer,
-   FooterTab,
-   Button,
-   Left,
-   Right,
-   Body,
-} from 'native-base';
+import { Container, Header, Content } from 'native-base';
 import { Icon } from 'react-native-elements';
 import ActionButton from 'react-native-action-button';
 import { cargarEquipos } from '../../services/equipos.js';
@@ -126,8 +115,7 @@ export default class Equipos extends Component {
                   </View>
                </Content>
             </Container>
-            {this.renderActionButton()}
-            <StatusBarGeneral />
+            {this.renderActionButton()}            <StatusBarGeneral />
          </View>
       );
    }
