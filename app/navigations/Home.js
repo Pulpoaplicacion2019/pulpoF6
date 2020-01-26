@@ -46,7 +46,8 @@ import CrudJugadoresScreen from '../screens/Jugadores/CrudJugadores';
 import CrearJugadoresScreen from '../screens/Jugadores/CrearJugadores';
 import ItemJugadoresScreen from '../components/ItemJugadoresEquipo';
 
-import LoginScreen from '../screens/Login';
+import LoginScreen from '../screens/Login/Login';
+import ResetScreen from '../screens/Login/ResetPassword'
 import VocaliaScreen from '../screens/vocalia';
 
 import RankingScreen from '../screens/Ranking';
@@ -135,7 +136,10 @@ const TorneosRootStack = createStackNavigator(
       CrearEquipos: {
          screen: CrearEquiposScreen,
       },
-      ItemEquipos: {
+      ResetPassword: {
+         screen: ResetScreen,
+      },
+ItemEquipos: {
          screen: ItemEquiposScreen,
       },
       InfoEquipos: {
@@ -149,8 +153,7 @@ const TorneosRootStack = createStackNavigator(
       },
       ItemJugadores: {
          screen: ItemJugadoresScreen,
-      },
-   },
+      },   },
    { initialRouteName: 'TabTorneos' }
 );
 

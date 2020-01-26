@@ -7,40 +7,79 @@ import {
    TouchableOpacity,
    Modal,
    TouchableHighlight,
+   Alert,
 } from 'react-native';
 import { Icon } from 'react-native-elements';
+import { COLOR_CHRISTMAS_RED, COLOR_BLANCO } from '../constants/colors';
+import ModalSuplentes from '../modales/VacaliaSuplentes.js';
+
 export default class ItemJugadoresVocalia extends Component {
    state = {
       modalVisible: false,
+      modalVisibleSuplente: false,
    };
 
    setModalVisible(visible) {
       this.setState({ modalVisible: visible });
    }
+   setModalVisibleSuplentes(visible) {
+      console.log('Visible:', visible);
+      this.setState({ modalVisibleSuplente: visible });
+      console.log(this.state.modalVisibleSuplente);
+   }
+
    render() {
       return (
          <View style={{ flexDirection: 'row' }}>
             <View>
                <Modal
                   animationType="slide"
-                  transparent={false}
+                  transparent={true}
                   visible={this.state.modalVisible}
                   onRequestClose={() => {
                      Alert.alert('Modal has been closed.');
                   }}
                >
                   <View
-                     style={{
-                        flexDirection: 'row',
-                        margin: 10,
-                        backgroundColor: '#f7f8fa',
-                     }}
+                     style={[
+                        {
+                           flex: 1,
+                           alignItems: 'center',
+                           backgroundColor: 'rgba(35, 35, 35, 0.9)',
+                           padding: 150,
+                        },
+                     ]}
                   >
-                     <View style={{ flexDirection: 'column', padding: 40 }}>
-                        <View style={{ flexDirection: 'row' }}>
-                           <View>
+                     <View
+                        style={[
+                           {
+                              flexDirection: 'column',
+                              borderRadius: 5,
+                              padding: 5,
+                              backgroundColor: '#fff',
+                           },
+                        ]}
+                     >
+                        <View
+                           style={{
+                              height: 50,
+                              backgroundColor: COLOR_CHRISTMAS_RED,
+                              alignItems: 'center',
+                           }}
+                        >
+                           <Text style={{ color: COLOR_BLANCO, fontSize: 30 }}>
+                              Puntos
+                           </Text>
+                        </View>
+                        <View style={[{ flexDirection: 'row' }]}>
+                           <View style={{ alignItems: 'center' }}>
                               <TouchableHighlight
-                                 style={styles.button}
+                                 style={[
+                                    styles.button,
+                                    {
+                                       justifyContent: 'center',
+                                    },
+                                 ]}
                                  onPress={() => {
                                     this.props.sumarPuntos(
                                        1,
@@ -59,12 +98,19 @@ export default class ItemJugadoresVocalia extends Component {
                                     name="ios-basketball"
                                     type="ionicon"
                                     style={styles.button}
+                                    size={20}
                                  />
                               </TouchableHighlight>
+                              <Text>1</Text>
                            </View>
-                           <View>
+                           <View style={{ alignItems: 'center' }}>
                               <TouchableHighlight
-                                 style={styles.button}
+                                 style={[
+                                    styles.button,
+                                    {
+                                       justifyContent: 'center',
+                                    },
+                                 ]}
                                  onPress={() => {
                                     this.props.sumarPuntos(
                                        2,
@@ -83,83 +129,159 @@ export default class ItemJugadoresVocalia extends Component {
                                     name="ios-basketball"
                                     type="ionicon"
                                     style={styles.button}
+                                    size={30}
                                  />
                               </TouchableHighlight>
+                              <Text>2</Text>
+                           </View>
+
+                           <View style={{ alignItems: 'center' }}>
+                              <TouchableHighlight
+                                 style={[
+                                    styles.button,
+                                    {
+                                       justifyContent: 'center',
+                                    },
+                                 ]}
+                                 title="1"
+                                 onPress={() => {
+                                    this.props.sumarPuntos(
+                                       3,
+                                       this.props.jugador.numero,
+                                       this.props.jugador.puntosQ1,
+                                       this.props.jugador.puntosQ2,
+                                       this.props.jugador.puntosQ3,
+                                       this.props.jugador.puntosQ4
+                                    );
+                                    this.setModalVisible(
+                                       !this.state.modalVisible
+                                    );
+                                 }}
+                              >
+                                 <Icon
+                                    name="ios-basketball"
+                                    type="ionicon"
+                                    style={styles.button}
+                                    size={40}
+                                 />
+                              </TouchableHighlight>
+                              <Text>3</Text>
                            </View>
                         </View>
-                        <View style={{ marginLeft: 70 }}>
-                           <TouchableHighlight
-                              style={styles.button}
-                              title="1"
+                        <View style={[{ paddingTop: 20 }]}>
+                           <Button
+                              small
+                              title="Cancelar"
                               onPress={() => {
-                                 this.props.sumarPuntos(
-                                    3,
-                                    this.props.jugador.numero,
-                                    this.props.jugador.puntosQ1,
-                                    this.props.jugador.puntosQ2,
-                                    this.props.jugador.puntosQ3,
-                                    this.props.jugador.puntosQ4
-                                 );
                                  this.setModalVisible(!this.state.modalVisible);
                               }}
-                           >
-                              <Icon
-                                 name="ios-basketball"
-                                 type="ionicon"
-                                 style={styles.button}
-                              />
-                           </TouchableHighlight>
-                        </View>
-                     </View>
-                     <View>
-                        <TouchableHighlight
-                           onPress={() => {
-                              this.setModalVisible(!this.state.modalVisible);
-                           }}
-                        >
-                           <Icon
-                              name="close"
-                              type="material-icons"
-                              style={styles.button}
                            />
-                        </TouchableHighlight>
+                        </View>
                      </View>
                   </View>
                </Modal>
             </View>
-
-            <Text style={styles.txt}>{this.props.jugador.nombre}</Text>
-            <TouchableOpacity
+            <View
                style={{
-                  width: 35,
-                  height: 35,
-               }}
-               hitSlop={{ top: 70, bottom: 70, left: 70, right: 70 }}
-               onPress={() => {
-                  this.setModalVisible(true);
+                  flex: 1,
+                  alignContent: 'center',
+                  flexDirection: 'row',
+                  paddingVertical: 5,
                }}
             >
-               <Icon
-                  name="ios-basketball"
-                  type="ionicon"
-                  style={styles.button}
-               />
-            </TouchableOpacity>
-            <TouchableOpacity
-               style={{
-                  borderWidth: 1,
-                  width: 35,
-                  height: 35,
-                  marginLeft: 8,
-               }}
-               hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
-            >
-               <Text style={{ padding: 5 }}> F</Text>
-            </TouchableOpacity>
+               <View
+                  style={{
+                     flex: 4,
+                     flexDirection: 'row',
+                     alignItems: 'center',
+                  }}
+               >
+                  <View>
+                     <Text style={{ fontWeight: 'bold', width: 30 }}>
+                        {this.props.jugador.numero}
+                     </Text>
+                  </View>
+                  <View>
+                     <Text style={styles.txt}>{this.props.jugador.nombre}</Text>
+                  </View>
+               </View>
+               <View style={[{ flex: 1 }]}>
+                  <TouchableOpacity
+                     style={{
+                        borderWidth: 1,
+                        width: 35,
+                        height: 35,
+                        marginLeft: 8,
+                     }}
+                     hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
+                     onPress={() => this.setModalVisibleSuplentes(true)}
+                  >
+                     <Icon
+                        name="account-arrow-right"
+                        type="material-community"
+                        style={styles.button}
+                     />
+                  </TouchableOpacity>
+                  <ModalSuplentes
+                     isModalVisible={this.state.modalVisibleSuplente}
+                     suplente={valorSuplente => {
+                        this.setState({ modalVisibleSuplente: valorSuplente });
+                     }}
+                     listaSuplente={this.props.listaSuplentes}
+                  />
+               </View>
+               <View
+                  style={[
+                     {
+                        flex: 2,
+                        flexDirection: 'row',
+                        alignContent: 'flex-end',
+                        justifyContent: 'flex-end',
+                     },
+                  ]}
+               >
+                  <TouchableOpacity
+                     style={{
+                        borderWidth: 1,
+                        width: 35,
+                        height: 35,
+                     }}
+                     hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
+                     onPress={() => {
+                        this.setModalVisible(true);
+                     }}
+                  >
+                     <Icon
+                        name="ios-basketball"
+                        type="ionicon"
+                        style={styles.button}
+                     />
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                     style={{
+                        borderWidth: 1,
+                        width: 35,
+                        height: 35,
+                        marginLeft: 8,
+                     }}
+                     hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
+                  >
+                     <Icon
+                        name="arrow-up-bold"
+                        type="material-community"
+                        style={styles.button}
+                     />
+                  </TouchableOpacity>
+               </View>
+            </View>
          </View>
       );
    }
 }
+
+const border = color => {
+   return { borderColor: color, borderWidth: 2 };
+};
 
 const styles = StyleSheet.create({
    container: {
@@ -170,11 +292,11 @@ const styles = StyleSheet.create({
    button: {
       borderWidth: 0,
       fontSize: 50,
-      width: 80,
-      height: 80,
-      margin: 30,
-      padding: 20,
+      width: 50,
+      height: 50,
+      marginTop: 30,
+      marginHorizontal: 20,
       backgroundColor: '#ded7d7',
    },
-   txt: { fontSize: 15, padding: 5, width: 120 },
+   txt: { fontSize: 15, padding: 5 },
 });
