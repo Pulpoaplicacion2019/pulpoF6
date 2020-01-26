@@ -15,9 +15,14 @@ export default class Login extends Component {
       console.log('usuario', global.usuario);
       console.log('usuario', usuario);
       cargarPermisos(usuario, listaPermisos => {
-         console.log('listaPermisos', listaPermisos);
+         global.listaTorneos = listaPermisos[0].listaTorneos;
+         global.listaEquipos = listaPermisos[0].listaEquipos;
+         global.listaJugadores = listaPermisos[0].listaJugadores;
+         global.listaVocalia = listaPermisos[0].listaVocalia;
       });
+      console.log('global.listaTorneos', global.listaTorneos);
    };
+
    static navigationOptions = ({ navigation }) => ({
       headerTitle: 'Login',
       headerLeft: Platform.select({
