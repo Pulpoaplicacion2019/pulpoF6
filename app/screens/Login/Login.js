@@ -3,57 +3,56 @@ import { Platform, StyleSheet, View, Text } from 'react-native';
 import { Icon, Input, Button } from 'react-native-elements';
 import { DrawerActions } from 'react-navigation-drawer';
 import { cargarPermisos } from '../../services/permisos';
+import { firebase } from '@react-native-firebase/auth';
 export default class Login extends Component {
-
    state = { usuario: '', contrasenia: '', errorMessage: null };
 
    constructor(props) {
       super(props);
    }
 
-   showError = (error) => {
-      switch(error){
-         case "auth/user-not-found":
-            mensaje = "Usuario no registrado"
-         break;
-         case "auth/wrong-password":
-            mensaje = "Contraseña incorrecta"
-         break;
-         case "auth/invalid-email":
-            mensaje = "E-mail inválido"
-         break;
+   showError = error => {
+      switch (error) {
+         case 'auth/user-not-found':
+            mensaje = 'Usuario no registrado';
+            break;
+         case 'auth/wrong-password':
+            mensaje = 'Contraseña incorrecta';
+            break;
+         case 'auth/invalid-email':
+            mensaje = 'E-mail inválido';
+            break;
          default:
-            mensaje = "Error de autenticación"
-         break;
-
+            mensaje = 'Error de autenticación';
+            break;
       }
-      
-      this.setState({errorMessage: mensaje})
-   }
+
+      this.setState({ errorMessage: mensaje });
+   };
    guardar = () => {
       global.usuario = this.state.usuario;
-      console.log(this.state.usuario)
-      console.log(this.state.contrasenia)
+      console.log(this.state.usuario);
+      console.log(this.state.contrasenia);
       firebase
-      .auth()
-      .signInWithEmailAndPassword(this.state.usuario, this.state.contrasenia)
-      .then(() => {
-      let usuario = global.usuario;
-      usuario = usuario.replace(/\./g, '');
-      cargarPermisos(usuario, listaPermisos => {
-         global.listaTorneos = listaPermisos[0].listaTorneos;
-         global.listaEquipos = listaPermisos[0].listaEquipos;
-         global.listaJugadores = listaPermisos[0].listaJugadores;
-         global.listaVocalia = listaPermisos[0].listaVocalia;
-      });
-      this.props.navigation.navigate('MisTorneos')
-   })
-      .catch(error =>{
-         this.showError(error.code);
+         .auth()
+         .signInWithEmailAndPassword(this.state.usuario, this.state.contrasenia)
+         .then(() => {
+            let usuario = global.usuario;
+            usuario = usuario.replace(/\./g, '');
+            cargarPermisos(usuario, listaPermisos => {
+               global.listaTorneos = listaPermisos[0].listaTorneos;
+               global.listaEquipos = listaPermisos[0].listaEquipos;
+               global.listaJugadores = listaPermisos[0].listaJugadores;
+               global.listaVocalia = listaPermisos[0].listaVocalia;
+            });
+            this.props.navigation.navigate('MisTorneos');
          })
+         .catch(error => {
+            this.showError(error.code);
+         });
    };
 
-   goResetPassword = () => this.props.navigation.navigate('ResetPassword')
+   goResetPassword = () => this.props.navigation.navigate('ResetPassword');
    static navigationOptions = ({ navigation }) => ({
       headerTitle: 'Login',
       headerLeft: Platform.select({
@@ -78,8 +77,9 @@ export default class Login extends Component {
    render() {
       return (
          <View style={styles.viewBody}>
-            {this.state.errorMessage &&<Text style={{ color: 'red' }}>
-            {this.state.errorMessage}</Text>}
+            {this.state.errorMessage && (
+               <Text style={{ color: 'red' }}>{this.state.errorMessage}</Text>
+            )}
             <Input
                placeholder="Correo"
                onChangeText={text => this.setState({ usuario: text })}
@@ -116,12 +116,12 @@ export default class Login extends Component {
             />
 
             <Button
-            title='Recuperar Contraseña'
-            onPress={this.goResetPassword}
-            titleStyle={{
-               color: '#039BE5'
-            }}
-            type='clear'
+               title="Recuperar Contraseña"
+               onPress={this.goResetPassword}
+               titleStyle={{
+                  color: '#039BE5',
+               }}
+               type="clear"
             />
          </View>
       );
