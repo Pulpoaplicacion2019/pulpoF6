@@ -41,6 +41,66 @@ export default class Calendarios extends Component {
          this.setState({ listCalendarios: lista });
       }, categ);
    }
+   renderEditButton = (id, listaPartidos, listaFechas) => {
+      let usuario = global.usuario;
+      let torneoActual = global.idTorneo;
+      let listaTorneos = global.listaTorneos;
+      let permiso = this.buscarPermiso(listaTorneos, torneoActual);
+      console.log('renderActionButton' + usuario);
+      console.log('torneoActual' + torneoActual);
+      if (usuario && permiso != -1) {
+         return (
+            <View style={styles.viewHeaderFechasBton}>
+               <Icon
+                  name="pencil"
+                  type="material-community"
+                  color={COLOR.COLOR_GRIS_CLARO}
+                  size={20}
+                  onPress={() => {
+                     this.props.navigation.navigate('Partidos', {
+                        partidos: listaPartidos,
+                        fechas: listaFechas,
+                        id: id,
+                     });
+                  }}
+               />
+            </View>
+         );
+      }
+   };
+   renderActionButton = () => {
+      let usuario = global.usuario;
+      let torneoActual = global.idTorneo;
+      let listaTorneos = global.listaTorneos;
+      let permiso = this.buscarPermiso(listaTorneos, torneoActual);
+      console.log('renderActionButton' + usuario);
+      console.log('torneoActual' + torneoActual);
+      if (usuario && permiso != -1) {
+         return (
+            <ActionButton
+               buttonColor="#00A680"
+               onPress={() => {
+                  this.props.navigation.navigate('CrearFecha', {
+                     id: listCalendarios.length,
+                  });
+               }}
+            />
+         );
+      }
+   };
+   buscarPermiso = (lista, id) => {
+      let posicion = -1;
+      let iteracion = 0;
+      if (lista) {
+         lista.forEach(element => {
+            if (element == id) {
+               posicion = iteracion;
+            }
+            iteracion++;
+         });
+      }
+      return posicion;
+   };
 
    renderRowPartidos = listaPartidos => {
       const {
@@ -93,27 +153,7 @@ export default class Calendarios extends Component {
             <View>
                <View style={styles.viewHeaderFechas}>
                   <Text style={styles.fechas}>{nombreItem}</Text>
-                  <View style={styles.viewHeaderFechasBton}>
-                     <Icon
-                        name="pencil"
-                        type="material-community"
-                        color={COLOR.COLOR_GRIS_CLARO}
-                        size={20}
-                        onPress={() => {
-                           this.props.navigation.navigate('Partidos', {
-                              partidos: listaPartidos,
-                              fechas: listaFechas,
-                              id: id,
-                           });
-                        }}
-                     />
-                     <Icon
-                        name="pencil-plus"
-                        type="material-community"
-                        color={COLOR.COLOR_GRIS_CLARO}
-                        size={20}
-                     />
-                  </View>
+                  {this.renderEditButton(id, listaPartidos, listaFechas)}
                </View>
                <FlatList
                   data={listaPartidos}
@@ -187,14 +227,7 @@ export default class Calendarios extends Component {
             <Content>
                <View>{this.renderFlatList(listCalendarios)}</View>
             </Content>
-            <ActionButton
-               buttonColor="#00A680"
-               onPress={() => {
-                  this.props.navigation.navigate('CrearFecha', {
-                     id: listCalendarios.length,
-                  });
-               }}
-            />
+            {this.renderActionButton()}
             <StatusBarGeneral />
          </Container>
       );

@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import { Platform, StyleSheet, View, Text } from 'react-native';
 import { Icon, Input, Button } from 'react-native-elements';
 import { DrawerActions } from 'react-navigation-drawer';
-import { cargarPermisos } from '../../services/permisos';
-import { firebase } from '@react-native-firebase/auth';
+import { cargarPermisos } from '../services/permisos';
 export default class Login extends Component {
 
    state = { usuario: '', contrasenia: '', errorMessage: null };
@@ -42,7 +41,10 @@ export default class Login extends Component {
       let usuario = global.usuario;
       usuario = usuario.replace(/\./g, '');
       cargarPermisos(usuario, listaPermisos => {
-         console.log('listaPermisos', listaPermisos);
+         global.listaTorneos = listaPermisos[0].listaTorneos;
+         global.listaEquipos = listaPermisos[0].listaEquipos;
+         global.listaJugadores = listaPermisos[0].listaJugadores;
+         global.listaVocalia = listaPermisos[0].listaVocalia;
       });
       this.props.navigation.navigate('MisTorneos')
    })
