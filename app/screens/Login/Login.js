@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Platform, StyleSheet, View, Text } from 'react-native';
 import { Icon, Input, Button } from 'react-native-elements';
 import { DrawerActions } from 'react-navigation-drawer';
-import { cargarPermisos } from '../services/permisos';
+import { cargarPermisos } from '../../services/permisos';
 export default class Login extends Component {
 
    state = { usuario: '', contrasenia: '', errorMessage: null };
