@@ -41,7 +41,8 @@ import InfoPerfilTorneoScreen from '../screens/Torneos/InfoPerfilTorneo';
 import CargarImagenScreen from '../components/CargarImagen';
 import CrearEquiposScreen from '../screens/Equipos/CrearEquipos';
 
-import LoginScreen from '../screens/Login';
+import LoginScreen from '../screens/Login/Login';
+import ResetScreen from '../screens/Login/ResetPassword'
 import VocaliaScreen from '../screens/vocalia';
 
 import RankingScreen from '../screens/Ranking';
@@ -129,6 +130,9 @@ const TorneosRootStack = createStackNavigator(
       },
       CrearEquipos: {
          screen: CrearEquiposScreen,
+      },
+      ResetPassword: {
+         screen: ResetScreen,
       },
    },
    { initialRouteName: 'TabTorneos' }
