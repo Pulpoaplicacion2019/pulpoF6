@@ -68,6 +68,41 @@ export default class Equipos extends Component {
          this.setState({ listaEquip: listaEquipos });
       });
    }
+   renderActionButton = () => {
+      let usuario = global.usuario;
+      let torneoActual = global.idTorneo;
+      let listaTorneos = global.listaTorneos;
+      let permiso = this.buscarPermiso(listaTorneos, torneoActual);
+      console.log('renderActionButton' + usuario);
+      console.log('torneoActual' + torneoActual);
+      if (usuario && permiso != -1) {
+         return (
+            <ActionButton
+               buttonColor="#00A680"
+               onPress={() => {
+                  this.props.navigation.navigate(
+                     'CrearEquipos',
+                     this.state.categoria
+                  );
+               }}
+            />
+         );
+      }
+   };
+   buscarPermiso = (lista, id) => {
+      let posicion = -1;
+      let iteracion = 0;
+      if (lista) {
+         lista.forEach(element => {
+            if (element == id) {
+               posicion = iteracion;
+            }
+            iteracion++;
+         });
+      }
+      return posicion;
+   };
+
    render() {
       return (
          <View style={styles.container}>
@@ -88,15 +123,7 @@ export default class Equipos extends Component {
                   </View>
                </Content>
             </Container>
-            <ActionButton
-               buttonColor="#00A680"
-               onPress={() => {
-                  this.props.navigation.navigate(
-                     'CrearEquipos',
-                     { categoria: this.state.categoria }
-                  );
-               }}
-            />
+            {this.renderActionButton()}
             <StatusBarGeneral />
          </View>
       );
