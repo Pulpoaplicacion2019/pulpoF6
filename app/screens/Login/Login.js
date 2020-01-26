@@ -111,7 +111,7 @@ export default class Login extends Component {
                title="Iniciar Sesión"
                onPress={() => {
                   this.guardar();
-                  global.objTorneos.setState({ usuario });
+                  global.objTorneos.setState({ user: this.state.usuario });
                }}
             />
 
