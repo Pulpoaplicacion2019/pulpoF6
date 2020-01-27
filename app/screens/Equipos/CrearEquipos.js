@@ -125,7 +125,7 @@ export default class CrearEquipos extends Component {
                   inputContainerStyle={styles.inputContentEstilo}
                   labelStyle={styles.labelEstilo}
                   label={'Nombre Equipo'}
-                  placeholder="Pitufitos"
+                  placeholder=""
                   onChangeText={value => this.setState({ nombreEquipo: value })}
                   value={this.state.nombreEquipo}
                   errorStyle={{ color: 'red' }}
@@ -135,7 +135,7 @@ export default class CrearEquipos extends Component {
                   inputContainerStyle={styles.inputContentEstilo}
                   labelStyle={styles.labelEstilo}
                   label={'Nombre Representante'}
-                  placeholder="Mariana"
+                  placeholder=""
                   onChangeText={value =>
                      this.setState({ nombreRepresentante: value })
                   }
@@ -146,7 +146,7 @@ export default class CrearEquipos extends Component {
                   inputContainerStyle={styles.inputContentEstilo}
                   labelStyle={styles.labelEstilo}
                   label={'Apellido del representante'}
-                  placeholder="Solis"
+                  placeholder=""
                   onChangeText={value =>
                      this.setState({ apellidoRepresentante: value })
                   }
@@ -158,7 +158,7 @@ export default class CrearEquipos extends Component {
                   labelStyle={styles.labelEstilo}
                   disabled={true}
                   label={'Categoria'}
-                  placeholder="Masculino"
+                  placeholder=""
                   value={this.state.categoria}
                />
                <Input
@@ -166,7 +166,7 @@ export default class CrearEquipos extends Component {
                   inputContainerStyle={styles.inputContentEstilo}
                   labelStyle={styles.labelEstilo}
                   label={'Correo'}
-                  placeholder="equipo@torneo.com"
+                  placeholder=""
                   onChangeText={value => this.setState({ mail: value })}
                   value={this.state.mail}
                />
@@ -175,7 +175,7 @@ export default class CrearEquipos extends Component {
                   inputContainerStyle={styles.inputContentEstilo}
                   labelStyle={styles.labelEstilo}
                   label={'Teléfono'}
-                  placeholder="0999999999"
+                  placeholder=""
                   onChangeText={value => this.setState({ telefono: value })}
                   value={this.state.telefono}
                />

@@ -3,7 +3,7 @@ import { Platform, StyleSheet, View, Text } from 'react-native';
 import { Icon } from 'react-native-elements';
 import ItemTorneos from '../../components/ItemTorneos';
 import styles from '../../Styles/styles';
-
+import { cargarTorneo } from '../../services/torneos.js';
 export default class PorIniciar extends Component {
    static navigationOptions = {
       tabBarLabel: 'Por Iniciar',

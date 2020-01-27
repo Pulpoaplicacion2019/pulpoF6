@@ -73,18 +73,24 @@ export default class PerfilTorneo extends Component {
       let usuario = global.usuario;
       let torneoActual = global.idTorneo;
       let listaTorneos = global.listaTorneos;
-      let permiso = this.buscarPermiso(listaTorneos, torneoActual);
-      console.log('renderActionButton' + usuario);
-      console.log('torneoActual' + torneoActual);
-      if (usuario && permiso != -1) {
-         return (
-            <TouchableOpacity
-               hitSlop={{ top: 50, bottom: 50, left: 50, right: 50 }}
-               onPress={() => this.props.navigation.navigate('PerfilTorneo')}
-            >
-               <Icon name="edit" type="material-icons" style={styles.button} />
-            </TouchableOpacity>
-         );
+      if (listaTorneos) {
+         let permiso = this.buscarPermiso(listaTorneos, torneoActual);
+         console.log('renderActionButton' + usuario);
+         console.log('torneoActual' + torneoActual);
+         if (usuario && permiso != -1) {
+            return (
+               <TouchableOpacity
+                  hitSlop={{ top: 50, bottom: 50, left: 50, right: 50 }}
+                  onPress={() => this.props.navigation.navigate('PerfilTorneo')}
+               >
+                  <Icon
+                     name="edit"
+                     type="material-icons"
+                     style={styles.button}
+                  />
+               </TouchableOpacity>
+            );
+         }
       }
    };
    buscarPermiso = (lista, id) => {

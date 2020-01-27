@@ -7,10 +7,10 @@ export const cargarPermisos = (usuario, fn) => {
       .ref('permisos/')
       .child(usuario);
 
-   let torneos = {};
-   let equipos = {};
-   let vocalia = {};
-   let jugadores = {};
+   let torneos = '';
+   let equipos = '';
+   let vocalia = '';
+   let jugadores = '';
 
    refPermisosRoot.on('child_added', snap => {
       let listaPermisos = [];

@@ -64,20 +64,22 @@ export default class Equipos extends Component {
       let usuario = global.usuario;
       let torneoActual = global.idTorneo;
       let listaTorneos = global.listaTorneos;
-      let permiso = this.buscarPermiso(listaTorneos, torneoActual);
-      console.log('renderActionButton' + usuario);
-      console.log('torneoActual' + torneoActual);
-      if (usuario && permiso != -1) {
-         return (
-            <ActionButton
-               buttonColor="#00A680"
-               onPress={() => {
-                  this.props.navigation.navigate('CrearEquipos', {
-                     categoria: this.state.categoria,
-                  });
-               }}
-            />
-         );
+      if (listaTorneos) {
+         let permiso = this.buscarPermiso(listaTorneos, torneoActual);
+         console.log('renderActionButton' + usuario);
+         console.log('torneoActual' + torneoActual);
+         if (usuario && permiso != -1) {
+            return (
+               <ActionButton
+                  buttonColor="#00A680"
+                  onPress={() => {
+                     this.props.navigation.navigate('CrearEquipos', {
+                        categoria: this.state.categoria,
+                     });
+                  }}
+               />
+            );
+         }
       }
    };
    buscarPermiso = (lista, id) => {
