@@ -75,13 +75,17 @@ export default class Calendarios extends Component {
       let permiso = this.buscarPermiso(listaTorneos, torneoActual);
       console.log('renderActionButton' + usuario);
       console.log('torneoActual' + torneoActual);
+      let val = 0;
       if (usuario && permiso != -1) {
+         if (listCalendarios) {
+            val = listCalendarios.length;
+         }
          return (
             <ActionButton
                buttonColor="#00A680"
                onPress={() => {
                   this.props.navigation.navigate('CrearFecha', {
-                     id: listCalendarios.length,
+                     id: val,
                   });
                }}
             />
@@ -152,7 +156,7 @@ export default class Calendarios extends Component {
          return (
             <View>
                <View style={styles.viewHeaderFechas}>
-                  <Text style={styles.fechas}>{nombreItem}</Text>
+                  <Text style={styles.fechas}>{id}</Text>
                   {this.renderEditButton(id, listaPartidos, listaFechas)}
                </View>
                <FlatList
