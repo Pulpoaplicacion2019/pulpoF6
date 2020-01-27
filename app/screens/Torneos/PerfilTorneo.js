@@ -71,6 +71,7 @@ export default class PerfilTorneo extends Component {
    }
 
    guardar = () => {
+      console.log('PerfilTorneo.js guardar');
       let categorias = this.convertirCategorias(this.state.listaCatTorneo);
       const torneo = {
          anio: this.state.anio,
@@ -83,7 +84,6 @@ export default class PerfilTorneo extends Component {
          id: this.state.nombreTorneo + '_' + this.state.anio,
          imagenTorneo: this.state.uri,
          nombreOrganizador: this.state.nombreOrganizador,
-         nombreTorneo: this.state.nombreTorneo,
          telefonoOrganizador: this.state.telefonoOrganizador,
          categorias: categorias,
       };

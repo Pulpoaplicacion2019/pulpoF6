@@ -31,13 +31,18 @@ export default class Example extends Component {
       global.idTorneo = item.id;
 
       console.log('torneo elegido ', item);
-      let ruta = 'TabEquipos';
+      /*let ruta = 'TabEquipos';
       if (item.estado === 'A') {
          ruta = 'PerfilTorneo';
       } else {
          global.listaCategorias = Object.getOwnPropertyNames(item.categorias);
+      }*/
+      if (item.categorias != null) {
+         global.listaCategorias = Object.getOwnPropertyNames(item.categorias);
       }
-      this.props.nav.navigate(ruta, { nombreTorneo: item.nombreTorneo });
+      this.props.nav.navigate('TabEquipos', {
+         nombreTorneo: item.nombreTorneo,
+      });
    }
 
    pintarFavorito = favorito => {
