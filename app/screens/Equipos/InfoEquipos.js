@@ -11,24 +11,9 @@ import { Icon, Input, Avatar, Button } from 'react-native-elements';
 import { recuperarEquipo } from '../../services/equipos.js';
 
 export default class InfoEquipos extends Component {
-   state = {
-      uri: '',
-      id: '',
-      nombreEquipo: '',
-      categoria: '',
-      nombreRepresentante: '',
-      apellidoRepresentante: '',
-      telefono: '',
-      mail: '',
-      imagenEquipo: '',
-      equipoDatos: '',
-   };
+   constructor(props) {
+      super(props);
 
-   pintarImagen = uriCargado => {
-      this.setState({ uri: uriCargado });
-   };
-
-   componentDidMount() {
       let equipoDatos = this.props.navigation.getParam('equipo', null);
       this.setState({
          equipoDatos: equipoDatos,
@@ -49,6 +34,94 @@ export default class InfoEquipos extends Component {
          }
       });
    }
+   state = {
+      uri: '',
+      id: '',
+      nombreEquipo: '',
+      categoria: '',
+      nombreRepresentante: '',
+      apellidoRepresentante: '',
+      telefono: '',
+      mail: '',
+      imagenEquipo: '',
+      equipoDatos: '',
+   };
+
+   pintarImagen = uriCargado => {
+      this.setState({ uri: uriCargado });
+   };
+
+   componentDidMount() {}
+   renderEditButton = () => {
+      let usuario = global.usuario;
+      let equipoActual = this.state.id;
+      let listaEquipos = global.listaEquipos;
+      if (listaEquipos) {
+         let permiso = this.buscarPermiso(listaEquipos, equipoActual);
+         console.log('renderActionButton' + usuario);
+         console.log('torneoActual' + equipoActual);
+         if (usuario && permiso != -1) {
+            return (
+               <TouchableOpacity
+                  hitSlop={{ top: 50, bottom: 50, left: 50, right: 50 }}
+                  onPress={() =>
+                     this.props.navigation.navigate('CrearEquipos', {
+                        equipo: this.state.equipoDatos,
+                     })
+                  }
+               >
+                  <Icon
+                     name="edit"
+                     type="material-icons"
+                     style={styles.button}
+                  />
+               </TouchableOpacity>
+            );
+         }
+      }
+   };
+   renderEditButtonJ = () => {
+      let usuario = global.usuario;
+      let equipoActual = this.state.id;
+      let listaEquipos = global.listaEquipos;
+      if (listaEquipos) {
+         let permiso = this.buscarPermiso(listaEquipos, equipoActual);
+         console.log('renderActionButton' + usuario);
+         console.log('torneoActual' + equipoActual);
+         if (usuario && permiso != -1) {
+            return (
+               <TouchableOpacity
+                  hitSlop={{ top: 50, bottom: 50, left: 50, right: 50 }}
+                  onPress={() =>
+                     this.props.navigation.navigate('CrudJugadores', {
+                        equipo: this.state.equipoDatos,
+                     })
+                  }
+               >
+                  <Text style={styles.txt}>JUGADORES</Text>
+                  <Icon
+                     name="edit"
+                     type="material-icons"
+                     style={styles.button}
+                  />
+               </TouchableOpacity>
+            );
+         }
+      }
+   };
+   buscarPermiso = (lista, id) => {
+      let posicion = -1;
+      let iteracion = 0;
+      if (lista) {
+         lista.forEach(element => {
+            if (element == id) {
+               posicion = iteracion;
+            }
+            iteracion++;
+         });
+      }
+      return posicion;
+   };
    render() {
       return (
          <View>
@@ -64,16 +137,7 @@ export default class InfoEquipos extends Component {
                   marginBottom: 30,
                }}
             />
-            <TouchableOpacity
-               hitSlop={{ top: 50, bottom: 50, left: 50, right: 50 }}
-               onPress={() =>
-                  this.props.navigation.navigate('CrearEquipos', {
-                     equipo: this.state.equipoDatos,
-                  })
-               }
-            >
-               <Icon name="edit" type="material-icons" style={styles.button} />
-            </TouchableOpacity>
+            {this.renderEditButton()}
 
             <Text style={styles.txt}>
                {' '}
@@ -96,17 +160,7 @@ export default class InfoEquipos extends Component {
                {' '}
                Correo Representante: {this.state.mail + ''}{' '}
             </Text>
-            <TouchableOpacity
-               hitSlop={{ top: 50, bottom: 50, left: 50, right: 50 }}
-               onPress={() =>
-                  this.props.navigation.navigate('CrudJugadores', {
-                     equipo: this.state.equipoDatos,
-                  })
-               }
-            >
-               <Text style={styles.txt}>JUGADORES</Text>
-               <Icon name="edit" type="material-icons" style={styles.button} />
-            </TouchableOpacity>
+            {this.renderEditButtonJ()}
          </View>
       );
    }

@@ -9,20 +9,6 @@ import {
 import { Icon } from 'react-native-elements';
 import { createDrawerNavigator, DrawerActions } from 'react-navigation-drawer';
 
-buscarPermiso = (lista, id) => {
-   let posicion = -1;
-   let iteracion = 0;
-   if (lista) {
-      lista.forEach(element => {
-         if (element == id) {
-            posicion = iteracion;
-         }
-         iteracion++;
-      });
-   }
-   return posicion;
-};
-
 const HeaderEdit = props => {
    return (
       <View style={styles.container}>

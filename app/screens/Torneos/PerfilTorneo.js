@@ -8,6 +8,7 @@ import {
    FlatList,
    KeyboardAvoidingView,
    ScrollView,
+   Alert,
 } from 'react-native';
 import { Avatar, Input, Icon, Button } from 'react-native-elements';
 import { Dropdown } from 'react-native-material-dropdown';
@@ -63,29 +64,38 @@ export default class PerfilTorneo extends Component {
 
    guardar = () => {
       console.log('PerfilTorneo.js guardar');
+      let cat = this.state.listaCatTorneo;
       let categorias = this.convertirCategorias(this.state.listaCatTorneo);
-      const torneo = {
-         anio: this.state.anio,
-         apellidoOrganizador: this.state.apellidoOrganizador,
-         correoOrganizador: this.state.correoOrganizador,
-         estado: this.state.estado,
-         favorito: this.state.favorito,
-         nombreTorneo: this.state.nombreTorneo,
-         fechaInicio: this.state.date,
-         id: this.state.nombreTorneo + '_' + this.state.anio,
-         imagenTorneo: this.state.uri,
-         nombreOrganizador: this.state.nombreOrganizador,
-         telefonoOrganizador: this.state.telefonoOrganizador,
-         categorias: categorias,
-      };
-      guardarTorneo(torneo);
-      this.props.navigation.goBack();
+      console.log('categorias', cat.length);
+      if (cat.length > 0) {
+         const torneo = {
+            anio: this.state.anio,
+            apellidoOrganizador: this.state.apellidoOrganizador,
+            correoOrganizador: this.state.correoOrganizador,
+            estado: this.state.estado,
+            favorito: this.state.favorito,
+            nombreTorneo: this.state.nombreTorneo,
+            fechaInicio: this.state.date,
+            id: this.state.nombreTorneo + '_' + this.state.anio,
+            imagenTorneo: this.state.uri,
+            nombreOrganizador: this.state.nombreOrganizador,
+            telefonoOrganizador: this.state.telefonoOrganizador,
+            categorias: categorias,
+         };
+         guardarTorneo(torneo);
+         this.props.navigation.goBack();
+      } else {
+         Alert.alert('Ingrese categorias');
+      }
    };
    convertirCategorias = categorias => {
+      console.log('convertirCategorias', categorias);
       let objetoCategorias = {};
       categorias.forEach(item => {
          objetoCategorias[item] = item;
       });
+      console.log('objetoCategorias', objetoCategorias);
+
       return objetoCategorias;
    };
    convertirCategoriasLista = objetoCategorias => {
@@ -140,193 +150,144 @@ export default class PerfilTorneo extends Component {
    render() {
       return (
          <ScrollView>
-            <KeyboardAvoidingView
-               behavior="position"
-               enabled
-               keyboardVerticalOffset={1}
+            <View
+               style={{
+                  backgroundColor: COLOR.COLOR_SECUNDARIO,
+                  alignItems: 'center',
+                  padding: 20,
+               }}
             >
-               <View
-                  style={{
-                     backgroundColor: COLOR.COLOR_SECUNDARIO,
-                     alignItems: 'center',
-                     padding: 20,
+               <Avatar
+                  size="xlarge"
+                  rounded
+                  title="CR"
+                  source={this.state.uri ? { uri: this.state.uri } : null}
+                  onEditPress={() =>
+                     this.props.navigation.navigate('CargarImagen', {
+                        url: 'torneos',
+                        fn: this.pintarImagen,
+                        imagenActual: { uri: this.state.uri },
+                     })
+                  }
+                  activeOpacity={0.7}
+                  showEditButton={true}
+                  editButton={{
+                     underlayColor: '#000',
+                     color: '#6E2665',
+                     name: 'mode-edit',
+                     type: 'material',
+                     containerStyle: '#6E2665',
+                     reverse: true,
+                     size: 30,
                   }}
-               >
-                  <Avatar
-                     size="xlarge"
-                     rounded
-                     title="CR"
-                     source={this.state.uri ? { uri: this.state.uri } : null}
-                     onEditPress={() =>
-                        this.props.navigation.navigate('CargarImagen', {
-                           url: 'torneos',
-                           fn: this.pintarImagen,
-                           imagenActual: { uri: this.state.uri },
-                        })
-                     }
-                     activeOpacity={0.7}
-                     showEditButton={true}
-                     editButton={{
-                        underlayColor: '#000',
-                        color: '#6E2665',
-                        name: 'mode-edit',
-                        type: 'material',
-                        containerStyle: '#6E2665',
-                        reverse: true,
-                        size: 30,
-                     }}
-                  />
-               </View>
-               <View style={[styles.viewContainer]}>
-                  <Input
-                     containerStyle={[styles.inputStilo]}
-                     inputContainerStyle={styles.inputContentEstilo}
-                     labelStyle={styles.labelEstilo}
-                     placeholder="Año"
-                     onChangeText={text => this.setState({ anio: text })}
-                     value={this.state.anio + ''}
-                     leftIcon={
-                        <Icon
-                           name="chevron-down-box"
-                           type="material-community"
-                           size={20}
-                           color="black"
-                        />
-                     }
-                  />
-                  <Input
-                     containerStyle={[styles.inputStilo]}
-                     inputContainerStyle={styles.inputContentEstilo}
-                     labelStyle={styles.labelEstilo}
-                     placeholder="Nombre Torneo"
-                     onChangeText={text =>
-                        this.setState({ nombreTorneo: text })
-                     }
-                     value={this.state.nombreTorneo}
-                     leftIcon={
-                        <Icon
-                           name="account-group"
-                           type="material-community"
-                           size={20}
-                           color="black"
-                        />
-                     }
-                  />
-                  <Input
-                     containerStyle={[styles.inputStilo]}
-                     inputContainerStyle={styles.inputContentEstilo}
-                     labelStyle={styles.labelEstilo}
-                     placeholder="Nombre Organizador"
-                     onChangeText={text =>
-                        this.setState({ nombreOrganizador: text })
-                     }
-                     value={this.state.nombreOrganizador}
-                     leftIcon={
-                        <Icon
-                           name="account-arrow-right"
-                           type="material-community"
-                           size={20}
-                           color="black"
-                        />
-                     }
-                  />
+               />
+            </View>
+            <View style={[styles.viewContainer]}>
+               <Input
+                  keyboardType="numeric"
+                  containerStyle={[styles.inputStilo]}
+                  inputContainerStyle={styles.inputContentEstilo}
+                  labelStyle={styles.labelEstilo}
+                  label={'Año'}
+                  placeholder=""
+                  onChangeText={text => this.setState({ anio: text })}
+                  value={this.state.anio + ''}
+               />
+               <Input
+                  containerStyle={[styles.inputStilo]}
+                  inputContainerStyle={styles.inputContentEstilo}
+                  labelStyle={styles.labelEstilo}
+                  label={'Nombre Torneo'}
+                  placeholder=""
+                  onChangeText={text => this.setState({ nombreTorneo: text })}
+                  value={this.state.nombreTorneo}
+               />
+               <Input
+                  containerStyle={[styles.inputStilo]}
+                  inputContainerStyle={styles.inputContentEstilo}
+                  labelStyle={styles.labelEstilo}
+                  label={'Nombre Organizador'}
+                  placeholder=""
+                  onChangeText={text =>
+                     this.setState({ nombreOrganizador: text })
+                  }
+                  value={this.state.nombreOrganizador}
+               />
 
-                  <Input
-                     containerStyle={[styles.inputStilo]}
-                     inputContainerStyle={styles.inputContentEstilo}
-                     labelStyle={styles.labelEstilo}
-                     placeholder="Apellido Organizador"
-                     onChangeText={text =>
-                        this.setState({ apellidoOrganizador: text })
-                     }
-                     value={this.state.apellidoOrganizador}
-                     leftIcon={
-                        <Icon
-                           name="account-arrow-right"
-                           type="material-community"
-                           size={20}
-                           color="black"
-                        />
-                     }
-                  />
-                  <Input
-                     containerStyle={[styles.inputStilo]}
-                     inputContainerStyle={styles.inputContentEstilo}
-                     labelStyle={styles.labelEstilo}
-                     placeholder="Telefono Organizador"
-                     onChangeText={text =>
-                        this.setState({ telefonoOrganizador: text })
-                     }
-                     value={this.state.telefonoOrganizador}
-                     leftIcon={
-                        <Icon
-                           name="phone-in-talk"
-                           type="material-community"
-                           size={20}
-                           color="black"
-                        />
-                     }
-                  />
-                  <Input
-                     containerStyle={[styles.inputStilo]}
-                     inputContainerStyle={styles.inputContentEstilo}
-                     labelStyle={styles.labelEstilo}
-                     placeholder="Correo Organizador"
-                     onChangeText={text =>
-                        this.setState({ correoOrganizador: text })
-                     }
-                     value={this.state.correoOrganizador}
-                     leftIcon={
-                        <Icon
-                           name="chevron-down-box"
-                           type="material-community"
-                           size={20}
-                           color="black"
-                        />
-                     }
-                  />
-                  <DatePicker
-                     style={styles.date}
-                     date={this.state.date}
-                     mode="date"
-                     placeholder="Fecha Inicio"
-                     format="YYYY-MM-DD"
-                     minDate="2016-05-01"
-                     maxDate="2100-06-01"
-                     confirmBtnText="Confirm"
-                     cancelBtnText="Cancel"
-                     customStyles={{
-                        dateIcon: {
-                           position: 'absolute',
-                           left: 0,
-                           top: 4,
-                           marginLeft: 0,
-                        },
-                        dateInput: { marginLeft: 36 },
-                        // ... You can check the source to find the other keys.
-                     }}
-                     onDateChange={date => {
-                        this.setState({ date: date });
-                     }}
-                  />
-                  <Dropdown
-                     label="Categorias"
-                     data={this.state.listaCategorias}
-                     onChangeText={this.elegirCategoria}
-                  />
-                  <FlatList
-                     data={this.state.listaCatTorneo}
-                     renderItem={({ item }) => (
-                        <FilaCategoria
-                           categoria={item}
-                           fnEliminar={this.eliminar}
-                        />
-                     )}
-                     keyExtractor={item => item}
-                  />
-               </View>
-               <Button title="GUARDAR" onPress={this.guardar} />
-            </KeyboardAvoidingView>
+               <Input
+                  containerStyle={[styles.inputStilo]}
+                  inputContainerStyle={styles.inputContentEstilo}
+                  labelStyle={styles.labelEstilo}
+                  label={'Apellido Organizador'}
+                  placeholder=""
+                  onChangeText={text =>
+                     this.setState({ apellidoOrganizador: text })
+                  }
+                  value={this.state.apellidoOrganizador}
+               />
+               <Input
+                  containerStyle={[styles.inputStilo]}
+                  inputContainerStyle={styles.inputContentEstilo}
+                  labelStyle={styles.labelEstilo}
+                  label={'Telefono Organizador'}
+                  placeholder=""
+                  onChangeText={text =>
+                     this.setState({ telefonoOrganizador: text })
+                  }
+                  value={this.state.telefonoOrganizador}
+               />
+               <Input
+                  containerStyle={[styles.inputStilo]}
+                  inputContainerStyle={styles.inputContentEstilo}
+                  labelStyle={styles.labelEstilo}
+                  label={'Correo Organizador'}
+                  placeholder=""
+                  onChangeText={text =>
+                     this.setState({ correoOrganizador: text })
+                  }
+                  value={this.state.correoOrganizador}
+               />
+               <DatePicker
+                  style={styles.date}
+                  date={this.state.date}
+                  mode="date"
+                  placeholder="Fecha Inicio"
+                  format="YYYY-MM-DD"
+                  minDate="2016-05-01"
+                  maxDate="2100-06-01"
+                  confirmBtnText="Confirm"
+                  cancelBtnText="Cancel"
+                  customStyles={{
+                     dateIcon: {
+                        position: 'absolute',
+                        left: 0,
+                        top: 4,
+                        marginLeft: 0,
+                     },
+                     dateInput: { marginLeft: 36 },
+                     // ... You can check the source to find the other keys.
+                  }}
+                  onDateChange={date => {
+                     this.setState({ date: date });
+                  }}
+               />
+               <Dropdown
+                  label="Categorias"
+                  data={this.state.listaCategorias}
+                  onChangeText={this.elegirCategoria}
+               />
+               <FlatList
+                  data={this.state.listaCatTorneo}
+                  renderItem={({ item }) => (
+                     <FilaCategoria
+                        categoria={item}
+                        fnEliminar={this.eliminar}
+                     />
+                  )}
+                  keyExtractor={item => item}
+               />
+            </View>
+            <Button title="GUARDAR" onPress={this.guardar} />
          </ScrollView>
       );
    }

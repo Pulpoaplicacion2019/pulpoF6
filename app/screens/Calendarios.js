@@ -44,52 +44,57 @@ export default class Calendarios extends Component {
    renderEditButton = (id, listaPartidos, listaFechas) => {
       let usuario = global.usuario;
       let torneoActual = global.idTorneo;
+
       let listaTorneos = global.listaTorneos;
-      let permiso = this.buscarPermiso(listaTorneos, torneoActual);
-      console.log('renderActionButton' + usuario);
-      console.log('torneoActual' + torneoActual);
-      if (usuario && permiso != -1) {
-         return (
-            <View style={styles.viewHeaderFechasBton}>
-               <Icon
-                  name="pencil"
-                  type="material-community"
-                  color={COLOR.COLOR_GRIS_CLARO}
-                  size={20}
-                  onPress={() => {
-                     this.props.navigation.navigate('Partidos', {
-                        partidos: listaPartidos,
-                        fechas: listaFechas,
-                        id: id,
-                     });
-                  }}
-               />
-            </View>
-         );
+      if (listaTorneos) {
+         let permiso = this.buscarPermiso(listaTorneos, torneoActual);
+         console.log('renderActionButton' + usuario);
+         console.log('torneoActual' + torneoActual);
+         if (usuario && permiso != -1) {
+            return (
+               <View style={styles.viewHeaderFechasBton}>
+                  <Icon
+                     name="pencil"
+                     type="material-community"
+                     color={COLOR.COLOR_GRIS_CLARO}
+                     size={20}
+                     onPress={() => {
+                        this.props.navigation.navigate('Partidos', {
+                           partidos: listaPartidos,
+                           fechas: listaFechas,
+                           id: id,
+                        });
+                     }}
+                  />
+               </View>
+            );
+         }
       }
    };
    renderActionButton = listCalendarios => {
       let usuario = global.usuario;
       let torneoActual = global.idTorneo;
       let listaTorneos = global.listaTorneos;
-      let permiso = this.buscarPermiso(listaTorneos, torneoActual);
-      console.log('renderActionButton' + usuario);
-      console.log('torneoActual' + torneoActual);
-      let val = 0;
-      if (usuario && permiso != -1) {
-         if (listCalendarios) {
-            val = listCalendarios.length;
+      if (listaTorneos) {
+         let permiso = this.buscarPermiso(listaTorneos, torneoActual);
+         console.log('renderActionButton' + usuario);
+         console.log('torneoActual' + torneoActual);
+         let val = 0;
+         if (usuario && permiso != -1) {
+            if (listCalendarios) {
+               val = listCalendarios.length;
+            }
+            return (
+               <ActionButton
+                  buttonColor="#00A680"
+                  onPress={() => {
+                     this.props.navigation.navigate('CrearFecha', {
+                        id: val,
+                     });
+                  }}
+               />
+            );
          }
-         return (
-            <ActionButton
-               buttonColor="#00A680"
-               onPress={() => {
-                  this.props.navigation.navigate('CrearFecha', {
-                     id: val,
-                  });
-               }}
-            />
-         );
       }
    };
    buscarPermiso = (lista, id) => {
