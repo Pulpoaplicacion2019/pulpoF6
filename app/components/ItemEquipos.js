@@ -9,7 +9,7 @@ import {
 import styles from '../Styles/styles';
 
 export default class ItemEquipos extends Component {
-   static navigationOptions = {
+   /*static navigationOptions = {
       tabBarLabel: 'Equipos',
       tabBarIcon: ({ tintColor }) => {
          let iconName = Platform.select({
@@ -18,7 +18,7 @@ export default class ItemEquipos extends Component {
          });
          return <Icon name={iconName} type="ionicon" color={tintColor} />;
       },
-   };
+   };*/
 
    state = {
       lista: [],
