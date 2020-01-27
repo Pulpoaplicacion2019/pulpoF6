@@ -115,7 +115,7 @@ export default class Equipos extends Component {
                   </View>
                </Content>
             </Container>
-            {this.renderActionButton()}            <StatusBarGeneral />
+            {this.renderActionButton()} <StatusBarGeneral />
          </View>
       );
    }
