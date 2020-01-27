@@ -63,7 +63,10 @@ export default class CrearFecha extends Component {
    };
    componentDidMount() {
       console.log('ingresa componentDidMount ');
-      const num = this.props.navigation.state.params.id;
+      let num = 0;
+      if (this.props.navigation.state.params.id) {
+         num = this.props.navigation.state.params.id;
+      }
       console.log('fe' + num);
       const categ = global.categoria;
       const fechaId = 'Fecha' + (num + 1);
