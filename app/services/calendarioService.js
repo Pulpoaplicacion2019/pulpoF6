@@ -7,12 +7,14 @@ export const loadTeams = (fn, categoria) => {
    console.log('Ingresa a cargar lista de Calendarios');
    console.log('Categoria' + categoria);
 
-   let itemsRef = firebase.database().ref('calendario');
-   let itemChildRef = itemsRef.child(
-      'torneos/' + global.idTorneo + '/categorias/' + categoria
-   );
-   const listaResultado = [];
-   listenForItems(itemChildRef, fn, listaResultado);
+   if (categoria != null) {
+      let itemsRef = firebase.database().ref('calendario');
+      let itemChildRef = itemsRef.child(
+         'torneos/' + global.idTorneo + '/categorias/' + categoria
+      );
+      const listaResultado = [];
+      listenForItems(itemChildRef, fn, listaResultado);
+   }
 };
 
 // Función como ingreso tiene la referencia

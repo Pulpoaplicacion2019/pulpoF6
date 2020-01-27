@@ -12,6 +12,7 @@ export default class Login extends Component {
    }
 
    showError = error => {
+      let mensaje;
       switch (error) {
          case 'auth/user-not-found':
             mensaje = 'Usuario no registrado';

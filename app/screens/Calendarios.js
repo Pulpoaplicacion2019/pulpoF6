@@ -35,7 +35,7 @@ export default class Calendarios extends Component {
 
    componentDidMount() {
       var listaCategorias = global.listaCategorias;
-      var categ = listaCategorias[0];
+      var categ = listaCategorias != null ? listaCategorias[0] : null;
 
       loadTeams(lista => {
          this.setState({ listCalendarios: lista });

@@ -1,8 +1,9 @@
 import { firebase } from '@react-native-firebase/database';
+import { crearPermiso } from './permisos.js';
 
 export const cargarTorneos = object => {
    console.log('ingresa a cargar');
-   global.itemsRef = firebase.database().ref('torneos');
+   const itemsRef = firebase.database().ref('torneos');
    listenForItems(itemsRef, object);
 };
 export const recuperarTorneo = fn => {
@@ -12,14 +13,18 @@ export const recuperarTorneo = fn => {
    });
 };
 export const guardarTorneo = torneo => {
-   console.log('ingresa a cargar equipos');
+   console.log('torneos.js guardarTorneo ingresa');
+   const id_torneo = torneo.nombreTorneo + '_' + torneo.anio;
    var itemsRef = firebase
       .database()
       .ref('torneos')
-      .child(torneo.nombreTorneo + '_' + torneo.anio);
+      .child(id_torneo);
    itemsRef.set(torneo);
+
+   crearPermiso(torneo.correoOrganizador, 'torneos', id_torneo);
 };
-listenForItems = (itemsRef, object) => {
+
+const listenForItems = (itemsRef, object) => {
    itemsRef.on('value', snap => {
       snap.forEach(child => {
          if (buscarTorneo(child.val().id) == null) {
@@ -46,7 +51,7 @@ listenForItems = (itemsRef, object) => {
    });
 };
 
-cargarTorneo = (estado, componente, modo) => {
+const cargarTorneo = (estado, componente, modo) => {
    var lista = [];
    for (var i = 0; i < global.torneos.length; i++) {
       if (modo == 1) {
@@ -66,7 +71,7 @@ cargarTorneo = (estado, componente, modo) => {
    componente.setState({ listaTorneos: lista });
 };
 
-buscarTorneo = idTorneo => {
+const buscarTorneo = idTorneo => {
    var i = 0;
    var torneosTmp = global.torneos;
    var torneo = null;
@@ -79,7 +84,7 @@ buscarTorneo = idTorneo => {
    return torneo;
 };
 
-buscarPosicionTorneo = idTorneo => {
+const buscarPosicionTorneo = idTorneo => {
    var i = 0,
       pos = -1;
    var torneosTmp = global.torneos;
@@ -90,7 +95,7 @@ buscarPosicionTorneo = idTorneo => {
    }
    return pos;
 };
-reemplazarTorneo = torneo => {
+const reemplazarTorneo = torneo => {
    var posicion = buscarPosicionTorneo(torneo.id);
    if (posicion != -1) {
       global.torneos[posicion] = torneo;

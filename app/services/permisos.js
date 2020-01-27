@@ -1,4 +1,5 @@
 import { firebase } from '@react-native-firebase/database';
+import { crearUsuario } from './autenticacion.js';
 
 export const cargarPermisos = (usuario, fn) => {
    const refPermisosRoot = firebase
@@ -36,4 +37,10 @@ export const cargarPermisos = (usuario, fn) => {
 
       fn(listaPermisos);
    });
+};
+
+//abc@gmail.com,torneos,abc
+export const crearPermiso = (correo, nodo, id) => {
+   crearUsuario(correo);
+   //nodo de permisos
 };
