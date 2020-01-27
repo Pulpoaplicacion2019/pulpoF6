@@ -28,6 +28,20 @@ const styles = StyleSheet.create({
    },
 });
 export default class Equipos extends Component {
+   constructor(props) {
+      super(props);
+      var lista = global.listaCategorias;
+      var categ = lista[0];
+      this.state = {
+         listaCat: lista,
+         categoria: categ,
+         listaEquip: [],
+      };
+
+      cargarEquipos(categ, listaEquipos => {
+         this.setState({ listaEquip: listaEquipos });
+      });
+   }
    static navigationOptions = {
       tabBarLabel: 'Equipos',
       tabBarIcon: ({ tintColor }) => {
@@ -45,18 +59,7 @@ export default class Equipos extends Component {
       listaEquip: [],
    };
 
-   componentDidMount() {
-      var lista = global.listaCategorias;
-      var categ = lista[0];
-      this.setState({
-         listaCat: lista,
-         categoria: categ,
-      });
-
-      cargarEquipos(categ, listaEquipos => {
-         this.setState({ listaEquip: listaEquipos });
-      });
-   }
+   componentDidMount() {}
    renderActionButton = () => {
       let usuario = global.usuario;
       let torneoActual = global.idTorneo;
@@ -103,7 +106,7 @@ export default class Equipos extends Component {
                         });
                         this.setState({ categoria: categ });
                      }}
-                  ></NavegadorCategorias>
+                  />
                </Header>
                <Content>
                   <View style={styles.container}>
@@ -115,7 +118,7 @@ export default class Equipos extends Component {
                   </View>
                </Content>
             </Container>
-            {this.renderActionButton()} <StatusBarGeneral />
+            {this.renderActionButton()}
          </View>
       );
    }
