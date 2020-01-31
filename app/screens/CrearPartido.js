@@ -2,11 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, Button } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { Dropdown } from 'react-native-material-dropdown';
-import {
-   guardarPartido,
-   cargarPartidos,
-   cargarJugadores,
-} from '../services/partidos.js';
+import { guardarPartido, cargarJugadores } from '../services/partidos.js';
 import { cargarEquipos } from '../services/equipos.js';
 import * as COLOR from '../constants/colors.js';
 
@@ -28,9 +24,12 @@ export default class CrearPartido extends Component {
          jugadores2: [],
          puntosEqui1Total: '',
          puntosEqui2Total: '',
+         errMsjFecha: null,
+         errMsjHora: null,
+         errMsjMinuto: null,
+         errMsjEquipo1: null,
+         errMsjEquipo2: null,
       };
-   }
-   componentDidMount() {
       var categ = global.categoria;
 
       cargarEquipos(categ, listaEquipos => {
@@ -38,26 +37,15 @@ export default class CrearPartido extends Component {
             listaEquip: this.convertirEquiposLista(listaEquipos),
          });
       });
-      this.setState({
-         listaFechas: this.props.navigation.state.params.fechas,
-      });
-      cargarPartidos(
-         categ,
-         this.props.navigation.state.params.id,
-         listaPartidos => {
-            console.log('listaPartidos: ', listaPartidos);
-            this.setState({
-               listaPartidos: listaPartidos,
-
-               fecha: this.props.navigation.state.params.id,
-            });
-         }
-      );
+   }
+   componentDidMount() {
+      console.log('listaFechas', this.props.navigation.state.params.fechas);
+      console.log('fechaID', this.props.navigation.state.params.fechaId);
    }
    convertirEquiposLista = equipos => {
       let listaEquipos = [];
       equipos.map((item, index) => {
-         console.log('item:   ' + item);
+         console.log('item:   ', item);
          listaEquipos.push({
             value: item.nombreEquipo,
          });
@@ -67,6 +55,49 @@ export default class CrearPartido extends Component {
 
       console.log('listaCategoriasconver ' + listaEquipos);
       return listaEquipos;
+   };
+   validar = () => {
+      let fecha = this.state.fechaPartido;
+      let hora = this.state.hora;
+      let min = this.state.minuto;
+      let equipo1 = this.state.equipoUno;
+      let equipo2 = this.state.equipoDos;
+
+      if (fecha == '') {
+         this.setState({ errMsjFecha: 'Campo Requerido' });
+      } else {
+         this.setState({ errMsjFecha: null });
+      }
+      if (hora == '') {
+         this.setState({ errMsjHora: 'Campo Requerido' });
+      } else {
+         this.setState({ errMsjHora: null });
+      }
+      if (min == '') {
+         this.setState({ errMsjMinuto: 'Campo Requerido' });
+      } else {
+         this.setState({ errMsjMinuto: null });
+      }
+      if (equipo1 == '') {
+         this.setState({ errMsjEquipo1: 'Campo Requerido' });
+      } else {
+         this.setState({ errMsjEquipo1: null });
+      }
+      if (equipo2 == '') {
+         this.setState({ errMsjEquipo2: 'Campo Requerido' });
+      } else {
+         this.setState({ errMsjEquipo2: null });
+      }
+
+      if (
+         fecha != '' &&
+         hora != '' &&
+         min != '' &&
+         equipo1 != '' &&
+         equipo2 != ''
+      ) {
+         this.guardar();
+      }
    };
 
    guardar = () => {
@@ -179,7 +210,8 @@ export default class CrearPartido extends Component {
             <View style={{ flex: 1 }}>
                <Dropdown
                   label="Fecha"
-                  data={this.state.listaFechas}
+                  error={this.state.errMsjFecha}
+                  data={this.props.navigation.state.params.fechas}
                   onChangeText={value => this.setState({ fechaPartido: value })}
                   selectedItemColor={COLOR.COLOR_CHRISTMAS_RED}
                   animationDuration={200}
@@ -189,6 +221,7 @@ export default class CrearPartido extends Component {
                <View style={{ flex: 1 }}>
                   <Dropdown
                      label="Hora"
+                     error={this.state.errMsjHora}
                      data={horas}
                      onChangeText={value => this.setState({ hora: value })}
                   />
@@ -196,6 +229,7 @@ export default class CrearPartido extends Component {
                <View style={{ flex: 1, marginLeft: 10 }}>
                   <Dropdown
                      label="Min"
+                     error={this.state.errMsjMinuto}
                      data={min}
                      onChangeText={value => this.setState({ minuto: value })}
                   />
@@ -205,6 +239,7 @@ export default class CrearPartido extends Component {
                <View style={{ flex: 1 }}>
                   <Dropdown
                      label="Equipo1"
+                     error={this.state.errMsjEquipo1}
                      data={this.state.listaEquip}
                      onChangeText={value => {
                         this.setState({ equipoUno: value }),
@@ -215,6 +250,7 @@ export default class CrearPartido extends Component {
                <View style={{ flex: 1, marginLeft: 50 }}>
                   <Dropdown
                      label="Equipo2"
+                     error={this.state.errMsjEquipo2}
                      data={this.state.listaEquip}
                      onChangeText={value => {
                         this.setState({ equipoDos: value }),
@@ -227,7 +263,7 @@ export default class CrearPartido extends Component {
                <TouchableOpacity
                   hitSlop={{ top: 50, bottom: 50, left: 50, right: 50 }}
                   onPress={() => {
-                     this.guardar();
+                     this.validar();
                   }}
                >
                   <Icon
@@ -248,7 +284,6 @@ const border = color => {
 const styles = StyleSheet.create({
    container: {
       flex: 1,
-      marginRight: 20,
    },
    time: {
       flex: 1,
@@ -260,8 +295,7 @@ const styles = StyleSheet.create({
       flexDirection: 'column',
       marginLeft: 2,
       marginRight: 2,
-      marginBottom: 10,
+
       borderRadius: 5,
-      paddingHorizontal: 15,
    },
 });

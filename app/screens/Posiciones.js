@@ -15,12 +15,7 @@ export default class Posiciones extends Component {
       super(props);
       this.state = {
          tableHead: ['', 'PJ', 'PG', 'PP', 'Ptos'],
-         tableData: [
-            ['1', '2', '3', '4', '4'],
-            ['a', 'b', 'c', 'd', '4'],
-            ['1', '2', '3', '456\n789', '4'],
-            ['a', 'b', 'c', 'd', '4'],
-         ],
+         tableData: [],
          lista: [],
       };
    }

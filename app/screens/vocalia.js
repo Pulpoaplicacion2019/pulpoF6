@@ -298,9 +298,10 @@ export default class Partidos extends Component {
                            jugador={item}
                            sumarPuntos={this.sumarP1}
                            listaSuplentes={this.state.listaJ1Suplentes}
+                           refJugadores="Jugadores1"
                         />
                      )}
-                     keyExtractor={item => item}
+                     keyExtractor={item => item.numero}
                   />
                </View>
                <View style={[styles.vocalia, { marginTop: 15 }]}>
@@ -333,7 +334,7 @@ export default class Partidos extends Component {
                            sumarPuntos={this.sumarP2}
                         />
                      )}
-                     keyExtractor={item => item}
+                     keyExtractor={item => item.numero}
                   />
                </View>
             </View>
