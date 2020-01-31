@@ -32,6 +32,7 @@ export const cargarEquipos = (categoria, fn) => {
       console.log('borrado ' + snap.val().id);
       fn(listaEquipos);
    });
+   fn(listaEquipos);
 };
 export const guardarEquipos = (categoria, equipo) => {
    console.log('ingresa a guardar equipos');

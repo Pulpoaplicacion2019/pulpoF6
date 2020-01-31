@@ -42,7 +42,11 @@ export const cargarPermisos = (usuario, fn) => {
 //abc@gmail.com,torneos,abc
 export const crearPermiso = (correo, nodo, id) => {
    crearUsuario(correo);
-   let nodoCorreo = correo.replace(/\./g, '');
+
+   let nodoCorreo = correo
+      .replace(/\./g, '')
+      .trim()
+      .toLowerCase();
    const itemsRef = firebase.database().ref('permisos');
    const refPermisos = itemsRef.child(nodoCorreo + '/' + nodo + '/' + id);
    refPermisos.set(id);

@@ -81,7 +81,11 @@ export default class PerfilTorneo extends Component {
             return (
                <TouchableOpacity
                   hitSlop={{ top: 50, bottom: 50, left: 50, right: 50 }}
-                  onPress={() => this.props.navigation.navigate('PerfilTorneo')}
+                  onPress={() =>
+                     this.props.navigation.navigate('PerfilTorneo', {
+                        editar: 'S',
+                     })
+                  }
                >
                   <Icon
                      name="edit"

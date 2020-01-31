@@ -81,6 +81,7 @@ export const listenForItems = (itemsRef, fn, lista) => {
       console.log('borrado ' + snap.val().id);
       fn(lista);
    });
+   fn(lista);
 };
 
 //guardar fechas
@@ -169,7 +170,9 @@ export const recuperarFecha = (categoria, fecha, fn) => {
             '/fechas'
       );
    fechasRef.on('value', snap => {
-      console.log('recuperar Fecha' + snap);
-      fn(snap.val());
+      if (snap.val() != null) {
+         console.log('recuperar Fecha' + snap);
+         fn(snap.val());
+      } else fn([]);
    });
 };

@@ -41,6 +41,54 @@ export default class CrearEquipos extends Component {
       telefono: '',
       mail: '',
       imagenEquipo: '',
+      errMsjEquipo: null,
+      errMsjNombreRepresentante: null,
+      errMsjApellidoRepresentante: null,
+      errMsjTlfRepresentante: null,
+      errMsjCorreo: null,
+   };
+   validar = () => {
+      let equipo = this.state.nombreEquipo;
+      let nombreRepresentante = this.state.nombreRepresentante;
+      let apellidoRepresentante = this.state.apellidoRepresentante;
+      let tlfRepresentante = this.state.telefono;
+      let correo = this.state.mail;
+
+      if (equipo == '') {
+         this.setState({ errMsjEquipo: 'Campo Requerido' });
+      } else {
+         this.setState({ errMsjEquipo: null });
+      }
+      if (nombreRepresentante == '') {
+         this.setState({ errMsjNombreRepresentante: 'Campo Requerido' });
+      } else {
+         this.setState({ errMsjNombreRepresentante: null });
+      }
+      if (apellidoRepresentante == '') {
+         this.setState({ errMsjApellidoRepresentante: 'Campo Requerido' });
+      } else {
+         this.setState({ errMsjApellidoRepresentante: null });
+      }
+      if (tlfRepresentante == '') {
+         this.setState({ errMsjTlfRepresentante: 'Campo Requerido' });
+      } else {
+         this.setState({ errMsjTlfRepresentante: null });
+      }
+
+      if (correo == '') {
+         this.setState({ errMsjCorreo: 'Campo Requerido' });
+      } else {
+         this.setState({ errMsjCorreo: null });
+      }
+      if (
+         equipo != '' &&
+         nombreRepresentante != '' &&
+         apellidoRepresentante != '' &&
+         tlfRepresentante != '' &&
+         correo != ''
+      ) {
+         this.guardar();
+      }
    };
    guardar = () => {
       let idEquipo = this.state.nombreEquipo + '_' + this.state.categoria;
@@ -129,6 +177,7 @@ export default class CrearEquipos extends Component {
                   onChangeText={value => this.setState({ nombreEquipo: value })}
                   value={this.state.nombreEquipo}
                   errorStyle={{ color: 'red' }}
+                  errorMessage={this.state.errMsjEquipo}
                />
                <Input
                   containerStyle={[styles.inputStilo]}
@@ -140,6 +189,8 @@ export default class CrearEquipos extends Component {
                      this.setState({ nombreRepresentante: value })
                   }
                   value={this.state.nombreRepresentante}
+                  errorStyle={{ color: 'red' }}
+                  errorMessage={this.state.errMsjNombreRepresentante}
                />
                <Input
                   containerStyle={[styles.inputStilo]}
@@ -151,6 +202,8 @@ export default class CrearEquipos extends Component {
                      this.setState({ apellidoRepresentante: value })
                   }
                   value={this.state.apellidoRepresentante}
+                  errorStyle={{ color: 'red' }}
+                  errorMessage={this.state.errMsjApellidoRepresentante}
                />
                <Input
                   containerStyle={[styles.inputStilo]}
@@ -169,6 +222,8 @@ export default class CrearEquipos extends Component {
                   placeholder=""
                   onChangeText={value => this.setState({ mail: value })}
                   value={this.state.mail}
+                  errorStyle={{ color: 'red' }}
+                  errorMessage={this.state.errMsjCorreo}
                />
                <Input
                   containerStyle={[styles.inputStilo]}
@@ -178,6 +233,8 @@ export default class CrearEquipos extends Component {
                   placeholder=""
                   onChangeText={value => this.setState({ telefono: value })}
                   value={this.state.telefono}
+                  errorStyle={{ color: 'red' }}
+                  errorMessage={this.state.errMsjTlfRepresentante}
                />
 
                <View
@@ -190,7 +247,7 @@ export default class CrearEquipos extends Component {
                      large
                      icon={{ name: 'cached' }}
                      title="Guardar"
-                     onPress={this.guardar}
+                     onPress={this.validar}
                      buttonStyle={{
                         backgroundColor: COLOR.COLOR_CHRISTMAS_RED,
                         borderRadius: 0,

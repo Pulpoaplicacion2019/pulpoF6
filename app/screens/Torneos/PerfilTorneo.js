@@ -35,10 +35,29 @@ export default class PerfilTorneo extends Component {
          uri: '',
          listaCategorias: [],
          listaCatTorneo: [],
+         errMsjAño: null,
+         errMsjTorneo: null,
+         errMsjNombreOrganizador: null,
+         errMsjApellidoOrganizador: null,
+         errMsjTlfOrganizador: null,
+         errMsjCorreo: null,
+         errMsjCategorias: null,
+         editarPantalla: true,
       };
+
+      if (this.props.navigation.state.params.editar == 'N') {
+         this.setState({
+            editarPantalla: false,
+         });
+      }
    }
 
    componentDidMount() {
+      if (this.props.navigation.state.params.editar == 'N') {
+         this.setState({
+            editarPantalla: false,
+         });
+      }
       recuperarTorneo(torneo => {
          if (torneo != null) {
             this.setState({
@@ -61,13 +80,62 @@ export default class PerfilTorneo extends Component {
          this.setState({ listaCategorias: listaCategorias });
       });
    }
+   validar = () => {
+      let año = this.state.anio;
+      let torneo = this.state.nombreTorneo;
+      let nOrganizador = this.state.nombreOrganizador;
+      let aOrganizador = this.state.apellidoOrganizador;
+      let tOrganizador = this.state.telefonoOrganizador;
+      let correo = this.state.correoOrganizador;
 
+      if (año == '') {
+         this.setState({ errMsjAño: 'Campo Requerido' });
+      } else {
+         this.setState({ errMsjAño: null });
+      }
+      if (torneo == '') {
+         this.setState({ errMsjTorneo: 'Campo Requerido' });
+      } else {
+         this.setState({ errMsjTorneo: null });
+      }
+      if (nOrganizador == '') {
+         this.setState({ errMsjNombreOrganizador: 'Campo Requerido' });
+      } else {
+         this.setState({ errMsjNombreOrganizador: null });
+      }
+      if (aOrganizador == '') {
+         this.setState({ errMsjApellidoOrganizador: 'Campo Requerido' });
+      } else {
+         this.setState({ errMsjApellidoOrganizador: null });
+      }
+      if (tOrganizador == '') {
+         this.setState({ errMsjTlfOrganizador: 'Campo Requerido' });
+      } else {
+         this.setState({ errMsjTlfOrganizador: null });
+      }
+      if (correo == '') {
+         this.setState({ errMsjCorreo: 'Campo Requerido' });
+      } else {
+         this.setState({ errMsjCorreo: null });
+      }
+      if (
+         año != '' &&
+         torneo != '' &&
+         nOrganizador != '' &&
+         aOrganizador != '' &&
+         tOrganizador != '' &&
+         correo != ''
+      ) {
+         this.guardar();
+      }
+   };
    guardar = () => {
       console.log('PerfilTorneo.js guardar');
       let cat = this.state.listaCatTorneo;
       let categorias = this.convertirCategorias(this.state.listaCatTorneo);
       console.log('categorias', cat.length);
       if (cat.length > 0) {
+         this.setState({ errMsjCorreo: null });
          const torneo = {
             anio: this.state.anio,
             apellidoOrganizador: this.state.apellidoOrganizador,
@@ -85,7 +153,7 @@ export default class PerfilTorneo extends Component {
          guardarTorneo(torneo);
          this.props.navigation.goBack();
       } else {
-         Alert.alert('Ingrese categorias');
+         this.setState({ errMsjCorreo: 'Ingrese Categorias' });
       }
    };
    convertirCategorias = categorias => {
@@ -190,17 +258,23 @@ export default class PerfilTorneo extends Component {
                   labelStyle={styles.labelEstilo}
                   label={'Año'}
                   placeholder=""
+                  disabled={this.state.editarPantalla}
                   onChangeText={text => this.setState({ anio: text })}
                   value={this.state.anio + ''}
+                  errorStyle={{ color: 'red' }}
+                  errorMessage={this.state.errMsjAño}
                />
                <Input
                   containerStyle={[styles.inputStilo]}
                   inputContainerStyle={styles.inputContentEstilo}
                   labelStyle={styles.labelEstilo}
                   label={'Nombre Torneo'}
+                  disabled={this.state.editarPantalla}
                   placeholder=""
                   onChangeText={text => this.setState({ nombreTorneo: text })}
                   value={this.state.nombreTorneo}
+                  errorStyle={{ color: 'red' }}
+                  errorMessage={this.state.errMsjTorneo}
                />
                <Input
                   containerStyle={[styles.inputStilo]}
@@ -212,6 +286,8 @@ export default class PerfilTorneo extends Component {
                      this.setState({ nombreOrganizador: text })
                   }
                   value={this.state.nombreOrganizador}
+                  errorStyle={{ color: 'red' }}
+                  errorMessage={this.state.errMsjNombreOrganizador}
                />
 
                <Input
@@ -224,8 +300,11 @@ export default class PerfilTorneo extends Component {
                      this.setState({ apellidoOrganizador: text })
                   }
                   value={this.state.apellidoOrganizador}
+                  errorStyle={{ color: 'red' }}
+                  errorMessage={this.state.errMsjApellidoOrganizador}
                />
                <Input
+                  keyboardType="numeric"
                   containerStyle={[styles.inputStilo]}
                   inputContainerStyle={styles.inputContentEstilo}
                   labelStyle={styles.labelEstilo}
@@ -235,6 +314,8 @@ export default class PerfilTorneo extends Component {
                      this.setState({ telefonoOrganizador: text })
                   }
                   value={this.state.telefonoOrganizador}
+                  errorStyle={{ color: 'red' }}
+                  errorMessage={this.state.errMsjTlfOrganizador}
                />
                <Input
                   containerStyle={[styles.inputStilo]}
@@ -246,6 +327,8 @@ export default class PerfilTorneo extends Component {
                      this.setState({ correoOrganizador: text })
                   }
                   value={this.state.correoOrganizador}
+                  errorStyle={{ color: 'red' }}
+                  errorMessage={this.state.errMsjCorreo}
                />
                <DatePicker
                   style={styles.date}
@@ -271,11 +354,15 @@ export default class PerfilTorneo extends Component {
                      this.setState({ date: date });
                   }}
                />
+
                <Dropdown
                   label="Categorias"
                   data={this.state.listaCategorias}
                   onChangeText={this.elegirCategoria}
                />
+               <Text style={{ color: 'red' }}>
+                  {this.state.errMsjCategorias}
+               </Text>
                <FlatList
                   data={this.state.listaCatTorneo}
                   renderItem={({ item }) => (
@@ -287,7 +374,13 @@ export default class PerfilTorneo extends Component {
                   keyExtractor={item => item}
                />
             </View>
-            <Button title="GUARDAR" onPress={this.guardar} />
+            <Text style={{ color: 'red' }}>{this.state.errMsjCategorias}</Text>
+            <Button
+               title="GUARDAR"
+               onPress={() => {
+                  this.validar();
+               }}
+            />
          </ScrollView>
       );
    }
