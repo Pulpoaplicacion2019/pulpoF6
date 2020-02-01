@@ -97,6 +97,30 @@ export default class PerfilTorneo extends Component {
          }
       }
    };
+   renderEditCanchas = () => {
+      let usuario = global.usuario;
+      let torneoActual = global.idTorneo;
+      let listaTorneos = global.listaTorneos;
+      if (listaTorneos) {
+         let permiso = this.buscarPermiso(listaTorneos, torneoActual);
+         console.log('renderActionButton' + usuario);
+         console.log('torneoActual' + torneoActual);
+         if (usuario && permiso != -1) {
+            return (
+               <TouchableOpacity
+                  hitSlop={{ top: 50, bottom: 50, left: 50, right: 50 }}
+                  onPress={() => this.props.navigation.navigate('Canchas')}
+               >
+                  <Icon
+                     name="edit"
+                     type="material-icons"
+                     style={styles.button}
+                  />
+               </TouchableOpacity>
+            );
+         }
+      }
+   };
    buscarPermiso = (lista, id) => {
       let posicion = -1;
       let iteracion = 0;
@@ -156,6 +180,7 @@ export default class PerfilTorneo extends Component {
                {' '}
                Categorias: {this.state.listaCatTorneo + ''}{' '}
             </Text>
+            {this.renderEditCanchas()}
          </View>
       );
    }

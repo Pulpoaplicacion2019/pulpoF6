@@ -229,7 +229,7 @@ export default class ItemJugadoresVocalia extends Component {
                      }}
                      listaSuplente={this.props.listaSuplentes}
                      numJugador={this.props.jugador.numero}
-                     refJugadores={this.props.jugador.refJugadores}
+                     refJugadores={this.props.refJugadores}
                   />
                </View>
                <View
@@ -293,7 +293,7 @@ const styles = StyleSheet.create({
    },
    button: {
       borderWidth: 0,
-      fontSize: 50,
+
       width: 50,
       height: 50,
       marginTop: 30,

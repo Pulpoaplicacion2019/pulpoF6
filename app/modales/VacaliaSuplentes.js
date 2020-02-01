@@ -5,8 +5,6 @@ import {
    Text,
    TouchableOpacity,
    Modal,
-   TouchableHighlight,
-   Alert,
    FlatList,
 } from 'react-native';
 import { Icon, Input, Avatar, Button, CheckBox } from 'react-native-elements';
@@ -39,35 +37,37 @@ export default class ModalSuplentes extends Component {
                <Text>{nombre}</Text>
                <Text>numero</Text>
                <Text>{numero}</Text>
-               <CheckBox
-                  checked={this.state.checked}
-                  onPress={() => {
-                     this.setState({ checked: !this.state.checked });
-                     if (!this.state.checked) {
-                        this.guardarEstadoJ(
-                           numero,
-                           'T',
-                           this.props.refJugadores
-                        );
-                        this.guardarEstadoJ(
-                           this.props.numJugador,
-                           'S',
-                           this.props.refJugadores
-                        );
-                     } else {
-                        this.guardarEstadoJ(
-                           numero,
-                           'S',
-                           this.props.refJugadores
-                        );
-                        this.guardarEstadoJ(
-                           this.props.numJugador,
-                           'T',
-                           this.props.refJugadores
-                        );
-                     }
-                  }}
-               />
+               <View>
+                  <CheckBox
+                     checked={this.state.checked}
+                     onPress={() => {
+                        this.setState({ checked: !this.state.checked });
+                        if (!this.state.checked) {
+                           this.guardarEstadoJ(
+                              numero,
+                              'T',
+                              this.props.refJugadores
+                           );
+                           this.guardarEstadoJ(
+                              this.props.numJugador,
+                              'S',
+                              this.props.refJugadores
+                           );
+                        } else {
+                           this.guardarEstadoJ(
+                              numero,
+                              'S',
+                              this.props.refJugadores
+                           );
+                           this.guardarEstadoJ(
+                              this.props.numJugador,
+                              'T',
+                              this.props.refJugadores
+                           );
+                        }
+                     }}
+                  />
+               </View>
             </View>
          );
       }
@@ -82,11 +82,13 @@ export default class ModalSuplentes extends Component {
          <Modal visible={isModalVisible}>
             <View style={{ flex: 1 }}>
                <Text>Modal para los suplentes</Text>
-               <FlatList
-                  data={this.props.listaSuplente}
-                  renderItem={this.renderRow}
-                  keyExtractor={(item, index) => index.toString()}
-               />
+               <View>
+                  <FlatList
+                     data={this.props.listaSuplente}
+                     renderItem={this.renderRow}
+                     keyExtractor={(item, index) => index.toString()}
+                  />
+               </View>
                <Button
                   small
                   title="Cancelar"

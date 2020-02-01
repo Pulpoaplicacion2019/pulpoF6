@@ -9,7 +9,7 @@ import {
    Platform,
 } from 'react-native';
 
-import { Image, Icon } from 'react-native-elements';
+import { Image, Icon, Avatar } from 'react-native-elements';
 import ActionButton from 'react-native-action-button';
 
 //Importación componente de navegación
@@ -119,14 +119,19 @@ export default class Calendarios extends Component {
          hora,
          minuto,
          cancha,
+         url1,
+         url2,
       } = listaPartidos.item;
       return (
          <View style={styles.viewPartidos}>
             <View style={styles.viewEquipoUno}>
-               <Image
-                  resizeMode="cover"
-                  source={{ cancha }}
-                  style={[styles.imagenEstilo, border('#7A7A7A')]}
+               <Avatar
+                  rounded
+                  size="xlarge"
+                  source={{
+                     uri: url1,
+                  }}
+                  style={[styles.imagenEstilo]}
                />
                <Text style={styles.viewNombreEquipo}>{equipoUno}</Text>
             </View>
@@ -138,10 +143,13 @@ export default class Calendarios extends Component {
                <Text>cancha: {cancha}</Text>
             </View>
             <View style={styles.viewEquipoUno}>
-               <Image
-                  resizeMode="cover"
-                  source={{ cancha }}
-                  style={[styles.imagenEstilo, border('#7A7A7A')]}
+               <Avatar
+                  rounded
+                  size="xlarge"
+                  source={{
+                     uri: url2,
+                  }}
+                  style={[styles.imagenEstilo]}
                />
                <Text style={styles.viewNombreEquipo}>{equipoDos}</Text>
             </View>
@@ -277,7 +285,7 @@ const styles = StyleSheet.create({
       marginTop: 5,
       marginLeft: 15,
    },
-   imagenEstilo: { width: 60, height: 60, borderRadius: 67 },
+   imagenEstilo: { width: 60, height: 60 },
    viewDatos: { flex: 2, justifyContent: 'center', alignItems: 'center' },
    header: {
       backgroundColor: COLOR.COLOR_SECUNDARIO,

@@ -298,7 +298,7 @@ export default class Partidos extends Component {
                            jugador={item}
                            sumarPuntos={this.sumarP1}
                            listaSuplentes={this.state.listaJ1Suplentes}
-                           refJugadores="Jugadores1"
+                           refJugadores="jugadores1"
                         />
                      )}
                      keyExtractor={item => item.numero}
@@ -332,6 +332,7 @@ export default class Partidos extends Component {
                         <ItemJugadoresVocalia
                            jugador={item}
                            sumarPuntos={this.sumarP2}
+                           refJugadores="jugadores2"
                         />
                      )}
                      keyExtractor={item => item.numero}
