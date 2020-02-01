@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Button } from 'react-native-elements';
-import { StyleSheet, View, Text } from 'react-native';
-import * as COLOR from '../constants/colors.js';
+import { StyleSheet, View, Text, Alert } from 'react-native';
+import { eliminarElementos } from './Alertas';
+import { eliminarJugador } from '../services/jugadores';
 //import styles from '../Styles/styles';
 
 const styles = StyleSheet.create({
@@ -25,9 +26,28 @@ export default class ItemJugadores extends Component {
    editarJugador = () => {
       let equipo = this.props.equipo;
       let ruta = 'CrearJugadores';
-      this.props.nav.navigate(ruta, { equipo: equipo });
+      this.props.nav.navigate(ruta, {
+         equipo: equipo,
+         jugadorId: this.props.jugador.cedula,
+      });
    };
-   eliminarJugador = () => {};
+   eliminarJugador = () => {
+      let mensaje =
+         '¿Está seguro que desea eliminar el jugador ' +
+         this.props.jugador.primerNombre +
+         ' ' +
+         this.props.jugador.primerApellido +
+         ' ?';
+      let infoJugador = {
+         categoria: this.props.equipo.categoria,
+         equipo: this.props.equipo.id,
+         cedula: this.props.jugador.cedula,
+      };
+      eliminarElementos(mensaje, () => {
+         eliminarJugador(infoJugador);
+      });
+   };
+   componentDidMount() {}
    render() {
       return (
          <View style={styles.row}>
@@ -49,15 +69,15 @@ export default class ItemJugadores extends Component {
                   type="outline"
                   icon={{ name: 'edit' }}
                   onPress={() => {
-                     this.editarjugador;
+                     this.editarJugador();
                   }}
                />
                <Button
                   small
                   type="outline"
-                  icon={{ name: 'garbage' }}
+                  icon={{ name: 'delete' }}
                   onPress={() => {
-                     this.eliminarjugador;
+                     this.eliminarJugador();
                   }}
                />
             </View>
