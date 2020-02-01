@@ -30,7 +30,13 @@ export default class ItemPartidoV2 extends Component {
                </Text>
                <View style={{ flexDirection: 'row', marginLeft: 100 }}>
                   <TouchableOpacity
-                     hitSlop={{ top: 60, bottom: 60, left: 60, right: 60 }}
+                     style={{
+                        borderWidth: 1,
+                        width: 35,
+                        height: 35,
+                        marginLeft: 8,
+                     }}
+                     hitSlop={{ top: 25, bottom: 25, left: 25, right: 25 }}
                      onPress={() => {
                         this.props.nav.navigate('EditarPartido', {
                            partidos: this.props.partidos,
@@ -46,7 +52,13 @@ export default class ItemPartidoV2 extends Component {
                      />
                   </TouchableOpacity>
                   <TouchableOpacity
-                     hitSlop={{ top: 50, bottom: 50, left: 50, right: 50 }}
+                     style={{
+                        borderWidth: 1,
+                        width: 35,
+                        height: 35,
+                        marginLeft: 20,
+                     }}
+                     hitSlop={{ top: 25, bottom: 25, left: 25, right: 25 }}
                      onPress={() => {
                         this.props.eliminar(this.props.partidos.id);
                      }}

@@ -1,23 +1,12 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, ScrollView } from 'react-native';
-import {
-   Container,
-   Header,
-   Title,
-   Content,
-   Footer,
-   FooterTab,
-   Button,
-   Left,
-   Right,
-   Body,
-} from 'native-base';
+import { Container, Header, Content } from 'native-base';
 import { Icon } from 'react-native-elements';
 import ActionButton from 'react-native-action-button';
 import { cargarEquipos } from '../../services/equipos.js';
 import ItemEquipos from '../../components/ItemEquipos';
 import NavegadorCategorias from '../../components/NavegadorCategorias.js';
-
+import * as COLOR from '../../constants/colors.js';
 //importación barra de estado
 import StatusBarGeneral from '../../components/StatusBarGeneral.js';
 
@@ -34,11 +23,25 @@ const styles = StyleSheet.create({
       backgroundColor: '#ebebeb',
    },
    header: {
-      backgroundColor: '#E67E22',
-      justifyContent: 'center',
+      backgroundColor: COLOR.COLOR_SECUNDARIO,
+      marginTop: 2,
    },
 });
 export default class Equipos extends Component {
+   constructor(props) {
+      super(props);
+      var lista = global.listaCategorias;
+      var categ = lista[0];
+      this.state = {
+         listaCat: lista,
+         categoria: categ,
+         listaEquip: [],
+      };
+
+      cargarEquipos(categ, listaEquipos => {
+         this.setState({ listaEquip: listaEquipos });
+      });
+   }
    static navigationOptions = {
       tabBarLabel: 'Equipos',
       tabBarIcon: ({ tintColor }) => {
@@ -56,18 +59,43 @@ export default class Equipos extends Component {
       listaEquip: [],
    };
 
-   componentDidMount() {
-      var lista = global.listaCategorias;
-      var categ = lista[0];
-      this.setState({
-         listaCat: lista,
-         categoria: categ,
-      });
+   componentDidMount() {}
+   renderActionButton = () => {
+      let usuario = global.usuario;
+      let torneoActual = global.idTorneo;
+      let listaTorneos = global.listaTorneos;
+      if (listaTorneos) {
+         let permiso = this.buscarPermiso(listaTorneos, torneoActual);
+         console.log('renderActionButton' + usuario);
+         console.log('torneoActual' + torneoActual);
+         if (usuario && permiso != -1) {
+            return (
+               <ActionButton
+                  buttonColor="#00A680"
+                  onPress={() => {
+                     this.props.navigation.navigate('CrearEquipos', {
+                        categoria: this.state.categoria,
+                     });
+                  }}
+               />
+            );
+         }
+      }
+   };
+   buscarPermiso = (lista, id) => {
+      let posicion = -1;
+      let iteracion = 0;
+      if (lista) {
+         lista.forEach(element => {
+            if (element == id) {
+               posicion = iteracion;
+            }
+            iteracion++;
+         });
+      }
+      return posicion;
+   };
 
-      cargarEquipos(categ, listaEquipos => {
-         this.setState({ listaEquip: listaEquipos });
-      });
-   }
    render() {
       return (
          <View style={styles.container}>
@@ -78,25 +106,21 @@ export default class Equipos extends Component {
                         cargarEquipos(categ, listaEquipos => {
                            this.setState({ listaEquip: listaEquipos });
                         });
+                        this.setState({ categoria: categ });
                      }}
-                  ></NavegadorCategorias>
+                  />
                </Header>
                <Content>
                   <View style={styles.container}>
-                     <ItemEquipos lista={this.state.listaEquip} />
+                     <ItemEquipos
+                        lista={this.state.listaEquip}
+                        nav={this.props.navigation}
+                        categoria={this.state.categoria}
+                     />
                   </View>
                </Content>
             </Container>
-            <ActionButton
-               buttonColor="#00A680"
-               onPress={() => {
-                  this.props.navigation.navigate(
-                     'CrearEquipos',
-                     this.state.categoria
-                  );
-               }}
-            />
-            <StatusBarGeneral />
+            {this.renderActionButton()}
          </View>
       );
    }

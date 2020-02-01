@@ -28,7 +28,6 @@ import MisTorneosScreen from '../screens/Torneos/MisTorneos';
 
 import CalendariosScreen from '../screens/Calendarios';
 import CrearFechaScreen from '../screens/CrearFecha';
-//import PartidosScreen from '../screens/Partidos';
 import PartidosScreen from '../screens/PartidosV2';
 import EditarPartidoScreen from '../screens/EditarPartido';
 import CrearPartidoScreen from '../screens/CrearPartido';
@@ -40,10 +39,16 @@ import PerfilTorneoScreen from '../screens/Torneos/PerfilTorneo';
 import InfoPerfilTorneoScreen from '../screens/Torneos/InfoPerfilTorneo';
 import CargarImagenScreen from '../components/CargarImagen';
 import CrearEquiposScreen from '../screens/Equipos/CrearEquipos';
+import ItemEquiposScreen from '../components/ItemEquipos';
+import InfoEquiposScreen from '../screens/Equipos/InfoEquipos';
+import CrudJugadoresScreen from '../screens/Jugadores/CrudJugadores';
+import CrearJugadoresScreen from '../screens/Jugadores/CrearJugadores';
+import ItemJugadoresScreen from '../components/ItemJugadoresEquipo';
 
-import LoginScreen from '../screens/Login';
+import LoginScreen from '../screens/Login/Login';
+import ResetScreen from '../screens/Login/ResetPassword';
+import VocaliaJugadoresScreen from '../screens/JugadoresPartido';
 import VocaliaScreen from '../screens/vocalia';
-
 import RankingScreen from '../screens/Ranking';
 
 // importación del archivo de colores
@@ -121,21 +126,43 @@ const TorneosRootStack = createStackNavigator(
       EditarPartido: {
          screen: EditarPartidoScreen,
       },
-      CrearPartido: {
-         screen: CrearPartidoScreen,
-      },
+
       CargarImagen: {
          screen: CargarImagenScreen,
       },
       CrearEquipos: {
          screen: CrearEquiposScreen,
       },
+      ResetPassword: {
+         screen: ResetScreen,
+      },
+      ItemEquipos: {
+         screen: ItemEquiposScreen,
+      },
+      InfoEquipos: {
+         screen: InfoEquiposScreen,
+      },
+      CrudJugadores: {
+         screen: CrudJugadoresScreen,
+      },
+      CrearJugadores: {
+         screen: CrearJugadoresScreen,
+      },
+      ItemJugadores: {
+         screen: ItemJugadoresScreen,
+      },
+      CrearPartido: {
+         screen: CrearPartidoScreen,
+      },
+      Vocalia: {
+         screen: VocaliaScreen,
+      },
    },
    { initialRouteName: 'TabTorneos' }
 );
 
 const LoginStack = createStackNavigator({ LoginScreen });
-const VocaliaStack = createStackNavigator({ VocaliaScreen });
+const VocaliaJugadoresStack = createStackNavigator({ VocaliaJugadoresScreen });
 const RankingStack = createStackNavigator({ RankingScreen });
 const MainNavigator = Platform.select({
    //ios: createBottomTabNavigator({LoginStack }),
@@ -158,8 +185,8 @@ const MainNavigator = Platform.select({
             ),
          },
       },
-      VocaliaScreen: {
-         screen: VocaliaScreen,
+      VocaliaJugadoresScreen: {
+         screen: VocaliaJugadoresScreen,
          navigationOptions: {
             drawerLabel: 'Vocalia',
             drawerIcon: ({ tintColor }) => (

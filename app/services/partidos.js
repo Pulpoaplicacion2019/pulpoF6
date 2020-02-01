@@ -77,8 +77,8 @@ export const eliminarPartidos = (categoria, fecha, partidoEliminar, fn) => {
 };
 export const cargarJugadores = (categoria, equipo, fn) => {
    console.log('ingresa a cargar equipos v6');
-   const refPartidosRoot = firebase.database().ref('equipos');
-   const refPartidos = refPartidosRoot.child(
+   const refJugadoresRoot = firebase.database().ref('equipos');
+   const refJugadores = refJugadoresRoot.child(
       global.idTorneo +
          '/categorias/' +
          categoria +
@@ -86,11 +86,11 @@ export const cargarJugadores = (categoria, equipo, fn) => {
          equipo +
          '/jugadores'
    );
-   console.log('refPartidos ' + refPartidos.path);
+   console.log('refJugadores ' + refJugadores.path);
    const listaJugadores = [];
    let objJugador = {};
    let obj = {};
-   refPartidos.once('child_added', snap => {
+   refJugadores.once('child_added', snap => {
       console.log('agrega jugadores ', snap);
 
       obj = snap.val();
@@ -102,6 +102,7 @@ export const cargarJugadores = (categoria, equipo, fn) => {
          puntosQ2: '00',
          puntosQ3: '00',
          puntosQ4: '00',
+         estado: 'S',
       };
       console.log('obJugador ', objJugador);
 

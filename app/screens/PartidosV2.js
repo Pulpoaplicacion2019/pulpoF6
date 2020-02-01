@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, FlatList, ScrollView } from 'react-native';
+import { Container, Content, Header } from 'native-base';
 import CrearPartidoV from '../components/CrearPartidoV';
 import ItemPartidoV2 from '../components/ItemPartidoV2';
 import { cargarEquipos } from '../services/equipos.js';
@@ -20,21 +21,15 @@ export default class Partidos extends Component {
          equipoDos: '',
          equipoUno: '',
          fecha: '',
+         fechaId: '',
          hora: '',
          id: '',
          minuto: '',
          puntosEquiDos: '00',
          puntosEquiUno: '00',
       };
-   }
-   componentDidMount() {
       var categ = global.categoria;
 
-      cargarEquipos(categ, listaEquipos => {
-         this.setState({
-            listaEquip: this.convertirEquiposLista(listaEquipos),
-         });
-      });
       cargarPartidos(
          categ,
          this.props.navigation.state.params.id,
@@ -42,13 +37,13 @@ export default class Partidos extends Component {
             console.log('listaPartidos: ' + listaPartidos);
             this.setState({
                listaPartidos: listaPartidos,
-               listaFechas: this.convertirFechaLista(
-                  this.props.navigation.state.params.fechas
-               ),
-               fecha: this.props.navigation.state.params.id,
             });
          }
       );
+   }
+   componentDidMount() {
+      console.log('FechaId', this.props.navigation.state.params.id);
+      console.log('Fechas', this.props.navigation.state.params.fechas);
    }
 
    convertirEquiposLista = equipos => {
@@ -98,37 +93,47 @@ export default class Partidos extends Component {
          />
       );
    };
+   renderActionButton = () => {
+      return (
+         <ActionButton
+            buttonColor="#00A680"
+            onPress={() => {
+               this.props.navigation.navigate('CrearPartido', {
+                  fechaId: this.props.navigation.state.params.id,
+                  fechas: this.convertirFechaLista(
+                     this.props.navigation.state.params.fechas
+                  ),
+               });
+            }}
+         />
+      );
+   };
    render() {
       return (
-         <View style={[styles.container]}>
-            <Text>Partidos</Text>
+         <Container style={styles.viewBody}>
+            <Content>
+               <Text>Partidos</Text>
 
-            <FlatList
-               data={this.state.listaPartidos}
-               //ItemSeparatorComponent={this.separador}
-               renderItem={({ item }) => (
-                  <ItemPartidoV2
-                     equipos={this.state.listaEquip}
-                     fechas={this.state.listaFechas}
-                     partidos={item}
-                     eliminar={this.eliminar}
-                     guardar={this.guardar}
-                     nav={this.props.navigation}
-                     fechaId={this.props.navigation.state.params.id}
-                  />
-               )}
-               keyExtractor={item => item}
-            />
-            <ActionButton
-               buttonColor="#00A680"
-               onPress={() => {
-                  this.props.navigation.navigate('CrearPartido', {
-                     fechaId: this.props.navigation.state.params.id,
-                     fechas: this.state.listaFechas,
-                  });
-               }}
-            />
-         </View>
+               <FlatList
+                  data={this.state.listaPartidos}
+                  //ItemSeparatorComponent={this.separador}
+                  renderItem={({ item }) => (
+                     <ItemPartidoV2
+                        equipos={this.state.listaEquip}
+                        fechas={this.state.listaFechas}
+                        partidos={item}
+                        eliminar={this.eliminar}
+                        guardar={this.guardar}
+                        nav={this.props.navigation}
+                        fechaId={this.props.navigation.state.params.id}
+                     />
+                  )}
+                  keyExtractor={item => item}
+               />
+            </Content>
+
+            {this.renderActionButton()}
+         </Container>
       );
    }
 }

@@ -7,12 +7,14 @@ export const loadTeams = (fn, categoria) => {
    console.log('Ingresa a cargar lista de Calendarios');
    console.log('Categoria' + categoria);
 
-   let itemsRef = firebase.database().ref('calendario');
-   let itemChildRef = itemsRef.child(
-      'torneos/' + global.idTorneo + '/categorias/' + categoria
-   );
-   const listaResultado = [];
-   listenForItems(itemChildRef, fn, listaResultado);
+   if (categoria != null) {
+      let itemsRef = firebase.database().ref('calendario');
+      let itemChildRef = itemsRef.child(
+         'torneos/' + global.idTorneo + '/categorias/' + categoria
+      );
+      const listaResultado = [];
+      listenForItems(itemChildRef, fn, listaResultado);
+   }
 };
 
 // Función como ingreso tiene la referencia
@@ -79,6 +81,7 @@ export const listenForItems = (itemsRef, fn, lista) => {
       console.log('borrado ' + snap.val().id);
       fn(lista);
    });
+   fn(lista);
 };
 
 //guardar fechas
@@ -167,7 +170,9 @@ export const recuperarFecha = (categoria, fecha, fn) => {
             '/fechas'
       );
    fechasRef.on('value', snap => {
-      console.log('recuperar Fecha' + snap);
-      fn(snap.val());
+      if (snap.val() != null) {
+         console.log('recuperar Fecha' + snap);
+         fn(snap.val());
+      } else fn([]);
    });
 };

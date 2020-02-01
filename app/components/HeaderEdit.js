@@ -19,7 +19,7 @@ const HeaderEdit = props => {
             hitSlop={{ top: 50, bottom: 50, left: 50, right: 50 }}
             onPress={() => props.nav.navigate('InfoPerfilTorneo')}
          >
-            <Icon name="edit" type="material-icons" style={styles.button} />
+            <Icon name="info" type="material-icons" style={styles.button} />
          </TouchableOpacity>
       </View>
    );

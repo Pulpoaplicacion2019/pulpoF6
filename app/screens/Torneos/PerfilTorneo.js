@@ -8,6 +8,7 @@ import {
    FlatList,
    KeyboardAvoidingView,
    ScrollView,
+   Alert,
 } from 'react-native';
 import { Avatar, Input, Icon, Button } from 'react-native-elements';
 import { Dropdown } from 'react-native-material-dropdown';
@@ -15,7 +16,7 @@ import { guardarTorneo, recuperarTorneo } from '../../services/torneos.js';
 import { cargarCategorias } from '../../services/categorias.js';
 import FilaCategoria from '../../components/filaCategoria.js';
 import DatePicker from 'react-native-datepicker';
-
+import * as COLOR from '../../constants/colors.js';
 export default class PerfilTorneo extends Component {
    constructor(props) {
       super(props);
@@ -34,19 +35,29 @@ export default class PerfilTorneo extends Component {
          uri: '',
          listaCategorias: [],
          listaCatTorneo: [],
+         errMsjAño: null,
+         errMsjTorneo: null,
+         errMsjNombreOrganizador: null,
+         errMsjApellidoOrganizador: null,
+         errMsjTlfOrganizador: null,
+         errMsjCorreo: null,
+         errMsjCategorias: null,
+         editarPantalla: true,
       };
+
+      if (this.props.navigation.state.params.editar == 'N') {
+         this.setState({
+            editarPantalla: false,
+         });
+      }
    }
 
-   /*listenForItems = (itemsRef) => {
-    itemsRef.on('value', (snap) => {
-     var torneoFirebase =snap.val();
-     this.setState({
-    	torneo:torneoFirebase
-      });
-        });
-  }*/
-
    componentDidMount() {
+      if (this.props.navigation.state.params.editar == 'N') {
+         this.setState({
+            editarPantalla: false,
+         });
+      }
       recuperarTorneo(torneo => {
          if (torneo != null) {
             this.setState({
@@ -69,32 +80,90 @@ export default class PerfilTorneo extends Component {
          this.setState({ listaCategorias: listaCategorias });
       });
    }
+   validar = () => {
+      let año = this.state.anio;
+      let torneo = this.state.nombreTorneo;
+      let nOrganizador = this.state.nombreOrganizador;
+      let aOrganizador = this.state.apellidoOrganizador;
+      let tOrganizador = this.state.telefonoOrganizador;
+      let correo = this.state.correoOrganizador;
 
+      if (año == '') {
+         this.setState({ errMsjAño: 'Campo Requerido' });
+      } else {
+         this.setState({ errMsjAño: null });
+      }
+      if (torneo == '') {
+         this.setState({ errMsjTorneo: 'Campo Requerido' });
+      } else {
+         this.setState({ errMsjTorneo: null });
+      }
+      if (nOrganizador == '') {
+         this.setState({ errMsjNombreOrganizador: 'Campo Requerido' });
+      } else {
+         this.setState({ errMsjNombreOrganizador: null });
+      }
+      if (aOrganizador == '') {
+         this.setState({ errMsjApellidoOrganizador: 'Campo Requerido' });
+      } else {
+         this.setState({ errMsjApellidoOrganizador: null });
+      }
+      if (tOrganizador == '') {
+         this.setState({ errMsjTlfOrganizador: 'Campo Requerido' });
+      } else {
+         this.setState({ errMsjTlfOrganizador: null });
+      }
+      if (correo == '') {
+         this.setState({ errMsjCorreo: 'Campo Requerido' });
+      } else {
+         this.setState({ errMsjCorreo: null });
+      }
+      if (
+         año != '' &&
+         torneo != '' &&
+         nOrganizador != '' &&
+         aOrganizador != '' &&
+         tOrganizador != '' &&
+         correo != ''
+      ) {
+         this.guardar();
+      }
+   };
    guardar = () => {
+      console.log('PerfilTorneo.js guardar');
+      let cat = this.state.listaCatTorneo;
       let categorias = this.convertirCategorias(this.state.listaCatTorneo);
-      const torneo = {
-         anio: this.state.anio,
-         apellidoOrganizador: this.state.apellidoOrganizador,
-         correoOrganizador: this.state.correoOrganizador,
-         estado: this.state.estado,
-         favorito: this.state.favorito,
-         nombreTorneo: this.state.nombreTorneo,
-         fechaInicio: this.state.date,
-         id: this.state.nombreTorneo + '_' + this.state.anio,
-         imagenTorneo: this.state.uri,
-         nombreOrganizador: this.state.nombreOrganizador,
-         nombreTorneo: this.state.nombreTorneo,
-         telefonoOrganizador: this.state.telefonoOrganizador,
-         categorias: categorias,
-      };
-      guardarTorneo(torneo);
-      this.props.navigation.goBack();
+      console.log('categorias', cat.length);
+      if (cat.length > 0) {
+         this.setState({ errMsjCorreo: null });
+         const torneo = {
+            anio: this.state.anio,
+            apellidoOrganizador: this.state.apellidoOrganizador,
+            correoOrganizador: this.state.correoOrganizador,
+            estado: this.state.estado,
+            favorito: this.state.favorito,
+            nombreTorneo: this.state.nombreTorneo,
+            fechaInicio: this.state.date,
+            id: this.state.nombreTorneo + '_' + this.state.anio,
+            imagenTorneo: this.state.uri,
+            nombreOrganizador: this.state.nombreOrganizador,
+            telefonoOrganizador: this.state.telefonoOrganizador,
+            categorias: categorias,
+         };
+         guardarTorneo(torneo);
+         this.props.navigation.goBack();
+      } else {
+         this.setState({ errMsjCorreo: 'Ingrese Categorias' });
+      }
    };
    convertirCategorias = categorias => {
+      console.log('convertirCategorias', categorias);
       let objetoCategorias = {};
       categorias.forEach(item => {
          objetoCategorias[item] = item;
       });
+      console.log('objetoCategorias', objetoCategorias);
+
       return objetoCategorias;
    };
    convertirCategoriasLista = objetoCategorias => {
@@ -149,11 +218,12 @@ export default class PerfilTorneo extends Component {
    render() {
       return (
          <ScrollView>
-            <KeyboardAvoidingView
-               behavior="position"
-               style={styles.container}
-               enabled
-               keyboardVerticalOffset={1}
+            <View
+               style={{
+                  backgroundColor: COLOR.COLOR_SECUNDARIO,
+                  alignItems: 'center',
+                  padding: 20,
+               }}
             >
                <Avatar
                   size="xlarge"
@@ -179,96 +249,89 @@ export default class PerfilTorneo extends Component {
                      size: 30,
                   }}
                />
-
+            </View>
+            <View style={[styles.viewContainer]}>
                <Input
-                  placeholder="Año"
+                  keyboardType="numeric"
+                  containerStyle={[styles.inputStilo]}
+                  inputContainerStyle={styles.inputContentEstilo}
+                  labelStyle={styles.labelEstilo}
+                  label={'Año'}
+                  placeholder=""
+                  disabled={this.state.editarPantalla}
                   onChangeText={text => this.setState({ anio: text })}
                   value={this.state.anio + ''}
-                  leftIcon={
-                     <Icon
-                        name="chevron-down-box"
-                        type="material-community"
-                        size={20}
-                        color="black"
-                     />
-                  }
+                  errorStyle={{ color: 'red' }}
+                  errorMessage={this.state.errMsjAño}
                />
                <Input
-                  placeholder="Nombre Torneo"
+                  containerStyle={[styles.inputStilo]}
+                  inputContainerStyle={styles.inputContentEstilo}
+                  labelStyle={styles.labelEstilo}
+                  label={'Nombre Torneo'}
+                  disabled={this.state.editarPantalla}
+                  placeholder=""
                   onChangeText={text => this.setState({ nombreTorneo: text })}
                   value={this.state.nombreTorneo}
-                  leftIcon={
-                     <Icon
-                        name="account-group"
-                        type="material-community"
-                        size={20}
-                        color="black"
-                     />
-                  }
+                  errorStyle={{ color: 'red' }}
+                  errorMessage={this.state.errMsjTorneo}
                />
                <Input
-                  placeholder="Nombre Organizador"
+                  containerStyle={[styles.inputStilo]}
+                  inputContainerStyle={styles.inputContentEstilo}
+                  labelStyle={styles.labelEstilo}
+                  label={'Nombre Organizador'}
+                  placeholder=""
                   onChangeText={text =>
                      this.setState({ nombreOrganizador: text })
                   }
                   value={this.state.nombreOrganizador}
-                  leftIcon={
-                     <Icon
-                        name="account-arrow-right"
-                        type="material-community"
-                        size={20}
-                        color="black"
-                     />
-                  }
+                  errorStyle={{ color: 'red' }}
+                  errorMessage={this.state.errMsjNombreOrganizador}
                />
 
                <Input
-                  placeholder="Apellido Organizador"
+                  containerStyle={[styles.inputStilo]}
+                  inputContainerStyle={styles.inputContentEstilo}
+                  labelStyle={styles.labelEstilo}
+                  label={'Apellido Organizador'}
+                  placeholder=""
                   onChangeText={text =>
                      this.setState({ apellidoOrganizador: text })
                   }
                   value={this.state.apellidoOrganizador}
-                  leftIcon={
-                     <Icon
-                        name="account-arrow-right"
-                        type="material-community"
-                        size={20}
-                        color="black"
-                     />
-                  }
+                  errorStyle={{ color: 'red' }}
+                  errorMessage={this.state.errMsjApellidoOrganizador}
                />
                <Input
-                  placeholder="Telefono Organizador"
+                  keyboardType="numeric"
+                  containerStyle={[styles.inputStilo]}
+                  inputContainerStyle={styles.inputContentEstilo}
+                  labelStyle={styles.labelEstilo}
+                  label={'Telefono Organizador'}
+                  placeholder=""
                   onChangeText={text =>
                      this.setState({ telefonoOrganizador: text })
                   }
                   value={this.state.telefonoOrganizador}
-                  leftIcon={
-                     <Icon
-                        name="phone-in-talk"
-                        type="material-community"
-                        size={20}
-                        color="black"
-                     />
-                  }
+                  errorStyle={{ color: 'red' }}
+                  errorMessage={this.state.errMsjTlfOrganizador}
                />
                <Input
-                  placeholder="Correo Organizador"
+                  containerStyle={[styles.inputStilo]}
+                  inputContainerStyle={styles.inputContentEstilo}
+                  labelStyle={styles.labelEstilo}
+                  label={'Correo Organizador'}
+                  placeholder=""
                   onChangeText={text =>
                      this.setState({ correoOrganizador: text })
                   }
                   value={this.state.correoOrganizador}
-                  leftIcon={
-                     <Icon
-                        name="chevron-down-box"
-                        type="material-community"
-                        size={20}
-                        color="black"
-                     />
-                  }
+                  errorStyle={{ color: 'red' }}
+                  errorMessage={this.state.errMsjCorreo}
                />
                <DatePicker
-                  style={{ width: 200 }}
+                  style={styles.date}
                   date={this.state.date}
                   mode="date"
                   placeholder="Fecha Inicio"
@@ -291,11 +354,15 @@ export default class PerfilTorneo extends Component {
                      this.setState({ date: date });
                   }}
                />
+
                <Dropdown
                   label="Categorias"
                   data={this.state.listaCategorias}
                   onChangeText={this.elegirCategoria}
                />
+               <Text style={{ color: 'red' }}>
+                  {this.state.errMsjCategorias}
+               </Text>
                <FlatList
                   data={this.state.listaCatTorneo}
                   renderItem={({ item }) => (
@@ -306,55 +373,52 @@ export default class PerfilTorneo extends Component {
                   )}
                   keyExtractor={item => item}
                />
-
-               <Button title="GUARDAR" onPress={this.guardar} />
-            </KeyboardAvoidingView>
+            </View>
+            <Text style={{ color: 'red' }}>{this.state.errMsjCategorias}</Text>
+            <Button
+               title="GUARDAR"
+               onPress={() => {
+                  this.validar();
+               }}
+            />
          </ScrollView>
       );
    }
 }
 
 const styles = StyleSheet.create({
-   container: {
-      flex: 1,
-   },
-
-   btn: {
-      paddingLeft: 20,
-      paddingRight: 20,
-      paddingTop: 10,
-      paddingBottom: 10,
-      borderRadius: 20,
-      backgroundColor: 'rgb(3, 154, 229)',
-      marginTop: 20,
-      alignItems: 'center',
-   },
-   disabledBtn: {
-      backgroundColor: 'rgba(3,155,229,0.5)',
-   },
-   btnTxt: {
-      color: '#fff',
-   },
-   image: {
-      marginTop: 20,
-      minWidth: 200,
-      height: 200,
-      resizeMode: 'contain',
-      backgroundColor: '#ccc',
-   },
-
-   img: {
-      flex: 1,
-      height: 100,
-      margin: 5,
-      resizeMode: 'contain',
-      borderWidth: 1,
-      borderColor: '#eee',
-      backgroundColor: '#ccc',
-   },
    progressBar: {
       backgroundColor: 'rgb(3, 154, 229)',
       height: 3,
       shadowColor: '#000',
+   },
+   viewContainer: {
+      flex: 1,
+      backgroundColor: COLOR.COLOR_SNOWY_MOUNT,
+      padding: 20,
+      //alignItems: 'center',
+   },
+   inputStilo: {
+      padding: 2,
+      marginTop: 20,
+   },
+   labelEstilo: { color: COLOR.COLOR_SECUNDARIO },
+   inputContentEstilo: {
+      backgroundColor: '#ffff',
+      borderWidth: 1,
+      borderColor: COLOR.COLOR_GRIS_CLARO,
+      borderRadius: 8,
+      paddingStart: 5,
+   },
+   date: {
+      backgroundColor: '#ffff',
+      borderWidth: 1,
+      borderColor: COLOR.COLOR_GRIS_CLARO,
+      borderRadius: 8,
+      paddingStart: 5,
+      padding: 2,
+      marginTop: 20,
+      marginLeft: 14,
+      width: 350,
    },
 });

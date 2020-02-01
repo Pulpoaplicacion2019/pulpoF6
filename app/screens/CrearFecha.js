@@ -60,22 +60,31 @@ export default class CrearFecha extends Component {
             listaFechas: this.convertirFechasLista(fechas),
          });
       });
+      recuperarFecha(categ, this.state.fecha, fechas => {
+         console.log('fechas: ' + fechas);
+         this.setState({
+            listaFechas: this.convertirFechasLista(fechas),
+         });
+      });
    };
    componentDidMount() {
       console.log('ingresa componentDidMount ');
-      const num = this.props.navigation.state.params.id;
+      let num = 0;
+      if (this.props.navigation.state.params.id) {
+         num = this.props.navigation.state.params.id;
+      }
       console.log('fe' + num);
       const categ = global.categoria;
       const fechaId = 'Fecha' + (num + 1);
       this.setState({ fecha: fechaId });
-      recuperarFecha(categ, this.state.fecha, fechas => {
+      /*cargarFechas(categ, this.state.fecha, fechas => {
          if (fechas != null) {
             console.log('fechas: ' + fechas);
             this.setState({
                listaFechas: this.convertirFechasLista(fechas),
             });
          }
-      });
+      });*/
    }
 
    convertirFechasLista = objetoFechas => {

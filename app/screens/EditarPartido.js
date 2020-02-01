@@ -88,7 +88,7 @@ export default class EditarPartido extends Component {
          equipo2 = this.props.navigation.state.params.partidos.equipoDos;
       }
       if (fecha == '') {
-         fecha = this.props.navigation.state.params.partidos.fecha;
+         fecha = this.props.navigation.state.params.partidos.fechaPartido;
       }
       if (hora == '') {
          hora = this.props.navigation.state.params.partidos.hora;
@@ -176,7 +176,9 @@ export default class EditarPartido extends Component {
             <View style={{ flex: 1 }}>
                <Dropdown
                   label="Fecha"
-                  value={this.props.navigation.state.params.partidos.fecha}
+                  value={
+                     this.props.navigation.state.params.partidos.fechaPartido
+                  }
                   data={this.state.listaFechas}
                   onChangeText={value => this.setState({ fechaPartido: value })}
                   selectedItemColor={COLOR.COLOR_CHRISTMAS_RED}
@@ -205,6 +207,7 @@ export default class EditarPartido extends Component {
                <View style={{ flex: 1 }}>
                   <Dropdown
                      label="Equipo1"
+                     disabled={true}
                      value={
                         this.props.navigation.state.params.partidos.equipoUno
                      }
@@ -215,6 +218,7 @@ export default class EditarPartido extends Component {
                <View style={{ flex: 1, marginLeft: 50 }}>
                   <Dropdown
                      label="Equipo2"
+                     disabled={true}
                      value={
                         this.props.navigation.state.params.partidos.equipoDos
                      }

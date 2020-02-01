@@ -213,3 +213,14 @@ export const guardarPuntosJugador = (puntosJ, jugadores, ref, equi) => {
    console.log('guardar puntos', refPuntosJ);
    refPuntosJ.set(puntosJ);
 };
+export const guardarEstadoJugador = (estado, jugadores, ref) => {
+   console.log('ingresa a guardar puntos');
+
+   const itemsRef = firebase.database().ref('calendario/torneos');
+   const refEstadoJ = itemsRef.child(
+      global.ref + '/' + jugadores + '/' + ref + '/estado'
+   );
+
+   console.log('guardar estado', refEstadoJ);
+   refEstadoJ.set(estado);
+};

@@ -228,6 +228,8 @@ export default class ItemJugadoresVocalia extends Component {
                         this.setState({ modalVisibleSuplente: valorSuplente });
                      }}
                      listaSuplente={this.props.listaSuplentes}
+                     numJugador={this.props.jugador.numero}
+                     refJugadores={this.props.jugador.refJugadores}
                   />
                </View>
                <View

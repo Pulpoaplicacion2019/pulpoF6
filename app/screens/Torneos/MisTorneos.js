@@ -47,14 +47,19 @@ export default class Example extends Component {
 
    renderActionButton = () => {
       let usuario = this.state.user;
-      console.log('renderActionButton' + usuario);
       if (usuario) {
+         usuario = usuario.toLowerCase().trim();
+      }
+      console.log('renderActionButton' + usuario);
+      if (usuario == 'pulpoapp2019@gmail.com') {
          return (
             <ActionButton
                buttonColor={COLOR.COLOR_AMARILLO}
                onPress={() => {
                   global.idTorneo = null;
-                  this.props.navigation.navigate('PerfilTorneo');
+                  this.props.navigation.navigate('PerfilTorneo', {
+                     editar: 'N',
+                  });
                }}
             />
          );
