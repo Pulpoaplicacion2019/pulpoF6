@@ -298,7 +298,7 @@ export default class Partidos extends Component {
                            jugador={item}
                            sumarPuntos={this.sumarP1}
                            listaSuplentes={this.state.listaJ1Suplentes}
-                           refJugadores="Jugadores1"
+                           refJugadores="jugadores1"
                         />
                      )}
                      keyExtractor={item => item.numero}
@@ -339,7 +339,13 @@ export default class Partidos extends Component {
                </View>
             </View>
             <View style={{ padding: 25 }}>
-               <Button large title="Fin Partido" />
+               <Button
+                  large
+                  title="Fin Partido"
+                  onPress={() => {
+                     this.props.navigation.navigate('MejorJugador');
+                  }}
+               />
             </View>
          </ScrollView>
       );

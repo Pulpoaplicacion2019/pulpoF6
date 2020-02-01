@@ -51,6 +51,8 @@ import VocaliaJugadoresScreen from '../screens/JugadoresPartido';
 import VocaliaScreen from '../screens/vocalia';
 import RankingScreen from '../screens/Ranking';
 
+import PartidosMejorJugadorScreen from '../screens/PartidoMejorJugador';
+
 // importación del archivo de colores
 import * as COLOR from '../constants/colors.js';
 
@@ -156,6 +158,9 @@ const TorneosRootStack = createStackNavigator(
       },
       Vocalia: {
          screen: VocaliaScreen,
+      },
+      MejorJugador: {
+         screen: PartidosMejorJugadorScreen,
       },
    },
    { initialRouteName: 'TabTorneos' }
