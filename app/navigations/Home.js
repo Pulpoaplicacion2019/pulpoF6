@@ -50,6 +50,7 @@ import ResetScreen from '../screens/Login/ResetPassword';
 import VocaliaJugadoresScreen from '../screens/JugadoresPartido';
 import VocaliaScreen from '../screens/vocalia';
 import RankingScreen from '../screens/Ranking';
+import CanchasScreen from '../screens/crearCanchas';
 
 // importación del archivo de colores
 import * as COLOR from '../constants/colors.js';
@@ -156,6 +157,9 @@ const TorneosRootStack = createStackNavigator(
       },
       Vocalia: {
          screen: VocaliaScreen,
+      },
+      Canchas: {
+         screen: CanchasScreen,
       },
    },
    { initialRouteName: 'TabTorneos' }

@@ -53,6 +53,7 @@ export default class CrearEquipos extends Component {
       let apellidoRepresentante = this.state.apellidoRepresentante;
       let tlfRepresentante = this.state.telefono;
       let correo = this.state.mail;
+      let valCorreo = '';
 
       if (equipo == '') {
          this.setState({ errMsjEquipo: 'Campo Requerido' });
@@ -77,15 +78,25 @@ export default class CrearEquipos extends Component {
 
       if (correo == '') {
          this.setState({ errMsjCorreo: 'Campo Requerido' });
-      } else {
+      } else if (
+         /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i.test(
+            correo
+         )
+      ) {
          this.setState({ errMsjCorreo: null });
+         valCorreo = 'S';
+      } else {
+         this.setState({ errMsjCorreo: 'E-mail inválido' });
+         valCorreo = 'N';
       }
+
       if (
          equipo != '' &&
          nombreRepresentante != '' &&
          apellidoRepresentante != '' &&
          tlfRepresentante != '' &&
-         correo != ''
+         correo != '' &&
+         valCorreo == 'S'
       ) {
          this.guardar();
       }
