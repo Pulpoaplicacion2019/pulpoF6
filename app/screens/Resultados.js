@@ -8,7 +8,7 @@ import {
    ActivityIndicator,
 } from 'react-native';
 
-import { Image } from 'react-native-elements';
+import { Avatar } from 'react-native-elements';
 import ActionButton from 'react-native-action-button';
 //Importación componente de navegación
 import NavegadorCategorias from '../components/NavegadorCategorias.js';
@@ -54,14 +54,19 @@ export default class Resultados extends Component {
          cancha,
          puntosEqui1Total,
          puntosEqui2Total,
+         url1,
+         url2,
       } = listaPartidos.item;
       return (
          <View style={styles.viewPartidos}>
             <View style={styles.viewEquipoUno}>
-               <Image
-                  resizeMode="cover"
-                  source={{ cancha }}
-                  style={[styles.imagenEstilo, border('#7A7A7A')]}
+               <Avatar
+                  rounded
+                  size="xlarge"
+                  source={{
+                     uri: url1,
+                  }}
+                  style={[styles.imagenEstilo]}
                />
                <Text style={styles.viewNombreEquipo}>{equipoUno}</Text>
             </View>
@@ -71,10 +76,13 @@ export default class Resultados extends Component {
                </Text>
             </View>
             <View style={styles.viewEquipoUno}>
-               <Image
-                  resizeMode="cover"
-                  source={{ cancha }}
-                  style={[styles.imagenEstilo, border('#7A7A7A')]}
+               <Avatar
+                  rounded
+                  size="xlarge"
+                  source={{
+                     uri: url2,
+                  }}
+                  style={[styles.imagenEstilo]}
                />
                <Text style={styles.viewNombreEquipo}>{equipoDos}</Text>
             </View>
