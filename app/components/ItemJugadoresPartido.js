@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import { Icon, CheckBox } from 'react-native-elements';
 import { COLOR_CHRISTMAS_RED, COLOR_BLANCO } from '../constants/colors';
-import ModalSuplentes from '../modales/VacaliaSuplentes.js';
+import ModalSuplentes from '../modales/VocaliaSuplentes.js';
 
 export default class ItemJugadoresVocalia extends Component {
    state = {
@@ -109,5 +109,5 @@ const styles = StyleSheet.create({
       marginHorizontal: 20,
       backgroundColor: '#ded7d7',
    },
-   txt: { fontSize: 15, padding: 5 },
+   txt: { fontSize: 12, padding: 5 },
 });

@@ -340,7 +340,13 @@ export default class Partidos extends Component {
                </View>
             </View>
             <View style={{ padding: 25 }}>
-               <Button large title="Fin Partido" />
+               <Button
+                  large
+                  title="Fin Partido"
+                  onPress={() => {
+                     this.props.navigation.navigate('MejorJugador');
+                  }}
+               />
             </View>
          </ScrollView>
       );

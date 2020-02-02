@@ -11,21 +11,24 @@ import {
 } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { COLOR_CHRISTMAS_RED, COLOR_BLANCO } from '../constants/colors';
-import ModalSuplentes from '../modales/VacaliaSuplentes.js';
+import ModalSuplentes from '../modales/VocaliaSuplentes.js';
+import ModalFaltas from '../modales/VocaliaFaltas.js';
 
 export default class ItemJugadoresVocalia extends Component {
    state = {
       modalVisible: false,
       modalVisibleSuplente: false,
+      modalVisibleFatas: false,
    };
 
    setModalVisible(visible) {
       this.setState({ modalVisible: visible });
    }
    setModalVisibleSuplentes(visible) {
-      console.log('Visible:', visible);
       this.setState({ modalVisibleSuplente: visible });
-      console.log(this.state.modalVisibleSuplente);
+   }
+   setModalVisibleFaltas(visible) {
+      this.setState({ modalVisibleFatas: visible });
    }
 
    render() {
@@ -267,11 +270,22 @@ export default class ItemJugadoresVocalia extends Component {
                         marginLeft: 8,
                      }}
                      hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
+                     onPress={() => {
+                        this.setModalVisibleFaltas(true);
+                     }}
                   >
                      <Icon
                         name="arrow-up-bold"
                         type="material-community"
                         style={styles.button}
+                     />
+                     <ModalFaltas
+                        falta={valorFalta => {
+                           this.setState({ modalVisibleFatas: valorFalta });
+                        }}
+                        isModalVisible={this.state.modalVisibleFatas}
+                        numJugador={this.props.jugador.numero}
+                        faltaJugador={this.props.jugador.faltas}
                      />
                   </TouchableOpacity>
                </View>

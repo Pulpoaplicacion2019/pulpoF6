@@ -129,7 +129,7 @@ export default class Partidos extends Component {
                <View style={{ padding: 25 }}>
                   <Button
                      large
-                     title="Guardar"
+                     title="Iniciar Partido"
                      onPress={() => {
                         this.props.navigation.navigate('Vocalia');
                      }}
@@ -143,9 +143,10 @@ export default class Partidos extends Component {
 
 const styles = StyleSheet.create({
    container: {
-      flexDirection: 'column',
+      flexDirection: 'row',
    },
    vocalia: {
+      flex: 1,
       margin: 1,
       borderRadius: 4,
       borderWidth: 0.5,
