@@ -7,18 +7,7 @@ import {
    ScrollView,
    TextInput,
 } from 'react-native';
-import {
-   Container,
-   Header,
-   Title,
-   Content,
-   Footer,
-   FooterTab,
-   Left,
-   Right,
-   Body,
-} from 'native-base';
-import { Icon, Input, Avatar, Button } from 'react-native-elements';
+import { Container, Content } from 'native-base';
 import ActionButton from 'react-native-action-button';
 import { cargarJugadores } from '../../services/jugadores';
 import ItemJugadoresEquipo from '../../components/ItemJugadoresEquipo';
@@ -73,28 +62,32 @@ export default class CrudJugadores extends Component {
 
    render() {
       return (
-         <View>
-            <ScrollView>
-               <View style={styles.viewContainer}>
-                  <View style={styles.header}>
-                     <Text style={styles.labelEstilo}>CÉDULA</Text>
-                     <Text style={styles.labelEstilo}>NOMBRE</Text>
-                     <Text style={styles.labelEstilo}>APELLIDO</Text>
-                     <Text style={styles.labelEstilo}>NÚMERO</Text>
-                  </View>
-                  <FlatList
-                     data={this.state.listaJugadores}
-                     renderItem={({ item }) => (
-                        <ItemJugadoresEquipo
-                           nav={this.props.navigation}
-                           jugador={item}
-                           equipo={this.state.equipo}
+         <Container>
+            <Content>
+               <View>
+                  <ScrollView>
+                     <View style={styles.viewContainer}>
+                        <View style={styles.header}>
+                           <Text style={styles.labelEstilo}>CÉDULA</Text>
+                           <Text style={styles.labelEstilo}>NOMBRE</Text>
+                           <Text style={styles.labelEstilo}>APELLIDO</Text>
+                           <Text style={styles.labelEstilo}>NÚMERO</Text>
+                        </View>
+                        <FlatList
+                           data={this.state.listaJugadores}
+                           renderItem={({ item }) => (
+                              <ItemJugadoresEquipo
+                                 nav={this.props.navigation}
+                                 jugador={item}
+                                 equipo={this.state.equipo}
+                              />
+                           )}
+                           keyExtractor={item => item}
                         />
-                     )}
-                     keyExtractor={item => item}
-                  />
+                     </View>
+                  </ScrollView>
                </View>
-            </ScrollView>
+            </Content>
             <ActionButton
                buttonColor="#00A680"
                onPress={() => {
@@ -103,7 +96,7 @@ export default class CrudJugadores extends Component {
                   });
                }}
             />
-         </View>
+         </Container>
       );
    }
 }

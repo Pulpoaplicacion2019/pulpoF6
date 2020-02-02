@@ -332,6 +332,7 @@ export default class Partidos extends Component {
                         <ItemJugadoresVocalia
                            jugador={item}
                            sumarPuntos={this.sumarP2}
+                           refJugadores="jugadores2"
                         />
                      )}
                      keyExtractor={item => item.numero}

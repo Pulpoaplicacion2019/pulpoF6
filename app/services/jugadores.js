@@ -19,13 +19,13 @@ export const cargarJugadores = (equipo, fn) => {
    });
 
    refJugador.on('child_changed', snap => {
-      let i = buscar(listaJugadores, snap.val().id);
+      let i = buscar(listaJugadores, snap.val().cedula);
       listaJugadores[i] = snap.val();
       fn(listaJugadores);
    });
 
    refJugador.on('child_removed', snap => {
-      let i = buscar(listaJugadores, snap.val().id);
+      let i = buscar(listaJugadores, snap.val().cedula);
       listaJugadores.splice(i, 1);
       fn(listaJugadores);
    });
@@ -44,12 +44,43 @@ export const guardarJugador = (equipo, jugador) => {
    );
    refEquipo.set(jugador);
 };
-
+export const recuperarJugador = (jugador, fn) => {
+   var refEquiposRoot = firebase.database().ref('equipos');
+   var refEquipo = refEquiposRoot.child(
+      global.idTorneo +
+         '/categorias/' +
+         jugador.categoria +
+         '/equipos/' +
+         jugador.equipo +
+         '/jugadores/' +
+         jugador.cedula
+   );
+   refEquipo.on('value', snap => {
+      fn(snap.val());
+   });
+};
+export const eliminarJugador = jugador => {
+   console.log('ingresa a eliminar partidos v6');
+   const refEquiposRoot = firebase.database().ref('equipos');
+   var refEquipo = refEquiposRoot
+      .child(
+         global.idTorneo +
+            '/categorias/' +
+            jugador.categoria +
+            '/equipos/' +
+            jugador.equipo +
+            '/jugadores/' +
+            jugador.cedula
+      )
+      .remove(() => {
+         console.log('Operation Complete');
+      });
+};
 buscar = (listaJugadores, id) => {
    let posicion = -1;
    let iteracion = 0;
    listaJugadores.forEach(element => {
-      if (element.id == id) {
+      if (element.cedula == id) {
          posicion = iteracion;
       }
       iteracion++;

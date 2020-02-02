@@ -29,6 +29,8 @@ export default class CrearPartido extends Component {
          errMsjMinuto: null,
          errMsjEquipo1: null,
          errMsjEquipo2: null,
+         url1: '',
+         url2: '',
       };
       var categ = global.categoria;
 
@@ -128,6 +130,8 @@ export default class CrearPartido extends Component {
          puntosEqui2Q3: '00',
          puntosEqui2Q4: '00',
          puntosEqui2Total: '00',
+         url1: this.state.url1,
+         url2: this.state.url2,
       };
       //const listaCategorias = global.listaCategorias;
       const categ = global.categoria;
@@ -139,10 +143,11 @@ export default class CrearPartido extends Component {
       console.log('equipo', equipo);
       const categ = global.categoria;
       let equi = equipo + '_' + categ;
-      cargarJugadores(categ, equi, listaJugadores => {
+      cargarJugadores(categ, equi, (listaJugadores, url) => {
          console.log('jugadores1: ', listaJugadores);
          this.setState({
-            jugadores1: listaJugadores[0],
+            jugadores1: listaJugadores,
+            url1: url,
          });
       });
    };
@@ -150,10 +155,11 @@ export default class CrearPartido extends Component {
       console.log('equipo', equipo);
       const categ = global.categoria;
       let equi = equipo + '_' + categ;
-      cargarJugadores(categ, equi, listaJugadores => {
+      cargarJugadores(categ, equi, (listaJugadores, url) => {
          console.log('jugadores2: ', listaJugadores);
          this.setState({
-            jugadores2: listaJugadores[0],
+            jugadores2: listaJugadores,
+            url2: url,
          });
       });
    };

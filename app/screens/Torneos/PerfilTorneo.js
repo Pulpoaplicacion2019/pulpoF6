@@ -87,6 +87,8 @@ export default class PerfilTorneo extends Component {
       let aOrganizador = this.state.apellidoOrganizador;
       let tOrganizador = this.state.telefonoOrganizador;
       let correo = this.state.correoOrganizador;
+      let valCorreo = '';
+      ('/^[-w.%+]{1,64}@(?:[A-Z0-9-]{1,63}.){1,125}[A-Z]{2,63}$/i');
 
       if (año == '') {
          this.setState({ errMsjAño: 'Campo Requerido' });
@@ -115,16 +117,26 @@ export default class PerfilTorneo extends Component {
       }
       if (correo == '') {
          this.setState({ errMsjCorreo: 'Campo Requerido' });
-      } else {
+      } else if (
+         /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i.test(
+            correo
+         )
+      ) {
          this.setState({ errMsjCorreo: null });
+         valCorreo = 'S';
+      } else {
+         this.setState({ errMsjCorreo: 'E-mail inválido' });
+         valCorreo = 'N';
       }
+
       if (
          año != '' &&
          torneo != '' &&
          nOrganizador != '' &&
          aOrganizador != '' &&
          tOrganizador != '' &&
-         correo != ''
+         correo != '' &&
+         valCorreo == 'S'
       ) {
          this.guardar();
       }

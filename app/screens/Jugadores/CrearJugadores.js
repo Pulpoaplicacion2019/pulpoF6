@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, ScrollView, TextInput } from 'react-native';
 import { Icon, Input, Avatar, Button } from 'react-native-elements';
-import { guardarJugador } from '../../services/jugadores.js';
+import { guardarJugador, recuperarJugador } from '../../services/jugadores.js';
 
 // importación archivo de colores
 import * as COLOR from '../../constants/colors.js';
@@ -38,7 +38,8 @@ export default class CrearJugadores extends Component {
       apellido: '',
       cedula: '',
       mail: '',
-      equipo: {},
+      numero: '',
+      jugadorInfo: {},
    };
    guardar = () => {
       let jugador = {
@@ -47,15 +48,34 @@ export default class CrearJugadores extends Component {
          primerApellido: this.state.apellido,
          telefono: this.state.telefono,
          mail: this.state.mail,
+         numero: this.state.numero,
       };
       guardarJugador(this.state.equipo, jugador);
       this.props.navigation.goBack();
    };
 
    componentDidMount() {
-      let equipoDatos = this.props.navigation.getParam('equipo', null);
+      let jugadorId = this.props.navigation.getParam('jugadorId', null);
+      let equipo = this.props.navigation.getParam('equipo', null);
       this.setState({
-         equipo: equipoDatos,
+         equipo: equipo,
+      });
+      let infoJugador = {
+         categoria: equipo.categoria,
+         equipo: equipo.id,
+         cedula: jugadorId,
+      };
+      recuperarJugador(infoJugador, jugador => {
+         if (jugador != null) {
+            this.setState({
+               cedula: jugador.cedula,
+               nombre: jugador.primerNombre,
+               apellido: jugador.primerApellido,
+               telefono: jugador.telefono,
+               mail: jugador.mail,
+               numero: jugador.numero,
+            });
+         }
       });
    }
    render() {
@@ -98,6 +118,14 @@ export default class CrearJugadores extends Component {
                   placeholder="equipo@torneo.com"
                   onChangeText={value => this.setState({ mail: value })}
                   value={this.state.mail}
+               />
+               <Input
+                  containerStyle={[styles.inputStilo]}
+                  inputContainerStyle={styles.inputContentEstilo}
+                  labelStyle={styles.labelEstilo}
+                  label={'Número del Jugador'}
+                  onChangeText={value => this.setState({ numero: value })}
+                  value={this.state.numero}
                />
 
                <View

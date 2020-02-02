@@ -50,6 +50,7 @@ import ResetScreen from '../screens/Login/ResetPassword';
 import VocaliaJugadoresScreen from '../screens/JugadoresPartido';
 import VocaliaScreen from '../screens/vocalia';
 import RankingScreen from '../screens/Ranking';
+import CanchasScreen from '../screens/crearCanchas';
 
 import PartidosMejorJugadorScreen from '../screens/PartidoMejorJugador';
 
@@ -159,8 +160,12 @@ const TorneosRootStack = createStackNavigator(
       Vocalia: {
          screen: VocaliaScreen,
       },
+
       MejorJugador: {
          screen: PartidosMejorJugadorScreen,
+      },
+      Canchas: {
+         screen: CanchasScreen,
       },
    },
    { initialRouteName: 'TabTorneos' }

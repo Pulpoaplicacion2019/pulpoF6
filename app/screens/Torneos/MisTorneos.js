@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Platform, StyleSheet, View } from 'react-native';
 import ItemTorneos from '../../components/ItemTorneos';
-import { cargarTorneos } from '../../services/torneos.js';
+import { cargarTorneosEnCurso } from '../../services/torneos.js';
 import { Icon } from 'react-native-elements';
 import { DrawerActions } from 'react-navigation-drawer';
 import styles from '../../Styles/styles';
@@ -24,22 +24,19 @@ export default class Example extends Component {
 
    constructor() {
       super();
-      global.torneos = [];
+      this.state = {
+         urlResult: '',
+         idLayout: 'torneo',
+         listaTorneos: [],
+         user: '',
+      };
+      cargarTorneosEnCurso(torneos => {
+         this.setState({ listaTorneos: torneos });
+      });
    }
-   state = {
-      urlResult: '',
-      idLayout: 'torneo',
-      listaTorneos: [],
-      user: '',
-   };
 
    componentDidMount() {
       this.setState({ user: global.usuario });
-      cargarTorneos(this);
-      this.setState({
-         listaTorneos: global.torneos,
-      });
-      global.objTorneos = this;
    }
    componentWillUnmount() {
       console.log('salir');
