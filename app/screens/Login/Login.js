@@ -4,6 +4,12 @@ import { Icon, Input, Button } from 'react-native-elements';
 import { DrawerActions } from 'react-navigation-drawer';
 import { cargarPermisos } from '../../services/permisos';
 import { firebase } from '@react-native-firebase/auth';
+import {
+   GoogleSignin,
+   GoogleSigninButton,
+   statusCodes,
+ } from '@react-native-community/google-signin';
+
 export default class Login extends Component {
    state = {
       usuario: '',
@@ -11,11 +17,47 @@ export default class Login extends Component {
       errorMessage: null,
       errorMessageUser: null,
       errorMessagePass: null,
+      infoUsuario: null, 
+      loggedIn: true
    };
 
    constructor(props) {
       super(props);
    }
+
+   componentDidMount() {
+      GoogleSignin.configure({
+        webClientId: '616527640285-7jr93itadhs48qpg90jan9dum7uobgff.apps.googleusercontent.com', 
+      });
+    }
+
+    signIn = async () => {
+      try {
+        await GoogleSignin.hasPlayServices();
+        const infoUsuario = await GoogleSignin.signIn();
+        this.setState({ infoUsuario: infoUsuario, loggedIn: true });
+        this.loginGoogle();
+      } catch (error) {
+        if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+          console.log("error1")
+        } else if (error.code === statusCodes.IN_PROGRESS) {
+          console.log("error2")
+        } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+         console.log("error3")
+        } else {
+         console.log("Play services error", error);
+        }
+      }
+    };
+
+    loginGoogle = () => {
+      global.usuario = this.state.infoUsuario.user.email;
+       firebase.auth().signInWithCredential(firebase.auth.GoogleAuthProvider.credential(this.state.infoUsuario.idToken)).then(() => {
+         let usuario = global.usuario;
+         usuario = usuario.replace(/\./g, '');
+         this.props.navigation.navigate('MisTorneos')
+      })
+    }
 
    showError = error => {
       let mensaje;
@@ -83,7 +125,8 @@ export default class Login extends Component {
          });
    };
 
-   goResetPassword = () => this.props.navigation.navigate('ResetPassword');
+   goResetPassword = () => this.props.navigation.navigate('ResetPassword')
+
    static navigationOptions = ({ navigation }) => ({
       headerTitle: 'Login',
       headerLeft: Platform.select({
@@ -105,6 +148,7 @@ export default class Login extends Component {
          ),
       }),
    });
+
    render() {
       return (
          <View style={styles.viewBody}>
@@ -158,6 +202,15 @@ export default class Login extends Component {
                   color: '#039BE5',
                }}
                type="clear"
+            />
+
+            <GoogleSigninButton
+              style={{ width: 312, height: 48 }}
+              size={GoogleSigninButton.Size.Wide}
+              color={GoogleSigninButton.Color.Light}
+              onPress={() => {
+               this.signIn();
+              }}
             />
          </View>
       );
