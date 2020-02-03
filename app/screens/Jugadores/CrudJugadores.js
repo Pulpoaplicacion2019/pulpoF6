@@ -20,7 +20,6 @@ const styles = StyleSheet.create({
       flex: 1,
       backgroundColor: COLOR.COLOR_SNOWY_MOUNT,
       padding: 20,
-      //alignItems: 'center',
    },
    inputStilo: {
       padding: 2,
@@ -65,6 +64,7 @@ export default class CrudJugadores extends Component {
          <Container>
             <Content>
                <View>
+                  <Text style={styles.labelEstilo}>JUGADORES DEL EQUIPO</Text>
                   <ScrollView>
                      <View style={styles.viewContainer}>
                         <View style={styles.header}>
@@ -80,6 +80,7 @@ export default class CrudJugadores extends Component {
                                  nav={this.props.navigation}
                                  jugador={item}
                                  equipo={this.state.equipo}
+                                 visible={true}
                               />
                            )}
                            keyExtractor={item => item}
@@ -93,6 +94,8 @@ export default class CrudJugadores extends Component {
                onPress={() => {
                   this.props.navigation.navigate('CrearJugadores', {
                      equipo: this.state.equipo,
+                     listaJugadores: this.state.listaJugadores,
+                     modo: 'C',
                   });
                }}
             />

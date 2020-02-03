@@ -1,4 +1,5 @@
 import { firebase } from '@react-native-firebase/database';
+import { crearPermiso } from './permisos.js';
 
 export const cargarJugadores = (equipo, fn) => {
    console.log('ingresa a cargar equipo');
@@ -32,8 +33,8 @@ export const cargarJugadores = (equipo, fn) => {
 };
 export const guardarJugador = (equipo, jugador) => {
    console.log('ingresa a guardar equipos');
-   var refEquiposRoot = firebase.database().ref('equipos');
-   var refEquipo = refEquiposRoot.child(
+   var refJugadoresRoot = firebase.database().ref('equipos');
+   var refJugador = refJugadoresRoot.child(
       global.idTorneo +
          '/categorias/' +
          equipo.categoria +
@@ -42,11 +43,12 @@ export const guardarJugador = (equipo, jugador) => {
          '/jugadores/' +
          jugador.cedula
    );
-   refEquipo.set(jugador);
+   refJugador.set(jugador);
+   crearPermiso(jugador.mail, 'jugadores', jugador.cedula);
 };
 export const recuperarJugador = (jugador, fn) => {
-   var refEquiposRoot = firebase.database().ref('equipos');
-   var refEquipo = refEquiposRoot.child(
+   var refJugadoresRoot = firebase.database().ref('equipos');
+   var refJugador = refJugadoresRoot.child(
       global.idTorneo +
          '/categorias/' +
          jugador.categoria +
@@ -55,14 +57,14 @@ export const recuperarJugador = (jugador, fn) => {
          '/jugadores/' +
          jugador.cedula
    );
-   refEquipo.on('value', snap => {
+   refJugador.on('value', snap => {
       fn(snap.val());
    });
 };
 export const eliminarJugador = jugador => {
    console.log('ingresa a eliminar partidos v6');
-   const refEquiposRoot = firebase.database().ref('equipos');
-   var refEquipo = refEquiposRoot
+   const refJugadoresRoot = firebase.database().ref('equipos');
+   var refJugador = refJugadoresRoot
       .child(
          global.idTorneo +
             '/categorias/' +
@@ -76,7 +78,7 @@ export const eliminarJugador = jugador => {
          console.log('Operation Complete');
       });
 };
-buscar = (listaJugadores, id) => {
+export const buscar = (listaJugadores, id) => {
    let posicion = -1;
    let iteracion = 0;
    listaJugadores.forEach(element => {

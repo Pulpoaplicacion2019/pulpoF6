@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, ScrollView, TextInput } from 'react-native';
 import { Icon, Input, Avatar, Button } from 'react-native-elements';
-import { guardarEquipos, recuperarEquipo } from '../../services/equipos.js';
+import {
+   guardarEquipos,
+   recuperarEquipo,
+   buscar,
+} from '../../services/equipos.js';
 
 // importación archivo de colores
 import * as COLOR from '../../constants/colors.js';
@@ -53,12 +57,24 @@ export default class CrearEquipos extends Component {
       let apellidoRepresentante = this.state.apellidoRepresentante;
       let tlfRepresentante = this.state.telefono;
       let correo = this.state.mail;
-      let valCorreo = '';
+      let existeEquipo = -1;
+      let modo = this.props.navigation.getParam('modo', null);
+      let listaEquipos = this.props.navigation.getParam('listaEquipos', null);
 
       if (equipo == '') {
          this.setState({ errMsjEquipo: 'Campo Requerido' });
       } else {
-         this.setState({ errMsjEquipo: null });
+         if (modo == 'C') {
+            let idEquipo = this.state.nombreEquipo + '_' + this.state.categoria;
+            existeEquipo = buscar(listaEquipos, idEquipo);
+            if (existeEquipo != -1) {
+               this.setState({ errMsjEquipo: 'Equipo ya existe' });
+            } else {
+               this.setState({ errMsjEquipo: null });
+            }
+         } else {
+            this.setState({ errMsjEquipo: null });
+         }
       }
       if (nombreRepresentante == '') {
          this.setState({ errMsjNombreRepresentante: 'Campo Requerido' });
@@ -96,7 +112,8 @@ export default class CrearEquipos extends Component {
          apellidoRepresentante != '' &&
          tlfRepresentante != '' &&
          correo != '' &&
-         valCorreo == 'S'
+         valCorreo == 'S' &&
+         existeEquipo == -1
       ) {
          this.guardar();
       }

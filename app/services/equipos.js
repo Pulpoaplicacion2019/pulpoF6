@@ -40,7 +40,15 @@ export const guardarEquipos = (categoria, equipo) => {
    var refEquipo = refEquiposRoot.child(
       global.idTorneo + '/categorias/' + categoria + '/equipos/' + equipo.id
    );
-   refEquipo.set(equipo);
+   refEquipo.child('/id').set(equipo.id);
+   refEquipo.child('/nombreEquipo').set(equipo.nombreEquipo);
+   refEquipo.child('/categoria').set(equipo.categoria);
+   refEquipo.child('/nombreRepresentante').set(equipo.nombreRepresentante);
+   refEquipo.child('/apellidoRepresentante').set(equipo.apellidoRepresentante);
+   refEquipo.child('/telefono').set(equipo.telefono);
+   refEquipo.child('/mail').set(equipo.mail);
+   refEquipo.child('/imagenEquipo').set(equipo.imagenEquipo);
+
    crearPermiso(equipo.mail, 'equipos', equipo.id);
 };
 export const recuperarEquipo = (equipo, fn) => {
@@ -57,8 +65,7 @@ export const recuperarEquipo = (equipo, fn) => {
       fn(snap.val());
    });
 };
-
-buscar = (listaEquipos, id) => {
+export const buscar = (listaEquipos, id) => {
    let posicion = -1;
    let iteracion = 0;
    listaEquipos.forEach(element => {

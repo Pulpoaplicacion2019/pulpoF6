@@ -75,6 +75,8 @@ export default class Equipos extends Component {
                   onPress={() => {
                      this.props.navigation.navigate('CrearEquipos', {
                         categoria: this.state.categoria,
+                        listaEquipos: this.state.listaEquip,
+                        modo: 'C',
                      });
                   }}
                />
