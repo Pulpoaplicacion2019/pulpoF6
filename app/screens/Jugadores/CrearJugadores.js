@@ -41,6 +41,72 @@ export default class CrearJugadores extends Component {
       numero: '',
       jugadorInfo: {},
    };
+   validar = () => {
+      let primerNombre = this.state.nombre;
+      let primerApellido = this.state.apellido;
+      let telefono = this.state.telefono;
+      let correo = this.state.mail;
+      let numeroJugador = this.state.numero;
+      let idJugador = this.state.cedula;
+      let existeJugador = -1;
+      let modo = this.props.navigation.getParam('modo', null);
+      let listaJugadores = this.props.navigation.getParam(
+         'listaJugadores',
+         null
+      );
+
+      if (primerNombre == '') {
+         this.setState({ errMsjNombre: 'Campo Requerido' });
+      } else {
+         this.setState({ errMsjNombre: null });
+      }
+      if (primerApellido == '') {
+         this.setState({ errMsjApellido: 'Campo Requerido' });
+      } else {
+         this.setState({ errMsjApellido: null });
+      }
+      if (telefono == '') {
+         this.setState({ errMsjTelefono: 'Campo Requerido' });
+      } else {
+         this.setState({ errMsjTelefono: null });
+      }
+      if (numeroJugador == '') {
+         this.setState({ errMsjNumero: 'Campo Requerido' });
+      } else {
+         this.setState({ errMsjNumero: null });
+      }
+      if (correo == '') {
+         this.setState({ errMsjCorreo: 'Campo Requerido' });
+      } else {
+         this.setState({ errMsjCorreo: null });
+      }
+      if (idJugador == '') {
+         this.setState({ errMsjCedula: 'Campo Requerido' });
+      } else {
+         if (modo == 'C') {
+            existeJugador = buscar(listaJugadores, idJugador);
+            if (existeJugador != -1) {
+               this.setState({ errMsjCedula: 'Jugador ya existe' });
+            } else {
+               this.setState({ errMsjCedula: null });
+            }
+         } else {
+            this.setState({ errMsjCedula: null });
+         }
+      }
+
+      if (
+         primerNombre != '' &&
+         primerApellido != '' &&
+         telefono != '' &&
+         numeroJugador != '' &&
+         correo != '' &&
+         idJugador != '' &&
+         existeJugador == -1
+      ) {
+         this.guardar();
+      }
+   };
    guardar = () => {
       let jugador = {
          cedula: this.state.cedula,
@@ -87,7 +153,7 @@ export default class CrearJugadores extends Component {
                   inputContainerStyle={styles.inputContentEstilo}
                   labelStyle={styles.labelEstilo}
                   label={'Cédula'}
-                  placeholder="102453685"
+                  placeholder=""
                   onChangeText={value => this.setState({ cedula: value })}
                   value={this.state.cedula}
                   errorStyle={{ color: 'red' }}
@@ -97,27 +163,33 @@ export default class CrearJugadores extends Component {
                   inputContainerStyle={styles.inputContentEstilo}
                   labelStyle={styles.labelEstilo}
                   label={'Nombre Jugador'}
-                  placeholder="Mariana"
+                  placeholder=""
                   onChangeText={value => this.setState({ nombre: value })}
                   value={this.state.nombre}
+                  errorStyle={{ color: 'red' }}
+                  errorMessage={this.state.errMsjNombre}
                />
                <Input
                   containerStyle={[styles.inputStilo]}
                   inputContainerStyle={styles.inputContentEstilo}
                   labelStyle={styles.labelEstilo}
                   label={'Apellido del jugador'}
-                  placeholder="Solis"
+                  placeholder=""
                   onChangeText={value => this.setState({ apellido: value })}
                   value={this.state.apellido}
+                  errorStyle={{ color: 'red' }}
+                  errorMessage={this.state.errMsjApellido}
                />
                <Input
                   containerStyle={[styles.inputStilo]}
                   inputContainerStyle={styles.inputContentEstilo}
                   labelStyle={styles.labelEstilo}
                   label={'Correo'}
-                  placeholder="equipo@torneo.com"
+                  placeholder=""
                   onChangeText={value => this.setState({ mail: value })}
                   value={this.state.mail}
+                  errorStyle={{ color: 'red' }}
+                  errorMessage={this.state.errMsjCorreo}
                />
                <Input
                   containerStyle={[styles.inputStilo]}
@@ -126,6 +198,8 @@ export default class CrearJugadores extends Component {
                   label={'Número del Jugador'}
                   onChangeText={value => this.setState({ numero: value })}
                   value={this.state.numero}
+                  errorStyle={{ color: 'red' }}
+                  errorMessage={this.state.errMsjNumero}
                />
 
                <View
@@ -138,7 +212,7 @@ export default class CrearJugadores extends Component {
                      large
                      icon={{ name: 'cached' }}
                      title="Guardar"
-                     onPress={this.guardar}
+                     onPress={this.validar}
                      buttonStyle={{
                         backgroundColor: COLOR.COLOR_CHRISTMAS_RED,
                         borderRadius: 0,

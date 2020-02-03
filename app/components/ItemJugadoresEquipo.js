@@ -33,7 +33,7 @@ export default class ItemJugadores extends Component {
    };
    eliminarJugador = () => {
       let mensaje =
-         '¿Está seguro que desea eliminar el jugador ' +
+         '¿Seguro que desea eliminar el jugador ' +
          this.props.jugador.primerNombre +
          ' ' +
          this.props.jugador.primerApellido +
@@ -46,6 +46,30 @@ export default class ItemJugadores extends Component {
       eliminarElementos(mensaje, () => {
          eliminarJugador(infoJugador);
       });
+   };
+   renderEditAndDeleteButton = () => {
+      if (this.props.visible) {
+         return (
+            <View style={styles.container}>
+               <Button
+                  small
+                  type="outline"
+                  icon={{ name: 'edit' }}
+                  onPress={() => {
+                     this.editarJugador();
+                  }}
+               />
+               <Button
+                  small
+                  type="outline"
+                  icon={{ name: 'delete' }}
+                  onPress={() => {
+                     this.eliminarJugador();
+                  }}
+               />
+            </View>
+         );
+      }
    };
    componentDidMount() {}
    render() {
@@ -64,22 +88,7 @@ export default class ItemJugadores extends Component {
                <Text style={styles.inputContentEstilo}>
                   {this.props.jugador.numero}
                </Text>
-               <Button
-                  small
-                  type="outline"
-                  icon={{ name: 'edit' }}
-                  onPress={() => {
-                     this.editarJugador();
-                  }}
-               />
-               <Button
-                  small
-                  type="outline"
-                  icon={{ name: 'delete' }}
-                  onPress={() => {
-                     this.eliminarJugador();
-                  }}
-               />
+               {this.renderEditAndDeleteButton()}
             </View>
          </View>
       );
