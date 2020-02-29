@@ -10,7 +10,7 @@ export const cargarPermisos = (usuario, fn) => {
    let torneos = '';
    let equipos = '';
    let vocalia = '';
-   let jugadores = '';
+   let perfiles = '';
 
    refPermisosRoot.on('child_added', snap => {
       let listaPermisos = [];
@@ -24,15 +24,15 @@ export const cargarPermisos = (usuario, fn) => {
       if (snap.key == 'vocalia') {
          vocalia = Object.values(snap.val());
       }
-      if (snap.key == 'jugadores') {
-         jugadores = Object.values(snap.val());
+      if (snap.key == 'perfiles') {
+         perfiles = Object.values(snap.val());
       }
 
       listaPermisos.push({
          listaTorneos: torneos,
          listaEquipos: equipos,
          listaVocalia: vocalia,
-         listaJugadores: jugadores,
+         listaPerfiles: perfiles,
       });
 
       fn(listaPermisos);
@@ -50,4 +50,18 @@ export const crearPermiso = (correo, nodo, id) => {
    const itemsRef = firebase.database().ref('permisos');
    const refPermisos = itemsRef.child(nodoCorreo + '/' + nodo + '/' + id);
    refPermisos.set(id);
+};
+
+export const buscarPermiso = (lista, id) => {
+   let posicion = -1;
+   let iteracion = 0;
+   if (lista) {
+      lista.forEach(element => {
+         if (element == id) {
+            posicion = iteracion;
+         }
+         iteracion++;
+      });
+   }
+   return posicion;
 };

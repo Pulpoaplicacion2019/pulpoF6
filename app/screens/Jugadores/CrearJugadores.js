@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, ScrollView, TextInput } from 'react-native';
 import { Icon, Input, Avatar, Button } from 'react-native-elements';
-import { guardarJugador, recuperarJugador } from '../../services/jugadores.js';
+import {
+   guardarJugador,
+   recuperarJugador,
+   buscar,
+} from '../../services/jugadores.js';
+import { guardarPerfiles } from '../../services/perfiles';
 
 // importación archivo de colores
 import * as COLOR from '../../constants/colors.js';
@@ -48,12 +53,14 @@ export default class CrearJugadores extends Component {
       let correo = this.state.mail;
       let numeroJugador = this.state.numero;
       let idJugador = this.state.cedula;
-      let existeJugador = -1;
+      let valCorreo = 'N';
+      let valID = 'N';
       let modo = this.props.navigation.getParam('modo', null);
       let listaJugadores = this.props.navigation.getParam(
          'listaJugadores',
          null
       );
+      let existeJugador = buscar(listaJugadores, idJugador, numeroJugador);
 
       if (primerNombre == '') {
          this.setState({ errMsjNombre: 'Campo Requerido' });
@@ -73,25 +80,45 @@ export default class CrearJugadores extends Component {
       if (numeroJugador == '') {
          this.setState({ errMsjNumero: 'Campo Requerido' });
       } else {
-         this.setState({ errMsjNumero: null });
+         if (existeJugador.numero != 0) {
+            this.setState({ errMsjNumero: 'Número de Jugador ya existe' });
+         } else {
+            this.setState({ errMsjNumero: null });
+         }
       }
       if (correo == '') {
          this.setState({ errMsjCorreo: 'Campo Requerido' });
-      } else {
+      } else if (
+         /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i.test(
+            correo
+         )
+      ) {
          this.setState({ errMsjCorreo: null });
-      }
-      if (idJugador == '') {
-         this.setState({ errMsjCedula: 'Campo Requerido' });
+         valCorreo = 'S';
       } else {
-         if (modo == 'C') {
-            existeJugador = buscar(listaJugadores, idJugador);
-            if (existeJugador != -1) {
-               this.setState({ errMsjCedula: 'Jugador ya existe' });
-            } else {
-               this.setState({ errMsjCedula: null });
-            }
+         this.setState({ errMsjCorreo: 'Correo inválido' });
+         valCorreo = 'N';
+      }
+
+      if (modo == 'C') {
+         this.setState({
+            uri:
+               'https://firebasestorage.googleapis.com/v0/b/pulpoapp2019-36a53.appspot.com/o/default%2Favatar-default.png?alt=media&token=6abbf4e5-5859-46d0-b5ae-d4bfc76a0739',
+         });
+
+         if (existeJugador.posicion != -1) {
+            this.setState({ errMsjCedula: 'Jugador ya existe' });
+            valID = 'N';
          } else {
             this.setState({ errMsjCedula: null });
+            valID = 'S';
+         }
+      } else {
+         if (idJugador == '') {
+            this.setState({ errMsjCedula: 'Campo Requerido' });
+         } else {
+            this.setState({ errMsjCedula: null });
+            valID = 'S';
          }
       }
 
@@ -100,9 +127,11 @@ export default class CrearJugadores extends Component {
          primerApellido != '' &&
          telefono != '' &&
          numeroJugador != '' &&
+         existeJugador.numero == 0 &&
          correo != '' &&
+         valCorreo == 'S' &&
          idJugador != '' &&
-         existeJugador == -1
+         valID == 'S'
       ) {
          this.guardar();
       }
@@ -116,7 +145,17 @@ export default class CrearJugadores extends Component {
          mail: this.state.mail,
          numero: this.state.numero,
       };
+      let infoPerfil = {
+         cedula: this.state.cedula,
+         nombre: this.state.nombre,
+         apellido: this.state.apellido,
+         telefono: this.state.telefono,
+         correo: this.state.mail,
+         rol: 'Jugador',
+         // foto: this.state.uri,
+      };
       guardarJugador(this.state.equipo, jugador);
+      guardarPerfiles(infoPerfil);
       this.props.navigation.goBack();
    };
 
@@ -157,6 +196,7 @@ export default class CrearJugadores extends Component {
                   onChangeText={value => this.setState({ cedula: value })}
                   value={this.state.cedula}
                   errorStyle={{ color: 'red' }}
+                  errorMessage={this.state.errMsjCedula}
                />
                <Input
                   containerStyle={[styles.inputStilo]}

@@ -1,25 +1,9 @@
 import React, { Component } from 'react';
-import {
-   View,
-   Text,
-   StyleSheet,
-   ImageBackground,
-   TouchableHighlight,
-} from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
+import { Image } from 'react-native-elements';
 import styles from '../Styles/styles';
 
 export default class ItemEquipos extends Component {
-   /*static navigationOptions = {
-      tabBarLabel: 'Equipos',
-      tabBarIcon: ({ tintColor }) => {
-         let iconName = Platform.select({
-            ios: 'ios-basketball',
-            android: 'md-basketball',
-         });
-         return <Icon name={iconName} type="ionicon" color={tintColor} />;
-      },
-   };*/
-
    state = {
       lista: [],
    };
@@ -32,22 +16,33 @@ export default class ItemEquipos extends Component {
    };
    render() {
       return (
-         <View>
+         <View style={styles.containerE}>
             {this.props.lista.map((item, index) => {
                return (
-                  <View key={index} style={styles.itemContainer}>
-                     <TouchableHighlight
-                        onPress={() => this.editarEquipo(item)}
-                     >
-                        <ImageBackground
-                           source={{ uri: item.imagenEquipo }}
-                           style={{ width: 100, height: 100 }}
-                        >
+                  <View style={styles.gridViewE}>
+                     <View key={index} style={styles.containerItemGrid}>
+                        <View>
                            <Text style={styles.itemName}>
                               {item.nombreEquipo}
                            </Text>
-                        </ImageBackground>
-                     </TouchableHighlight>
+                        </View>
+                        <TouchableOpacity
+                           style={styles.image}
+                           onPress={() => this.editarEquipo(item)}
+                        >
+                           <Image
+                              source={{ uri: item.imagenEquipo }}
+                              style={styles.image}
+                           ></Image>
+                        </TouchableOpacity>
+                     </View>
+                     <View style={styles.containerItemColumGrid}>
+                        <Text style={styles.itemYear}>
+                           {item.nombreRepresentante +
+                              ' ' +
+                              item.apellidoRepresentante}
+                        </Text>
+                     </View>
                   </View>
                );
             })}

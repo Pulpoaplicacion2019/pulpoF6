@@ -1,19 +1,10 @@
 import React, { Component } from 'react';
-import {
-   StyleSheet,
-   View,
-   Text,
-   TouchableOpacity,
-   Image,
-   FlatList,
-   KeyboardAvoidingView,
-   ScrollView,
-   Alert,
-} from 'react-native';
+import { StyleSheet, View, Text, FlatList, ScrollView } from 'react-native';
 import { Avatar, Input, Icon, Button } from 'react-native-elements';
 import { Dropdown } from 'react-native-material-dropdown';
 import { guardarTorneo, recuperarTorneo } from '../../services/torneos.js';
 import { cargarCategorias } from '../../services/categorias.js';
+import { guardarPerfiles } from '../../services/perfiles';
 import FilaCategoria from '../../components/filaCategoria.js';
 import DatePicker from 'react-native-datepicker';
 import * as COLOR from '../../constants/colors.js';
@@ -27,6 +18,7 @@ export default class PerfilTorneo extends Component {
          fechaRegistro: '',
          estado: 'A',
          fechaInicio: '',
+         cedulaOrganizador: '',
          nombreOrganizador: '',
          apellidoOrganizador: '',
          correoOrganizador: '',
@@ -66,6 +58,7 @@ export default class PerfilTorneo extends Component {
                fechaRegistro: torneo.fechaRegistro,
                estado: torneo.estado,
                date: torneo.fechaInicio,
+               cedulaOrganizador: torneo.cedulaOrganizador,
                nombreOrganizador: torneo.nombreOrganizador,
                apellidoOrganizador: torneo.apellidoOrganizador,
                correoOrganizador: torneo.correoOrganizador,
@@ -86,6 +79,7 @@ export default class PerfilTorneo extends Component {
       let nOrganizador = this.state.nombreOrganizador;
       let aOrganizador = this.state.apellidoOrganizador;
       let tOrganizador = this.state.telefonoOrganizador;
+      let cedulaOrganizador = this.state.cedulaOrganizador;
       let correo = this.state.correoOrganizador;
       let valCorreo = '';
       ('/^[-w.%+]{1,64}@(?:[A-Z0-9-]{1,63}.){1,125}[A-Z]{2,63}$/i');
@@ -99,6 +93,11 @@ export default class PerfilTorneo extends Component {
          this.setState({ errMsjTorneo: 'Campo Requerido' });
       } else {
          this.setState({ errMsjTorneo: null });
+      }
+      if (cedulaOrganizador == '') {
+         this.setState({ errMsjCedulaOrganizador: 'Campo Requerido' });
+      } else {
+         this.setState({ errMsjCedulaOrganizador: null });
       }
       if (nOrganizador == '') {
          this.setState({ errMsjNombreOrganizador: 'Campo Requerido' });
@@ -132,6 +131,7 @@ export default class PerfilTorneo extends Component {
       if (
          año != '' &&
          torneo != '' &&
+         cedulaOrganizador != '' &&
          nOrganizador != '' &&
          aOrganizador != '' &&
          tOrganizador != '' &&
@@ -149,20 +149,32 @@ export default class PerfilTorneo extends Component {
       if (cat.length > 0) {
          this.setState({ errMsjCorreo: null });
          const torneo = {
+            id: this.state.nombreTorneo + '_' + this.state.anio,
             anio: this.state.anio,
-            apellidoOrganizador: this.state.apellidoOrganizador,
-            correoOrganizador: this.state.correoOrganizador,
+            categorias: categorias,
             estado: this.state.estado,
             favorito: this.state.favorito,
             nombreTorneo: this.state.nombreTorneo,
             fechaInicio: this.state.date,
-            id: this.state.nombreTorneo + '_' + this.state.anio,
             imagenTorneo: this.state.uri,
+            cedulaOrganizador: this.state.cedulaOrganizador,
             nombreOrganizador: this.state.nombreOrganizador,
+            apellidoOrganizador: this.state.apellidoOrganizador,
+            correoOrganizador: this.state.correoOrganizador,
             telefonoOrganizador: this.state.telefonoOrganizador,
-            categorias: categorias,
+         };
+         let infoPerfil = {
+            cedula: this.state.cedulaOrganizador,
+            nombre: this.state.nombreOrganizador,
+            apellido: this.state.apellidoOrganizador,
+            correo: this.state.correoOrganizador,
+            telefono: this.state.telefonoOrganizador,
+            rol: 'Organizador de Torneo',
+            foto:
+               'https://firebasestorage.googleapis.com/v0/b/pulpoapp2019-36a53.appspot.com/o/default%2Favatar-default.png?alt=media&token=6abbf4e5-5859-46d0-b5ae-d4bfc76a0739',
          };
          guardarTorneo(torneo);
+         guardarPerfiles(infoPerfil);
          this.props.navigation.goBack();
       } else {
          this.setState({ errMsjCorreo: 'Ingrese Categorias' });
@@ -229,7 +241,7 @@ export default class PerfilTorneo extends Component {
    };
    render() {
       return (
-         <ScrollView>
+         <View>
             <View
                style={{
                   backgroundColor: COLOR.COLOR_SECUNDARIO,
@@ -262,138 +274,157 @@ export default class PerfilTorneo extends Component {
                   }}
                />
             </View>
-            <View style={[styles.viewContainer]}>
-               <Input
-                  keyboardType="numeric"
-                  containerStyle={[styles.inputStilo]}
-                  inputContainerStyle={styles.inputContentEstilo}
-                  labelStyle={styles.labelEstilo}
-                  label={'Año'}
-                  placeholder=""
-                  disabled={this.state.editarPantalla}
-                  onChangeText={text => this.setState({ anio: text })}
-                  value={this.state.anio + ''}
-                  errorStyle={{ color: 'red' }}
-                  errorMessage={this.state.errMsjAño}
-               />
-               <Input
-                  containerStyle={[styles.inputStilo]}
-                  inputContainerStyle={styles.inputContentEstilo}
-                  labelStyle={styles.labelEstilo}
-                  label={'Nombre Torneo'}
-                  disabled={this.state.editarPantalla}
-                  placeholder=""
-                  onChangeText={text => this.setState({ nombreTorneo: text })}
-                  value={this.state.nombreTorneo}
-                  errorStyle={{ color: 'red' }}
-                  errorMessage={this.state.errMsjTorneo}
-               />
-               <Input
-                  containerStyle={[styles.inputStilo]}
-                  inputContainerStyle={styles.inputContentEstilo}
-                  labelStyle={styles.labelEstilo}
-                  label={'Nombre Organizador'}
-                  placeholder=""
-                  onChangeText={text =>
-                     this.setState({ nombreOrganizador: text })
-                  }
-                  value={this.state.nombreOrganizador}
-                  errorStyle={{ color: 'red' }}
-                  errorMessage={this.state.errMsjNombreOrganizador}
-               />
+            <ScrollView>
+               <View style={[styles.viewContainer]}>
+                  <Input
+                     keyboardType="numeric"
+                     containerStyle={[styles.inputStilo]}
+                     inputContainerStyle={styles.inputContentEstilo}
+                     labelStyle={styles.labelEstilo}
+                     label={'Año'}
+                     placeholder=""
+                     disabled={this.state.editarPantalla}
+                     onChangeText={text => this.setState({ anio: text })}
+                     value={this.state.anio + ''}
+                     errorStyle={{ color: 'red' }}
+                     errorMessage={this.state.errMsjAño}
+                  />
+                  <Input
+                     containerStyle={[styles.inputStilo]}
+                     inputContainerStyle={styles.inputContentEstilo}
+                     labelStyle={styles.labelEstilo}
+                     label={'Nombre Torneo'}
+                     disabled={this.state.editarPantalla}
+                     placeholder=""
+                     onChangeText={text =>
+                        this.setState({ nombreTorneo: text })
+                     }
+                     value={this.state.nombreTorneo}
+                     errorStyle={{ color: 'red' }}
+                     errorMessage={this.state.errMsjTorneo}
+                  />
+                  <Input
+                     containerStyle={[styles.inputStilo]}
+                     inputContainerStyle={styles.inputContentEstilo}
+                     labelStyle={styles.labelEstilo}
+                     label={'Cédula Organizador'}
+                     placeholder=""
+                     onChangeText={value =>
+                        this.setState({ cedulaOrganizador: value })
+                     }
+                     value={this.state.cedulaOrganizador}
+                     errorStyle={{ color: 'red' }}
+                     errorMessage={this.state.errMsjCedulaOrganizador}
+                  />
+                  <Input
+                     containerStyle={[styles.inputStilo]}
+                     inputContainerStyle={styles.inputContentEstilo}
+                     labelStyle={styles.labelEstilo}
+                     label={'Nombre Organizador'}
+                     placeholder=""
+                     onChangeText={text =>
+                        this.setState({ nombreOrganizador: text })
+                     }
+                     value={this.state.nombreOrganizador}
+                     errorStyle={{ color: 'red' }}
+                     errorMessage={this.state.errMsjNombreOrganizador}
+                  />
 
-               <Input
-                  containerStyle={[styles.inputStilo]}
-                  inputContainerStyle={styles.inputContentEstilo}
-                  labelStyle={styles.labelEstilo}
-                  label={'Apellido Organizador'}
-                  placeholder=""
-                  onChangeText={text =>
-                     this.setState({ apellidoOrganizador: text })
-                  }
-                  value={this.state.apellidoOrganizador}
-                  errorStyle={{ color: 'red' }}
-                  errorMessage={this.state.errMsjApellidoOrganizador}
-               />
-               <Input
-                  keyboardType="numeric"
-                  containerStyle={[styles.inputStilo]}
-                  inputContainerStyle={styles.inputContentEstilo}
-                  labelStyle={styles.labelEstilo}
-                  label={'Telefono Organizador'}
-                  placeholder=""
-                  onChangeText={text =>
-                     this.setState({ telefonoOrganizador: text })
-                  }
-                  value={this.state.telefonoOrganizador}
-                  errorStyle={{ color: 'red' }}
-                  errorMessage={this.state.errMsjTlfOrganizador}
-               />
-               <Input
-                  containerStyle={[styles.inputStilo]}
-                  inputContainerStyle={styles.inputContentEstilo}
-                  labelStyle={styles.labelEstilo}
-                  label={'Correo Organizador'}
-                  placeholder=""
-                  onChangeText={text =>
-                     this.setState({ correoOrganizador: text })
-                  }
-                  value={this.state.correoOrganizador}
-                  errorStyle={{ color: 'red' }}
-                  errorMessage={this.state.errMsjCorreo}
-               />
-               <DatePicker
-                  style={styles.date}
-                  date={this.state.date}
-                  mode="date"
-                  placeholder="Fecha Inicio"
-                  format="YYYY-MM-DD"
-                  minDate="2016-05-01"
-                  maxDate="2100-06-01"
-                  confirmBtnText="Confirm"
-                  cancelBtnText="Cancel"
-                  customStyles={{
-                     dateIcon: {
-                        position: 'absolute',
-                        left: 0,
-                        top: 4,
-                        marginLeft: 0,
-                     },
-                     dateInput: { marginLeft: 36 },
-                     // ... You can check the source to find the other keys.
-                  }}
-                  onDateChange={date => {
-                     this.setState({ date: date });
-                  }}
-               />
+                  <Input
+                     containerStyle={[styles.inputStilo]}
+                     inputContainerStyle={styles.inputContentEstilo}
+                     labelStyle={styles.labelEstilo}
+                     label={'Apellido Organizador'}
+                     placeholder=""
+                     onChangeText={text =>
+                        this.setState({ apellidoOrganizador: text })
+                     }
+                     value={this.state.apellidoOrganizador}
+                     errorStyle={{ color: 'red' }}
+                     errorMessage={this.state.errMsjApellidoOrganizador}
+                  />
+                  <Input
+                     keyboardType="numeric"
+                     containerStyle={[styles.inputStilo]}
+                     inputContainerStyle={styles.inputContentEstilo}
+                     labelStyle={styles.labelEstilo}
+                     label={'Telefono Organizador'}
+                     placeholder=""
+                     onChangeText={text =>
+                        this.setState({ telefonoOrganizador: text })
+                     }
+                     value={this.state.telefonoOrganizador}
+                     errorStyle={{ color: 'red' }}
+                     errorMessage={this.state.errMsjTlfOrganizador}
+                  />
+                  <Input
+                     containerStyle={[styles.inputStilo]}
+                     inputContainerStyle={styles.inputContentEstilo}
+                     labelStyle={styles.labelEstilo}
+                     label={'Correo Organizador'}
+                     placeholder=""
+                     onChangeText={text =>
+                        this.setState({ correoOrganizador: text })
+                     }
+                     value={this.state.correoOrganizador}
+                     errorStyle={{ color: 'red' }}
+                     errorMessage={this.state.errMsjCorreo}
+                  />
+                  <DatePicker
+                     style={styles.date}
+                     date={this.state.date}
+                     mode="date"
+                     placeholder="Fecha Inicio"
+                     format="YYYY-MM-DD"
+                     minDate="2016-05-01"
+                     maxDate="2100-06-01"
+                     confirmBtnText="Confirm"
+                     cancelBtnText="Cancel"
+                     customStyles={{
+                        dateIcon: {
+                           position: 'absolute',
+                           left: 0,
+                           top: 4,
+                           marginLeft: 0,
+                        },
+                        dateInput: { marginLeft: 36 },
+                        // ... You can check the source to find the other keys.
+                     }}
+                     onDateChange={date => {
+                        this.setState({ date: date });
+                     }}
+                  />
 
-               <Dropdown
-                  label="Categorias"
-                  data={this.state.listaCategorias}
-                  onChangeText={this.elegirCategoria}
-               />
+                  <Dropdown
+                     label="Categorias"
+                     data={this.state.listaCategorias}
+                     onChangeText={this.elegirCategoria}
+                  />
+                  <Text style={{ color: 'red' }}>
+                     {this.state.errMsjCategorias}
+                  </Text>
+                  <FlatList
+                     data={this.state.listaCatTorneo}
+                     renderItem={({ item }) => (
+                        <FilaCategoria
+                           categoria={item}
+                           fnEliminar={this.eliminar}
+                        />
+                     )}
+                     keyExtractor={item => item}
+                  />
+               </View>
                <Text style={{ color: 'red' }}>
                   {this.state.errMsjCategorias}
                </Text>
-               <FlatList
-                  data={this.state.listaCatTorneo}
-                  renderItem={({ item }) => (
-                     <FilaCategoria
-                        categoria={item}
-                        fnEliminar={this.eliminar}
-                     />
-                  )}
-                  keyExtractor={item => item}
+               <Button
+                  title="GUARDAR"
+                  onPress={() => {
+                     this.validar();
+                  }}
                />
-            </View>
-            <Text style={{ color: 'red' }}>{this.state.errMsjCategorias}</Text>
-            <Button
-               title="GUARDAR"
-               onPress={() => {
-                  this.validar();
-               }}
-            />
-         </ScrollView>
+            </ScrollView>
+         </View>
       );
    }
 }

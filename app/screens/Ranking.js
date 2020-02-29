@@ -1,15 +1,9 @@
 import React, { Component } from 'react';
-import {
-   StyleSheet,
-   View,
-   Text,
-   FlatList,
-   ScrollView,
-   Button,
-   Alert,
-} from 'react-native';
+import { StyleSheet, View, FlatList, ScrollView } from 'react-native';
+import { Icon } from 'react-native-elements';
 import ItemRanking from '../components/ItemRanking';
 import { cargarRanking } from '../services/ranking.js';
+import styles from '../Styles/styles';
 
 export default class Ranking extends Component {
    constructor(props) {
@@ -18,6 +12,16 @@ export default class Ranking extends Component {
          listaRanking: [],
       };
    }
+   static navigationOptions = {
+      drawerLabel: 'Ranking',
+      drawerIcon: ({ tintColor }) => {
+         let iconName = Platform.select({
+            ios: 'ios-podium',
+            android: 'md-podium',
+         });
+         return <Icon name={iconName} type="ionicon" color={tintColor} />;
+      },
+   };
    componentDidMount() {
       cargarRanking(listaRanking => {
          this.setState({
@@ -30,10 +34,9 @@ export default class Ranking extends Component {
    render() {
       return (
          <ScrollView>
-            <View style={styles.container}>
+            <View style={styles.containerPerfiles}>
                <FlatList
                   data={this.state.listaRanking}
-                  //ItemSeparatorComponent={this.separador}
                   renderItem={({ item }) => <ItemRanking datos={item} />}
                   keyExtractor={item => item}
                />
@@ -42,9 +45,3 @@ export default class Ranking extends Component {
       );
    }
 }
-
-const styles = StyleSheet.create({
-   container: {
-      flexDirection: 'column',
-   },
-});

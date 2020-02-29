@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import ItemJugadoresPartido from '../components/ItemJugadoresPartido';
 import { cargarPartidos, guardarEstadoJugador } from '../services/vocalia.js';
-import { Button } from 'react-native-elements';
+import { Button, Icon } from 'react-native-elements';
 
 // importación de constantes de color
 import * as COLOR from '../constants/colors.js';
@@ -39,6 +39,17 @@ export default class Partidos extends Component {
          listaJ1Titulares: [],
       };
    }
+   static navigationOptions = {
+      drawerLabel: 'Vocalia',
+      drawerIcon: ({ tintColor }) => {
+         let iconName = Platform.select({
+            ios: 'ios-document',
+            android: 'md-document',
+         });
+         return <Icon name={iconName} type="ionicon" color={tintColor} />;
+      },
+   };
+
    componentDidMount() {
       var categ = 'Masculino';
       var fecha = 'Fecha1';
