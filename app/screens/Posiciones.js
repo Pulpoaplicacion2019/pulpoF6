@@ -1,5 +1,12 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, FlatList, ScrollView } from 'react-native';
+import {
+   StyleSheet,
+   View,
+   Text,
+   FlatList,
+   ScrollView,
+   Platform,
+} from 'react-native';
 import {
    Table,
    TableWrapper,
@@ -9,6 +16,7 @@ import {
    Cols,
    Cell,
 } from 'react-native-table-component';
+import { Icon } from 'react-native-elements';
 import { cargarPosiciones } from '../services/posiciones.js';
 export default class Posiciones extends Component {
    constructor(props) {
@@ -19,6 +27,16 @@ export default class Posiciones extends Component {
          lista: [],
       };
    }
+   static navigationOptions = {
+      tabBarLabel: 'Posiciones',
+      tabBarIcon: ({ tintColor }) => {
+         let iconName = Platform.select({
+            ios: 'ios-podium',
+            android: 'md-podium',
+         });
+         return <Icon name={iconName} type="ionicon" color={tintColor} />;
+      },
+   };
    componentDidMount() {
       var categ = global.categoria;
 

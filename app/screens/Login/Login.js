@@ -4,6 +4,7 @@ import { Icon, Input, Button } from 'react-native-elements';
 import { DrawerActions } from 'react-navigation-drawer';
 import { cargarPermisos } from '../../services/permisos';
 import { firebase } from '@react-native-firebase/auth';
+import PerfilesUsuarios from '../Login/PerfilesUsuarios';
 export default class Login extends Component {
    state = {
       usuario: '',
@@ -16,6 +17,16 @@ export default class Login extends Component {
    constructor(props) {
       super(props);
    }
+   static navigationOptions = {
+      drawerLabel: 'Login',
+      drawerIcon: ({ tintColor }) => {
+         let iconName = Platform.select({
+            ios: 'ios-person',
+            android: 'md-person',
+         });
+         return <Icon name={iconName} type="ionicon" color={tintColor} />;
+      },
+   };
 
    showError = error => {
       let mensaje;
@@ -73,10 +84,26 @@ export default class Login extends Component {
             cargarPermisos(usuario, listaPermisos => {
                global.listaTorneos = listaPermisos[0].listaTorneos;
                global.listaEquipos = listaPermisos[0].listaEquipos;
-               global.listaJugadores = listaPermisos[0].listaJugadores;
+               global.listaPerfiles = listaPermisos[0].listaPerfiles;
                global.listaVocalia = listaPermisos[0].listaVocalia;
             });
             this.props.navigation.navigate('MisTorneos');
+            Login.navigationOptions = {
+               drawerLabel: () => null,
+               drawerIcon: () => null,
+            };
+            PerfilesUsuarios.navigationOptions = {
+               drawerLabel: 'Perfiles',
+               drawerIcon: ({ tintColor }) => {
+                  let iconName = Platform.select({
+                     ios: 'ios-person',
+                     android: 'md-person',
+                  });
+                  return (
+                     <Icon name={iconName} type="ionicon" color={tintColor} />
+                  );
+               },
+            };
          })
          .catch(error => {
             this.showError(error.code);
@@ -84,27 +111,7 @@ export default class Login extends Component {
    };
 
    goResetPassword = () => this.props.navigation.navigate('ResetPassword');
-   static navigationOptions = ({ navigation }) => ({
-      headerTitle: 'Login',
-      headerLeft: Platform.select({
-         ios: (
-            <Icon
-               name="ios-log-out"
-               type="ionicon"
-               containerStyle={styles.icon}
-               onPress={() => navigation.navigate('MisTorneosScreen')}
-            />
-         ),
-         android: (
-            <Icon
-               name="md-menu"
-               type="ionicon"
-               containerStyle={styles.icon}
-               onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
-            />
-         ),
-      }),
-   });
+
    render() {
       return (
          <View style={styles.viewBody}>
@@ -146,8 +153,6 @@ export default class Login extends Component {
                title="Iniciar Sesión"
                onPress={() => {
                   this.validar();
-
-                  global.objTorneos.setState({ user: this.state.usuario });
                }}
             />
 

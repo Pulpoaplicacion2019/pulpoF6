@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, ScrollView, TextInput } from 'react-native';
+import { StyleSheet, View, ScrollView } from 'react-native';
 import { Icon, Input, Avatar, Button } from 'react-native-elements';
 import {
    guardarEquipos,
    recuperarEquipo,
    buscar,
 } from '../../services/equipos.js';
+import { guardarPerfiles } from '../../services/perfiles';
 
 // importación archivo de colores
 import * as COLOR from '../../constants/colors.js';
@@ -38,6 +39,7 @@ export default class CrearEquipos extends Component {
    state = {
       uri: '',
       id: '',
+      cedulaRepresentante: '',
       nombreEquipo: '',
       categoria: '',
       nombreRepresentante: '',
@@ -56,10 +58,12 @@ export default class CrearEquipos extends Component {
       let nombreRepresentante = this.state.nombreRepresentante;
       let apellidoRepresentante = this.state.apellidoRepresentante;
       let tlfRepresentante = this.state.telefono;
+      let cedulaRepresentante = this.state.cedulaRepresentante;
       let correo = this.state.mail;
       let existeEquipo = -1;
       let modo = this.props.navigation.getParam('modo', null);
       let listaEquipos = this.props.navigation.getParam('listaEquipos', null);
+      let valCorreo = 'N';
 
       if (equipo == '') {
          this.setState({ errMsjEquipo: 'Campo Requerido' });
@@ -91,7 +95,11 @@ export default class CrearEquipos extends Component {
       } else {
          this.setState({ errMsjTlfRepresentante: null });
       }
-
+      if (cedulaRepresentante == '') {
+         this.setState({ errMsjCedulaRepresentante: 'Campo Requerido' });
+      } else {
+         this.setState({ errMsjCedulaRepresentante: null });
+      }
       if (correo == '') {
          this.setState({ errMsjCorreo: 'Campo Requerido' });
       } else if (
@@ -111,6 +119,7 @@ export default class CrearEquipos extends Component {
          nombreRepresentante != '' &&
          apellidoRepresentante != '' &&
          tlfRepresentante != '' &&
+         cedulaRepresentante != '' &&
          correo != '' &&
          valCorreo == 'S' &&
          existeEquipo == -1
@@ -122,6 +131,7 @@ export default class CrearEquipos extends Component {
       let idEquipo = this.state.nombreEquipo + '_' + this.state.categoria;
       let equipo = {
          id: idEquipo,
+         cedulaRepresentante: this.state.cedulaRepresentante,
          nombreEquipo: this.state.nombreEquipo,
          categoria: this.state.categoria,
          nombreRepresentante: this.state.nombreRepresentante,
@@ -130,7 +140,18 @@ export default class CrearEquipos extends Component {
          mail: this.state.mail,
          imagenEquipo: this.state.uri,
       };
+      let infoPerfil = {
+         cedula: this.state.cedulaRepresentante,
+         nombre: this.state.nombreRepresentante,
+         apellido: this.state.apellidoRepresentante,
+         telefono: this.state.telefono,
+         correo: this.state.mail,
+         rol: 'Representante del Equipo',
+         foto:
+            'https://firebasestorage.googleapis.com/v0/b/pulpoapp2019-36a53.appspot.com/o/default%2Favatar-default.png?alt=media&token=6abbf4e5-5859-46d0-b5ae-d4bfc76a0739',
+      };
       guardarEquipos(this.state.categoria, equipo);
+      guardarPerfiles(infoPerfil);
       this.props.navigation.goBack();
    };
    pintarImagen = uriCargado => {
@@ -148,6 +169,7 @@ export default class CrearEquipos extends Component {
          if (equipo != null) {
             this.setState({
                id: equipo.id,
+               cedulaRepresentante: equipo.cedulaRepresentante,
                nombreEquipo: equipo.nombreEquipo,
                categoria: equipo.categoria,
                nombreRepresentante: equipo.nombreRepresentante,
@@ -211,6 +233,28 @@ export default class CrearEquipos extends Component {
                   containerStyle={[styles.inputStilo]}
                   inputContainerStyle={styles.inputContentEstilo}
                   labelStyle={styles.labelEstilo}
+                  disabled={true}
+                  label={'Categoria'}
+                  placeholder=""
+                  value={this.state.categoria}
+               />
+               <Input
+                  containerStyle={[styles.inputStilo]}
+                  inputContainerStyle={styles.inputContentEstilo}
+                  labelStyle={styles.labelEstilo}
+                  label={'Cédula Representante'}
+                  placeholder=""
+                  onChangeText={value =>
+                     this.setState({ cedulaRepresentante: value })
+                  }
+                  value={this.state.cedulaRepresentante}
+                  errorStyle={{ color: 'red' }}
+                  errorMessage={this.state.errMsjCedulaRepresentante}
+               />
+               <Input
+                  containerStyle={[styles.inputStilo]}
+                  inputContainerStyle={styles.inputContentEstilo}
+                  labelStyle={styles.labelEstilo}
                   label={'Nombre Representante'}
                   placeholder=""
                   onChangeText={value =>
@@ -233,15 +277,7 @@ export default class CrearEquipos extends Component {
                   errorStyle={{ color: 'red' }}
                   errorMessage={this.state.errMsjApellidoRepresentante}
                />
-               <Input
-                  containerStyle={[styles.inputStilo]}
-                  inputContainerStyle={styles.inputContentEstilo}
-                  labelStyle={styles.labelEstilo}
-                  disabled={true}
-                  label={'Categoria'}
-                  placeholder=""
-                  value={this.state.categoria}
-               />
+
                <Input
                   containerStyle={[styles.inputStilo]}
                   inputContainerStyle={styles.inputContentEstilo}

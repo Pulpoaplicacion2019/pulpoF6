@@ -21,21 +21,17 @@ const styles = StyleSheet.create({
       backgroundColor: COLOR.COLOR_SNOWY_MOUNT,
       padding: 20,
    },
-   inputStilo: {
-      padding: 2,
-      marginTop: 20,
+   columnEstilo: {
+      color: COLOR.COLOR_SECUNDARIO,
+      fontWeight: 'bold',
+      fontSize: 12,
+      width: '18%',
+      padding: 1,
    },
    labelEstilo: {
       color: COLOR.COLOR_SECUNDARIO,
       fontWeight: 'bold',
       padding: 5,
-   },
-   inputContentEstilo: {
-      backgroundColor: '#ffff',
-      borderWidth: 1,
-      borderColor: COLOR.COLOR_GRIS_CLARO,
-      borderRadius: 8,
-      paddingStart: 5,
    },
    header: {
       flexDirection: 'row',
@@ -68,10 +64,10 @@ export default class CrudJugadores extends Component {
                   <ScrollView>
                      <View style={styles.viewContainer}>
                         <View style={styles.header}>
-                           <Text style={styles.labelEstilo}>CÉDULA</Text>
-                           <Text style={styles.labelEstilo}>NOMBRE</Text>
-                           <Text style={styles.labelEstilo}>APELLIDO</Text>
-                           <Text style={styles.labelEstilo}>NÚMERO</Text>
+                           <Text style={styles.columnEstilo}>CÉDULA</Text>
+                           <Text style={styles.columnEstilo}>NOMBRE</Text>
+                           <Text style={styles.columnEstilo}>APELLIDO</Text>
+                           <Text style={styles.columnEstilo}>NÚMERO</Text>
                         </View>
                         <FlatList
                            data={this.state.listaJugadores}
@@ -81,6 +77,7 @@ export default class CrudJugadores extends Component {
                                  jugador={item}
                                  equipo={this.state.equipo}
                                  visible={true}
+                                 listaJugadores={this.state.listaJugadores}
                               />
                            )}
                            keyExtractor={item => item}

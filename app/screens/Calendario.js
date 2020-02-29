@@ -1,15 +1,6 @@
 import React, { Component } from 'react';
-import {
-   StyleSheet,
-   View,
-   Text,
-   FlatList,
-   Button,
-   ActivityIndicator,
-   Platform,
-} from 'react-native';
-
-import { Image, Icon, Avatar } from 'react-native-elements';
+import { StyleSheet, View, Text, FlatList, Platform } from 'react-native';
+import { Icon, Avatar } from 'react-native-elements';
 import ActionButton from 'react-native-action-button';
 
 //Importación componente de navegación
@@ -24,7 +15,7 @@ import * as CONSTANTES from '../constants/constantes.js';
 import { loadTeams } from '../services/calendarioService.js';
 import { Container, Content, Header } from 'native-base';
 
-export default class Calendarios extends Component {
+export default class Calendario extends Component {
    constructor() {
       super();
       this.state = {
@@ -32,6 +23,16 @@ export default class Calendarios extends Component {
          categoria: '',
       };
    }
+   static navigationOptions = {
+      tabBarLabel: 'Calendario',
+      tabBarIcon: ({ tintColor }) => {
+         let iconName = Platform.select({
+            ios: 'ios-calendar',
+            android: 'md-calendar',
+         });
+         return <Icon name={iconName} type="ionicon" color={tintColor} />;
+      },
+   };
 
    componentDidMount() {
       var listaCategorias = global.listaCategorias;

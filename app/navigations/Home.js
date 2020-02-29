@@ -7,13 +7,7 @@ import {
    TabScene,
    TransitionConfig,
 } from 'react-navigation';
-import {
-   Platform,
-   Text,
-   StyleSheet,
-   TouchableOpacity,
-   View,
-} from 'react-native';
+import { Platform } from 'react-native';
 import { createDrawerNavigator, DrawerActions } from 'react-navigation-drawer';
 import { createStackNavigator, HeaderTitle } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
@@ -26,7 +20,7 @@ import EnCursoScreen from '../screens/Torneos/EnCurso';
 import PorIniciarScreen from '../screens/Torneos/PorIniciar';
 import MisTorneosScreen from '../screens/Torneos/MisTorneos';
 
-import CalendariosScreen from '../screens/Calendarios';
+import CalendariosScreen from '../screens/Calendario';
 import CrearFechaScreen from '../screens/CrearFecha';
 import PartidosScreen from '../screens/PartidosV2';
 import EditarPartidoScreen from '../screens/EditarPartido';
@@ -44,6 +38,7 @@ import InfoEquiposScreen from '../screens/Equipos/InfoEquipos';
 import CrudJugadoresScreen from '../screens/Jugadores/CrudJugadores';
 import CrearJugadoresScreen from '../screens/Jugadores/CrearJugadores';
 import ItemJugadoresScreen from '../components/ItemJugadoresEquipo';
+import ItemPerfilesScreen from '../components/ItemPerfiles';
 
 import LoginScreen from '../screens/Login/Login';
 import ResetScreen from '../screens/Login/ResetPassword';
@@ -51,6 +46,8 @@ import VocaliaJugadoresScreen from '../screens/JugadoresPartido';
 import VocaliaScreen from '../screens/vocalia';
 import RankingScreen from '../screens/Ranking';
 import CanchasScreen from '../screens/crearCanchas';
+import PerfilesUsuariosScreen from '../screens/Login/PerfilesUsuarios';
+import ModificarPerfilScreen from '../screens/Login/ModificarPerfil';
 
 import PartidosMejorJugadorScreen from '../screens/PartidoMejorJugador';
 
@@ -160,12 +157,17 @@ const TorneosRootStack = createStackNavigator(
       Vocalia: {
          screen: VocaliaScreen,
       },
-
       MejorJugador: {
          screen: PartidosMejorJugadorScreen,
       },
       Canchas: {
          screen: CanchasScreen,
+      },
+      ItemPerfiles: {
+         screen: ItemPerfilesScreen,
+      },
+      ModificarPerfil: {
+         screen: ModificarPerfilScreen,
       },
    },
    { initialRouteName: 'TabTorneos' }
@@ -188,30 +190,15 @@ const MainNavigator = Platform.select({
       },
       LoginScreen: {
          screen: LoginScreen,
-         navigationOptions: {
-            drawerLabel: 'Login',
-            drawerIcon: ({ tintColor }) => (
-               <Icon name="md-cog" type="ionicon" color={tintColor} />
-            ),
-         },
       },
       VocaliaJugadoresScreen: {
          screen: VocaliaJugadoresScreen,
-         navigationOptions: {
-            drawerLabel: 'Vocalia',
-            drawerIcon: ({ tintColor }) => (
-               <Icon name="md-cog" type="ionicon" color={tintColor} />
-            ),
-         },
       },
       RankingScreen: {
          screen: RankingScreen,
-         navigationOptions: {
-            drawerLabel: 'Ranking',
-            drawerIcon: ({ tintColor }) => (
-               <Icon name="md-cog" type="ionicon" color={tintColor} />
-            ),
-         },
+      },
+      PerfilesUsuariosScreen: {
+         screen: PerfilesUsuariosScreen,
       },
    }),
 });

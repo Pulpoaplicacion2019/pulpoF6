@@ -15,8 +15,11 @@ const styles = StyleSheet.create({
       alignItems: 'center',
    },
    inputContentEstilo: {
-      fontSize: 15,
-      padding: 5,
+      fontSize: 12,
+      width: '18%',
+   },
+   buttonRigth: {
+      width: '3%',
    },
 });
 export default class ItemJugadores extends Component {
@@ -29,11 +32,12 @@ export default class ItemJugadores extends Component {
       this.props.nav.navigate(ruta, {
          equipo: equipo,
          jugadorId: this.props.jugador.cedula,
+         listaJugadores: this.props.listaJugadores,
       });
    };
    eliminarJugador = () => {
       let mensaje =
-         '¿Seguro que desea eliminar el jugador ' +
+         'Â¿Seguro que desea eliminar el jugador ' +
          this.props.jugador.primerNombre +
          ' ' +
          this.props.jugador.primerApellido +
@@ -52,6 +56,7 @@ export default class ItemJugadores extends Component {
          return (
             <View style={styles.container}>
                <Button
+                  style={styles.buttonRigth}
                   small
                   type="outline"
                   icon={{ name: 'edit' }}
@@ -60,6 +65,7 @@ export default class ItemJugadores extends Component {
                   }}
                />
                <Button
+                  style={styles.buttonRigth}
                   small
                   type="outline"
                   icon={{ name: 'delete' }}

@@ -7,9 +7,7 @@ import {
    Button,
    ActivityIndicator,
 } from 'react-native';
-
-import { Avatar } from 'react-native-elements';
-import ActionButton from 'react-native-action-button';
+import { Image, Icon, Avatar } from 'react-native-elements';
 //Importación componente de navegación
 import NavegadorCategorias from '../components/NavegadorCategorias.js';
 
@@ -32,7 +30,16 @@ export default class Resultados extends Component {
          categoria: '',
       };
    }
-
+   static navigationOptions = {
+      tabBarLabel: 'Resultados',
+      tabBarIcon: ({ tintColor }) => {
+         let iconName = Platform.select({
+            ios: 'ios-analytics',
+            android: 'md-analytics',
+         });
+         return <Icon name={iconName} type="ionicon" color={tintColor} />;
+      },
+   };
    componentDidMount() {
       var listaCategorias = global.listaCategorias;
       var categ = listaCategorias[0];

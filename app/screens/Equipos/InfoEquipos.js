@@ -1,17 +1,12 @@
 import React, { Component } from 'react';
-import {
-   StyleSheet,
-   View,
-   Text,
-   TouchableOpacity,
-   ScrollView,
-   FlatList,
-} from 'react-native';
+import { StyleSheet, View, Text, ScrollView, FlatList } from 'react-native';
 import { Icon, Avatar } from 'react-native-elements';
-import { recuperarEquipo } from '../../services/equipos.js';
+import { recuperarEquipo, eliminarEquipo } from '../../services/equipos.js';
 import { cargarJugadores } from '../../services/jugadores';
 import ItemJugadoresEquipo from '../../components/ItemJugadoresEquipo';
+import { eliminarElementos } from '../../components/Alertas';
 import * as COLOR from '../../constants/colors.js';
+import { buscarPermiso } from '../../services/permisos';
 
 export default class InfoEquipos extends Component {
    state = {
@@ -56,30 +51,48 @@ export default class InfoEquipos extends Component {
          this.setState({ listaJugadores: listaJugadores });
       });
    }
+   eliminarEquipo = () => {
+      let mensaje =
+         '¿Seguro que desea eliminar el equipo ' +
+         this.state.nombreEquipo +
+         ' ?';
+      let infoEquipo = {
+         categoria: this.state.categoria,
+         id: this.state.id,
+      };
+      eliminarElementos(mensaje, () => {
+         eliminarEquipo(infoEquipo);
+         this.props.navigation.goBack();
+      });
+   };
    renderEditButton = () => {
       let usuario = global.usuario;
       let equipoActual = this.state.id;
       let listaEquipos = global.listaEquipos;
       if (listaEquipos) {
-         let permiso = this.buscarPermiso(listaEquipos, equipoActual);
+         let permiso = buscarPermiso(listaEquipos, equipoActual);
          console.log('renderActionButton' + usuario);
          console.log('torneoActual' + equipoActual);
          if (usuario && permiso != -1) {
             return (
-               <TouchableOpacity
-                  hitSlop={{ top: 50, bottom: 50, left: 50, right: 50 }}
-                  onPress={() =>
-                     this.props.navigation.navigate('CrearEquipos', {
-                        equipo: this.state.equipoDatos,
-                     })
-                  }
-               >
+               <View style={styles.container}>
                   <Icon
                      name="edit"
                      type="material-icons"
                      style={styles.button}
+                     onPress={() =>
+                        this.props.navigation.navigate('CrearEquipos', {
+                           equipo: this.state.equipoDatos,
+                        })
+                     }
                   />
-               </TouchableOpacity>
+                  <Icon
+                     name="delete"
+                     type="material-icons"
+                     style={styles.button}
+                     onPress={() => this.eliminarEquipo()}
+                  />
+               </View>
             );
          }
       }
@@ -89,7 +102,7 @@ export default class InfoEquipos extends Component {
       let equipoActual = this.state.id;
       let listaEquipos = global.listaEquipos;
       if (listaEquipos) {
-         let permiso = this.buscarPermiso(listaEquipos, equipoActual);
+         let permiso = buscarPermiso(listaEquipos, equipoActual);
          console.log('renderActionButton' + usuario);
          console.log('torneoActual' + equipoActual);
          if (usuario && permiso != -1) {
@@ -108,19 +121,7 @@ export default class InfoEquipos extends Component {
          }
       }
    };
-   buscarPermiso = (lista, id) => {
-      let posicion = -1;
-      let iteracion = 0;
-      if (lista) {
-         lista.forEach(element => {
-            if (element == id) {
-               posicion = iteracion;
-            }
-            iteracion++;
-         });
-      }
-      return posicion;
-   };
+
    render() {
       return (
          <View>
@@ -137,7 +138,10 @@ export default class InfoEquipos extends Component {
                      marginBottom: 30,
                   }}
                />
-               {this.renderEditButton()}
+               <View style={styles.header}>
+                  <Text style={styles.labelEstilo}>INFORMACIÓN DEL EQUIPO</Text>
+                  {this.renderEditButton()}
+               </View>
 
                <Text style={styles.txt}>
                   {' '}
@@ -170,10 +174,10 @@ export default class InfoEquipos extends Component {
                      {this.renderEditButtonJ()}
                   </View>
                   <View style={styles.header}>
-                     <Text style={styles.labelEstilo}>CÉDULA</Text>
-                     <Text style={styles.labelEstilo}>NOMBRE</Text>
-                     <Text style={styles.labelEstilo}>APELLIDO</Text>
-                     <Text style={styles.labelEstilo}>NÚMERO</Text>
+                     <Text style={styles.columnEstilo}>CÉDULA</Text>
+                     <Text style={styles.columnEstilo}>NOMBRE</Text>
+                     <Text style={styles.columnEstilo}>APELLIDO</Text>
+                     <Text style={styles.columnEstilo}>NÚMERO</Text>
                   </View>
                   <FlatList
                      data={this.state.listaJugadores}
@@ -212,6 +216,13 @@ const styles = StyleSheet.create({
    inputStilo: {
       padding: 2,
       marginTop: 20,
+   },
+   columnEstilo: {
+      color: COLOR.COLOR_SECUNDARIO,
+      fontWeight: 'bold',
+      fontSize: 12,
+      width: '18%',
+      padding: 1,
    },
    labelEstilo: {
       color: COLOR.COLOR_SECUNDARIO,
