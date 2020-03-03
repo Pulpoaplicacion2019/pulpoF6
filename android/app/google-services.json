@@ -8,12 +8,20 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:616527640285:android:7532a11f82a94d07",
+        "mobilesdk_app_id": "1:616527640285:android:4cc046755a3047adf24d34",
         "android_client_info": {
-          "package_name": "com.clearminds.pulpobase"
+          "package_name": "com.clearminds.pulpo"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "616527640285-7ts21m0e069gojj3tvujsarqe8bpl67e.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.clearminds.pulpo",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
         {
           "client_id": "616527640285-7jr93itadhs48qpg90jan9dum7uobgff.apps.googleusercontent.com",
           "client_type": 3
@@ -37,12 +45,20 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:616527640285:android:52c6d6fbc1f0608df24d34",
+        "mobilesdk_app_id": "1:616527640285:android:7532a11f82a94d07",
         "android_client_info": {
-          "package_name": "com.pulpo"
+          "package_name": "com.clearminds.pulpobase"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "616527640285-90e9jdevjpgcc91b30l60qbt82q2bvcr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.clearminds.pulpobase",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
         {
           "client_id": "616527640285-7jr93itadhs48qpg90jan9dum7uobgff.apps.googleusercontent.com",
           "client_type": 3

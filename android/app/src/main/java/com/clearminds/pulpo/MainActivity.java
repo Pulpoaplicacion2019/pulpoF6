@@ -1,4 +1,4 @@
-package com.pulpo;
+package com.clearminds.pulpo;
 
 import com.facebook.react.ReactActivity;
 
